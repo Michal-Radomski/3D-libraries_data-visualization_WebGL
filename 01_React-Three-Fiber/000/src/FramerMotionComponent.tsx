@@ -1,6 +1,6 @@
 import React from "react";
 
-const FramerMotionComponent = (): JSX.Element => {
+const FramerMotionComponent = (): React.JSX.Element => {
   return <React.Fragment>FramerMotionComponent</React.Fragment>;
 };
 

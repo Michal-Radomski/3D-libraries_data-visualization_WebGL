@@ -1,6 +1,6 @@
 import React from "react";
 
-const CesiumComponent = (): JSX.Element => {
+const CesiumComponent = (): React.JSX.Element => {
   return <React.Fragment>CesiumComponent</React.Fragment>;
 };
 

@@ -19,6 +19,7 @@ const SpringComponent = (): React.JSX.Element => {
 
   return (
     <React.Fragment>
+      React Spring
       <animated.div
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error

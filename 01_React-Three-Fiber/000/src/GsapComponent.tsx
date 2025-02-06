@@ -49,14 +49,14 @@ const GsapComponent = (): React.JSX.Element => {
           justifyContent: "center",
         }}
       >
-        Hello World
+        GSAP
       </div>
 
       <br />
 
       <main>
         <section className="boxes-container" ref={container}>
-          <h2>Use the button to toggle a Timeline</h2>
+          <h2>GSAP: Use the button to toggle a Timeline</h2>
           <div>
             <button onClick={toggleTimeline}>Toggle Timeline</button>
           </div>

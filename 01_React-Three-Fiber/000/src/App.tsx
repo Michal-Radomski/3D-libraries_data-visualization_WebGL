@@ -2,20 +2,22 @@ import React from "react";
 
 import "./App.scss";
 import SpringComponent from "./SpringComponent";
-import GsapComponent from "./GsapComponent";
-import CesiumComponent from "./CesiumComponent";
+import GSAPComponent from "./GSAPComponent";
+import CesiumWitResiumComponent from "./CesiumWitResiumComponent";
 import FramerMotionComponent from "./FramerMotionComponent";
 
 const App = (): React.JSX.Element => {
   return (
     <React.Fragment>
-      <SpringComponent />
-      <br />
-      <GsapComponent />
+      {/* <SpringComponent />
       <br />
       <FramerMotionComponent />
       <br />
-      <CesiumComponent />
+
+      <GSAPComponent />
+      <br /> */}
+
+      <CesiumWitResiumComponent />
     </React.Fragment>
   );
 };

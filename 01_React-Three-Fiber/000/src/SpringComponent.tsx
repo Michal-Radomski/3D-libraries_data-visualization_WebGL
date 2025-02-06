@@ -1,6 +1,7 @@
 import React from "react";
 import { useSpring, animated } from "@react-spring/web";
 
+//* License: MIT
 const SpringComponent = (): React.JSX.Element => {
   const [springs, api] = useSpring(() => ({
     from: { x: 0 },

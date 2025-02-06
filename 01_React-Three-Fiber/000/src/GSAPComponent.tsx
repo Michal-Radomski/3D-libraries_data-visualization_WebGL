@@ -4,7 +4,8 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(useGSAP);
 
-const GsapComponent = (): React.JSX.Element => {
+//* License: https://gsap.com/community/standard-license
+const GSAPComponent = (): React.JSX.Element => {
   //* Example 1
   const appRef = React.useRef<HTMLDivElement>(null);
 
@@ -69,4 +70,4 @@ const GsapComponent = (): React.JSX.Element => {
   );
 };
 
-export default GsapComponent;
+export default GSAPComponent;

@@ -9,13 +9,13 @@ import FramerMotionComponent from "./FramerMotionComponent";
 const App = (): React.JSX.Element => {
   return (
     <React.Fragment>
-      {/* <SpringComponent />
+      <SpringComponent />
       <br />
       <FramerMotionComponent />
       <br />
 
       <GSAPComponent />
-      <br /> */}
+      <br />
 
       <CesiumWitResiumComponent />
     </React.Fragment>

@@ -1,6 +1,6 @@
 import React from "react";
 import { Viewer, Entity } from "resium";
-import { Cartesian3, Color } from "cesium";
+import * as Cesium from "cesium";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 
 //* Cesium License: Apache License 2.0
@@ -8,12 +8,12 @@ import "cesium/Build/Cesium/Widgets/widgets.css";
 const CesiumWithResiumComponent = (): React.JSX.Element => {
   return (
     <React.Fragment>
-      CesiumComponent
+      Cesium/ResiumComponent
       <Viewer full={false}>
         <Entity
           name="Tokyo"
-          position={Cartesian3.fromDegrees(139.767052, 35.681167, 100)}
-          point={{ pixelSize: 10, color: Color.WHITE }}
+          position={Cesium.Cartesian3.fromDegrees(139.767052, 35.681167, 100)}
+          point={{ pixelSize: 10, color: Cesium.Color.WHITE }}
         />
       </Viewer>
     </React.Fragment>

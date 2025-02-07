@@ -8,7 +8,7 @@ import Box from "./Box";
 const App = (): React.JSX.Element => {
   return (
     <React.Fragment>
-      <Canvas camera={{ position: [0, 0, 2] }}>
+      <Canvas camera={{ position: [0, 0, 2] }} frameloop="demand">
         {/* <Example /> */}
         <Box position={[-0.75, 0, 0]} name="A" wireframe={false} />
         <Box position={[0.75, 0, 0]} name="B" wireframe={true} />

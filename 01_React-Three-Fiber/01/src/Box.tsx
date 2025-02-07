@@ -1,5 +1,5 @@
 import React from "react";
-import { Mesh, BufferGeometry, NormalBufferAttributes, Material, Object3DEventMap } from "three";
+import { Mesh, BufferGeometry, NormalBufferAttributes, Material, Object3DEventMap, MeshBasicMaterial } from "three";
 
 interface Props {
   position: [number, number, number];
@@ -10,19 +10,21 @@ interface Props {
 const Box: React.FC<Props> = (props: Props): React.JSX.Element => {
   // console.log("props:", props);
 
-  const ref = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>>(null);
+  const meshRef = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>>(null);
+  const materialRef = React.useRef<MeshBasicMaterial>(null);
 
   React.useEffect(() => {
-    if (ref?.current) {
-      console.log("ref:", ref);
+    if (meshRef?.current && materialRef?.current) {
+      // console.log("meshRef:", meshRef);
+      console.log("materialRef:", materialRef);
     }
   }, []);
 
   return (
     <React.Fragment>
-      <mesh {...props} ref={ref}>
+      <mesh {...props} ref={meshRef}>
         <boxGeometry />
-        <meshBasicMaterial color={0x00ff00} wireframe={props.wireframe} />
+        <meshBasicMaterial color={0x00ff00} wireframe={props.wireframe} ref={materialRef} />
       </mesh>
     </React.Fragment>
   );

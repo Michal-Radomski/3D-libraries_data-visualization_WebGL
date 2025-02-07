@@ -11,8 +11,12 @@ declare global {
   }
 }
 
+type Position = [number, number, number];
+
 interface PropsForMesh {
-  position: [number, number, number];
+  position: Position;
   name?: string;
   wireframe: boolean;
 }
+
+type PolyhedronArr = [THREE.BoxGeometry, THREE.SphereGeometry, THREE.DodecahedronGeometry];

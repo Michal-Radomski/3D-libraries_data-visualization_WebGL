@@ -1,7 +1,8 @@
 import React from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { Stats, StatsGl } from "@react-three/drei";
+import { OrbitControls, Stats, StatsGl } from "@react-three/drei";
+import { Perf } from "r3f-perf";
 
 import "./App.scss";
 // import Box from "./Box";
@@ -37,6 +38,13 @@ const App = (): React.JSX.Element => {
 
         <Stats />
         <StatsGl />
+        <Perf position="top-right" />
+        <OrbitControls
+          minAzimuthAngle={-Math.PI / 4}
+          maxAzimuthAngle={Math.PI / 4}
+          minPolarAngle={Math.PI / 6}
+          maxPolarAngle={Math.PI - Math.PI / 6}
+        />
       </Canvas>
     </React.Fragment>
   );

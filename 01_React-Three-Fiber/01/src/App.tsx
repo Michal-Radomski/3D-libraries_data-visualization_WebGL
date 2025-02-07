@@ -1,20 +1,18 @@
 import React from "react";
+import { Canvas } from "@react-three/fiber";
 
 import "./App.scss";
+import Box from "./Box";
 // import Example from "./Example";
 
 const App = (): React.JSX.Element => {
   return (
     <React.Fragment>
-      {/* <Example /> */}
-      <mesh>
-        <boxGeometry />
-        <meshBasicMaterial
-          // color={"#00ff00"}
-          color={0x00ff00}
-          wireframe={true}
-        />
-      </mesh>
+      <Canvas camera={{ position: [0, 0, 2] }}>
+        {/* <Example /> */}
+        <Box position={[-0.75, 0, 0]} name="A" />
+        <Box position={[0.75, 0, 0]} name="B" />
+      </Canvas>
     </React.Fragment>
   );
 };

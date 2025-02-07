@@ -6,6 +6,7 @@ import "./App.scss";
 // import Box from "./Box";
 import Polyhedron from "./Polyhedron";
 import { PolyhedronArr } from "./Types";
+// import TorusComponent from "./TorusComponent";
 // import Example from "./Example";
 
 const App = (): React.JSX.Element => {
@@ -25,6 +26,8 @@ const App = (): React.JSX.Element => {
 
         {/* <Box position={[-0.75, 0, 0]} name="A" wireframe={false} />
         <Box position={[0.75, 0, 0]} name="B" wireframe={true} /> */}
+
+        {/* <TorusComponent /> */}
 
         <Polyhedron position={[-0.75, -0.75, 0]} polyhedron={polyhedron} />
         <Polyhedron position={[0.75, -0.75, 0]} polyhedron={polyhedron} />

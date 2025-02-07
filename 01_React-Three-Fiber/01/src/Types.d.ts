@@ -10,3 +10,9 @@ declare global {
     }
   }
 }
+
+interface PropsForMesh {
+  position: [number, number, number];
+  name?: string;
+  wireframe: boolean;
+}

@@ -8,27 +8,26 @@ import {
   Object3DEventMap,
   MeshBasicMaterial,
   BoxGeometry,
+  SphereGeometry,
 } from "three";
-
 import { RootState, ThreeEvent, useFrame } from "@react-three/fiber";
 
-interface Props {
-  position: [number, number, number];
-  name?: string;
-  wireframe: boolean;
-}
+import { PropsForMesh } from "./Types";
 
-const Box: React.FC<Props> = (props: Props): React.JSX.Element => {
+const Box: React.FC<PropsForMesh> = (props: PropsForMesh): React.JSX.Element => {
   // console.log("props:", props);
 
+  //* useMemo will act as cache for the geometry and return that instead of generating a new object.
   // const geometry:THREE.BoxGeometry = new THREE.BoxGeometry()
-  const geometry: BoxGeometry = React.useMemo(() => new BoxGeometry(), []);
+  const geometry: [BoxGeometry, SphereGeometry] = React.useMemo(() => [new BoxGeometry(), new SphereGeometry(0.785398)], []);
+  // console.log("geometry:", geometry);
 
   const meshRef = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>>(null);
   const materialRef = React.useRef<MeshBasicMaterial>(null);
 
   const [hovered, setHover] = React.useState<boolean>(false);
   const [rotate, setRotate] = React.useState<boolean>(false);
+  const [count, setCount] = React.useState<number>(0);
 
   React.useEffect(() => {
     if (meshRef?.current && materialRef?.current) {
@@ -63,12 +62,13 @@ const Box: React.FC<Props> = (props: Props): React.JSX.Element => {
         //   console.log("self:", self)
         // }
         // onWheel={() => console.log("wheel spins")}
-        onClick={() => console.log("click")}
+        // onClick={() => console.log("click")}
+        onClick={() => setCount((count + 1) % 2)}
         onDoubleClick={(event: ThreeEvent<MouseEvent>) => console.log("event:", event)}
         onPointerDown={() => setRotate(!rotate)}
         onPointerOver={() => setHover(true)}
         onPointerOut={() => setHover(false)}
-        geometry={geometry}
+        geometry={geometry[count]}
       >
         <boxGeometry />
         <meshBasicMaterial color={hovered ? 0xff0000 : 0x00ff00} wireframe={props.wireframe} ref={materialRef} />

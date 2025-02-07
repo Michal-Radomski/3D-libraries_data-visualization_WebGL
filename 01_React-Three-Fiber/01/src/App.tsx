@@ -48,6 +48,8 @@ const App = (): React.JSX.Element => {
         />
         {/* <PointerLockControls /> */}
         <axesHelper args={[2]} />
+        <gridHelper rotation-x={Math.PI / 4} />
+        {/* <gridHelper args={[20, 20, 0xff0000, "teal"]} /> */}
       </Canvas>
     </React.Fragment>
   );

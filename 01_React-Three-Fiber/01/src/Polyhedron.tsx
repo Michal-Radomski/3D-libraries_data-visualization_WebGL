@@ -25,6 +25,7 @@ const Polyhedron = ({ position, polyhedron }: { position: Position; polyhedron: 
       geometry={polyhedron[count]}
     >
       <meshBasicMaterial color={"lime"} wireframe />
+      <axesHelper args={[1]} />
     </mesh>
   );
 };

@@ -44,7 +44,10 @@ const App = (): React.JSX.Element => {
           maxAzimuthAngle={Math.PI / 4}
           minPolarAngle={Math.PI / 6}
           maxPolarAngle={Math.PI - Math.PI / 6}
+          enableDamping={false}
         />
+        {/* <PointerLockControls /> */}
+        <axesHelper args={[2]} />
       </Canvas>
     </React.Fragment>
   );

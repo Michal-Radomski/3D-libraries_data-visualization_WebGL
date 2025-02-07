@@ -3,6 +3,7 @@ import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 import { OrbitControls, Stats, StatsGl } from "@react-three/drei";
 import { Perf } from "r3f-perf";
+import { useControls } from "leva";
 
 import "./App.scss";
 // import Box from "./Box";
@@ -12,6 +13,23 @@ import { PolyhedronArr } from "./Types";
 // import Example from "./Example";
 
 const App = (): React.JSX.Element => {
+  // const color = useControls({
+  //   value: "green",
+  // });
+
+  const options = React.useMemo(() => {
+    return {
+      x: { value: 0, min: 0, max: Math.PI * 2, step: 0.01 },
+      y: { value: 0, min: 0, max: Math.PI * 2, step: 0.01 },
+      z: { value: 0, min: 0, max: Math.PI * 2, step: 0.01 },
+      visible: true,
+      color: { value: "orange" },
+    };
+  }, []);
+
+  const pA = useControls("Polyhedron A", options);
+  const pB = useControls("Polyhedron B", options);
+
   const polyhedron = [
     new THREE.BoxGeometry(),
     new THREE.SphereGeometry(0.785398),
@@ -31,8 +49,20 @@ const App = (): React.JSX.Element => {
 
         {/* <TorusComponent /> */}
 
-        <Polyhedron position={[-0.75, -0.75, 0]} polyhedron={polyhedron} />
-        <Polyhedron position={[0.75, -0.75, 0]} polyhedron={polyhedron} />
+        <Polyhedron
+          position={[-0.75, -0.75, 0]}
+          polyhedron={polyhedron}
+          rotation={[pA.x, pA.y, pA.z]}
+          visible={pA.visible}
+          color={pA.color}
+        />
+        <Polyhedron
+          position={[0.75, -0.75, 0]}
+          polyhedron={polyhedron}
+          rotation={[pB.x, pB.y, pB.z]}
+          visible={pB.visible}
+          color={pB.color}
+        />
         <Polyhedron position={[-0.75, 0.75, 0]} polyhedron={polyhedron} />
         <Polyhedron position={[0.75, 0.75, 0]} polyhedron={polyhedron} />
 
@@ -50,6 +80,8 @@ const App = (): React.JSX.Element => {
         <axesHelper args={[2]} />
         <gridHelper rotation-x={Math.PI / 4} />
         {/* <gridHelper args={[20, 20, 0xff0000, "teal"]} /> */}
+
+        {/* <color attach="background" args={[color.value]} /> */}
       </Canvas>
     </React.Fragment>
   );

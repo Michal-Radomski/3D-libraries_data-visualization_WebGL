@@ -4,7 +4,19 @@ import { BufferGeometry, Material, Mesh, NormalBufferAttributes, Object3DEventMa
 
 import { PolyhedronArr, Position } from "./Types";
 
-const Polyhedron = ({ position, polyhedron }: { position: Position; polyhedron: PolyhedronArr }): React.JSX.Element => {
+const Polyhedron = ({
+  position,
+  polyhedron,
+  rotation,
+  visible,
+  color,
+}: {
+  position: Position;
+  polyhedron: PolyhedronArr;
+  rotation?: [number, number, number];
+  visible?: boolean;
+  color?: string;
+}): React.JSX.Element => {
   const meshRef = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>>(null);
   const [count, setCount] = React.useState<number>(0);
 
@@ -17,6 +29,8 @@ const Polyhedron = ({ position, polyhedron }: { position: Position; polyhedron: 
 
   return (
     <mesh
+      rotation={rotation}
+      visible={visible}
       position={position}
       ref={meshRef}
       onPointerDown={() => {
@@ -24,7 +38,7 @@ const Polyhedron = ({ position, polyhedron }: { position: Position; polyhedron: 
       }}
       geometry={polyhedron[count]}
     >
-      <meshBasicMaterial color={"lime"} wireframe />
+      <meshBasicMaterial color={color || "lime"} wireframe />
       <axesHelper args={[1]} />
     </mesh>
   );

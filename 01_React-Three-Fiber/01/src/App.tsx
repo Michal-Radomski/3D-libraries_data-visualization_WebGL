@@ -10,8 +10,8 @@ const App = (): React.JSX.Element => {
     <React.Fragment>
       <Canvas camera={{ position: [0, 0, 2] }}>
         {/* <Example /> */}
-        <Box position={[-0.75, 0, 0]} name="A" />
-        <Box position={[0.75, 0, 0]} name="B" />
+        <Box position={[-0.75, 0, 0]} name="A" wireframe={false} />
+        <Box position={[0.75, 0, 0]} name="B" wireframe={true} />
       </Canvas>
     </React.Fragment>
   );

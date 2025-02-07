@@ -1,5 +1,15 @@
 import React from "react";
-import { Mesh, BufferGeometry, NormalBufferAttributes, Material, Object3DEventMap, MeshBasicMaterial } from "three";
+// import * as THREE from "three";
+import {
+  Mesh,
+  BufferGeometry,
+  NormalBufferAttributes,
+  Material,
+  Object3DEventMap,
+  MeshBasicMaterial,
+  BoxGeometry,
+} from "three";
+
 import { RootState, ThreeEvent, useFrame } from "@react-three/fiber";
 
 interface Props {
@@ -11,6 +21,9 @@ interface Props {
 const Box: React.FC<Props> = (props: Props): React.JSX.Element => {
   // console.log("props:", props);
 
+  // const geometry:THREE.BoxGeometry = new THREE.BoxGeometry()
+  const geometry: BoxGeometry = React.useMemo(() => new BoxGeometry(), []);
+
   const meshRef = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>>(null);
   const materialRef = React.useRef<MeshBasicMaterial>(null);
 
@@ -20,7 +33,8 @@ const Box: React.FC<Props> = (props: Props): React.JSX.Element => {
   React.useEffect(() => {
     if (meshRef?.current && materialRef?.current) {
       // console.log("meshRef:", meshRef);
-      console.log("materialRef:", materialRef);
+      // console.log("materialRef:", materialRef);
+      console.log("meshRef.current.geometry.uuid:", meshRef.current.geometry.uuid);
     }
   }, []);
 
@@ -54,6 +68,7 @@ const Box: React.FC<Props> = (props: Props): React.JSX.Element => {
         onPointerDown={() => setRotate(!rotate)}
         onPointerOver={() => setHover(true)}
         onPointerOut={() => setHover(false)}
+        geometry={geometry}
       >
         <boxGeometry />
         <meshBasicMaterial color={hovered ? 0xff0000 : 0x00ff00} wireframe={props.wireframe} ref={materialRef} />

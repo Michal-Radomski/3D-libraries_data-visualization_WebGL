@@ -1,6 +1,7 @@
 import React from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
+import { Stats, StatsGl } from "@react-three/drei";
 
 import "./App.scss";
 // import Box from "./Box";
@@ -33,6 +34,9 @@ const App = (): React.JSX.Element => {
         <Polyhedron position={[0.75, -0.75, 0]} polyhedron={polyhedron} />
         <Polyhedron position={[-0.75, 0.75, 0]} polyhedron={polyhedron} />
         <Polyhedron position={[0.75, 0.75, 0]} polyhedron={polyhedron} />
+
+        <Stats />
+        <StatsGl />
       </Canvas>
     </React.Fragment>
   );

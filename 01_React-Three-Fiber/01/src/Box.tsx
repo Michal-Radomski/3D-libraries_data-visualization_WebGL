@@ -1,5 +1,6 @@
 import React from "react";
 import { Mesh, BufferGeometry, NormalBufferAttributes, Material, Object3DEventMap, MeshBasicMaterial } from "three";
+import { RootState, useFrame } from "@react-three/fiber";
 
 interface Props {
   position: [number, number, number];
@@ -19,6 +20,14 @@ const Box: React.FC<Props> = (props: Props): React.JSX.Element => {
       console.log("materialRef:", materialRef);
     }
   }, []);
+
+  // The useFrame hook is invoked continually, and on desktop, will try to maintain a rate of 60 frames per second.
+  useFrame((_state: RootState, delta: number) => {
+    // console.log("_state", _state);
+    // console.log("delta:", delta);
+    meshRef.current!.rotation.x += 1 * delta;
+    meshRef.current!.rotation.y += 0.5 * delta;
+  });
 
   return (
     <React.Fragment>

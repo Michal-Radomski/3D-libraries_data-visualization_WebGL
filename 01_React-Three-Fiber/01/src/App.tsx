@@ -39,9 +39,10 @@ const App = (): React.JSX.Element => {
   return (
     <React.Fragment>
       <Canvas
-        camera={{ position: [0, 0, 2] }}
+        camera={{ position: [-1, 4, 2.5] }}
         // frameloop="demand"
       >
+        <directionalLight position={[1, 1, 1]} />
         {/* <Example /> */}
 
         {/* <Box position={[-0.75, 0, 0]} name="A" wireframe={false} />
@@ -50,21 +51,35 @@ const App = (): React.JSX.Element => {
         {/* <TorusComponent /> */}
 
         <Polyhedron
+          name="meshBasicMaterial"
           position={[-0.75, -0.75, 0]}
           polyhedron={polyhedron}
           rotation={[pA.x, pA.y, pA.z]}
           visible={pA.visible}
           color={pA.color}
+          material={new THREE.MeshBasicMaterial()}
         />
         <Polyhedron
+          name="meshNormalMaterial"
           position={[0.75, -0.75, 0]}
           polyhedron={polyhedron}
           rotation={[pB.x, pB.y, pB.z]}
           visible={pB.visible}
           color={pB.color}
+          material={new THREE.MeshNormalMaterial()}
         />
-        <Polyhedron position={[-0.75, 0.75, 0]} polyhedron={polyhedron} />
-        <Polyhedron position={[0.75, 0.75, 0]} polyhedron={polyhedron} />
+        <Polyhedron
+          position={[-0.75, 0.75, 0]}
+          polyhedron={polyhedron}
+          name="meshPhongMaterial"
+          material={new THREE.MeshPhongMaterial()}
+        />
+        <Polyhedron
+          position={[0.75, 0.75, 0]}
+          polyhedron={polyhedron}
+          name="meshStandardMaterial"
+          material={new THREE.MeshStandardMaterial()}
+        />
 
         <Stats />
         <StatsGl />

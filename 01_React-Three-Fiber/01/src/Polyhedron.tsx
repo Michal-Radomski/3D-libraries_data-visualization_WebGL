@@ -67,6 +67,8 @@ const Polyhedron = ({
 
   return (
     <mesh
+      castShadow={true}
+      receiveShadow={true}
       rotation={rotation}
       visible={visible}
       position={position}

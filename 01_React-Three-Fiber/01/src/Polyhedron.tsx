@@ -38,7 +38,8 @@ const Polyhedron = ({
   useControls(name as string, {
     wireframe: {
       value: false,
-      onChange: (v) => {
+      onChange: (v: boolean) => {
+        // console.log({ name });
         // console.log("meshRef.current!.material:", meshRef.current!.material);
         // @ts-ignore
         meshRef.current!.material.wireframe = v;
@@ -46,7 +47,7 @@ const Polyhedron = ({
     },
     flatShading: {
       value: true,
-      onChange: (v) => {
+      onChange: (v: boolean) => {
         // console.log("v:", v);
         // @ts-ignore
         meshRef.current!.material.flatShading = v;
@@ -56,7 +57,8 @@ const Polyhedron = ({
     },
     color: {
       value: "lime",
-      onChange: (v) => {
+      onChange: (v: string) => {
+        // console.log("v:", v);
         // @ts-ignore
         meshRef.current!.material.color = new Color(v);
       },

@@ -42,7 +42,9 @@ const App = (): React.JSX.Element => {
         camera={{ position: [-1, 4, 2.5] }}
         // frameloop="demand"
       >
-        <directionalLight position={[1, 1, 1]} />
+        {/* <directionalLight position={[1, 1, 1]} /> */}
+        <Lights />
+
         {/* <Example /> */}
 
         {/* <Box position={[-0.75, 0, 0]} name="A" wireframe={false} />
@@ -103,3 +105,106 @@ const App = (): React.JSX.Element => {
 };
 
 export default App;
+
+function Lights(): React.JSX.Element {
+  const ambientRef = React.useRef<THREE.AmbientLight>(null);
+  const directionalRef = React.useRef<THREE.DirectionalLight>(null);
+  const pointRef = React.useRef<THREE.PointLight>(null);
+  const spotRef = React.useRef<THREE.SpotLight>(null);
+
+  useControls("Ambient Light", {
+    visible: {
+      value: false,
+      onChange: (v) => {
+        ambientRef.current!.visible = v;
+      },
+    },
+    color: {
+      value: "white",
+      onChange: (v) => {
+        ambientRef.current!.color = new THREE.Color(v);
+      },
+    },
+  });
+
+  useControls("Directional Light", {
+    visible: {
+      value: true,
+      onChange: (v) => {
+        directionalRef.current!.visible = v;
+      },
+    },
+    // position: {
+    //   x: 1,
+    //   y: 1,
+    //   z: 1,
+    //   onChange: (v) => {
+    //     directionalRef.current!.position.copy(v)
+    //   },
+    // },
+    position: [1, 1, 1],
+    color: {
+      value: "white",
+      onChange: (v) => {
+        directionalRef.current!.color = new THREE.Color(v);
+      },
+    },
+  });
+
+  useControls("Point Light", {
+    visible: {
+      value: false,
+      onChange: (v) => {
+        pointRef.current!.visible = v;
+      },
+    },
+    // position: {
+    //   x: 2,
+    //   y: 0,
+    //   z: 0,
+    //   onChange: (v) => {
+    //     pointRef.current!.position.copy(v)
+    //   },
+    // },
+    position: [2, 0, 0],
+    color: {
+      value: "white",
+      onChange: (v) => {
+        pointRef.current!.color = new THREE.Color(v);
+      },
+    },
+  });
+
+  useControls("Spot Light", {
+    visible: {
+      value: false,
+      onChange: (v) => {
+        spotRef.current!.visible = v;
+      },
+    },
+    // position: {
+    //   x: 3,
+    //   y: 2.5,
+    //   z: 1,
+    //   onChange: (v) => {
+    //     spotRef.current!.position.copy(v)
+    //   },
+    // },
+    position: [3, 2.5, 1],
+    color: {
+      value: "white",
+      onChange: (v) => {
+        spotRef.current!.color = new THREE.Color(v);
+      },
+    },
+  });
+
+  return (
+    <>
+      <ambientLight ref={ambientRef} />
+      <directionalLight ref={directionalRef} />
+      <pointLight ref={pointRef} />
+      <spotLight ref={spotRef} />
+    </>
+  );
+}

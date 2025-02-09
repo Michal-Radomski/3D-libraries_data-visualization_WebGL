@@ -29,21 +29,28 @@ function Model({ url }: { url: string }): React.JSX.Element {
   // console.log("scene:", scene);
 
   const [cache, setCache] = React.useState<Cache>({} as Cache);
-  console.log("cache:", cache);
+  // console.log("cache:", cache);
 
   if (!cache[url]) {
     const annotations = [] as React.JSX.Element[];
 
-    scene.traverse((o: Object3D<Object3DEventMap>) => {
-      if (o.userData.prop) {
+    scene.traverse((obj: Object3D<Object3DEventMap>): void => {
+      if (obj.userData.prop) {
+        // console.log("obj.userData.prop", obj.userData.prop);
         annotations.push(
-          <Html key={o.uuid} position={[o.position.x, o.position.y, o.position.z]} distanceFactor={0.25}>
-            <div className="annotation">{o.userData.prop}</div>
+          <Html
+            key={obj.uuid}
+            position={[obj.position.x, obj.position.y, obj.position.z]}
+            distanceFactor={0.25}
+            occlude={false}
+            transform={false}
+          >
+            <div className="annotation">{obj.userData.prop}</div>
           </Html>
         );
       }
     });
-    console.log("annotations:", annotations);
+    // console.log("annotations:", annotations);
 
     console.log("Caching JSX for url " + url);
     setCache({

@@ -1,59 +1,83 @@
-//* V5
+//* V6
 import React from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Camera, Vector3 } from "three";
-import { Stats, Environment, Center } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import { Stats, OrbitControls } from "@react-three/drei";
 
 import "./App.scss";
-import Button from "./Button";
-
-const vec: Vector3 = new Vector3();
-// console.log("vec:", vec);
-
-interface PositionI {
-  x: number;
-  y: number;
-}
-
-function Rig(): null {
-  const state = useThree();
-  console.log("state:", state);
-
-  return useFrame(
-    ({
-      camera,
-      pointer,
-    }: {
-      camera: Camera & {
-        manual?: boolean;
-      };
-      pointer: PositionI;
-    }) => {
-      // console.log("pointer:", pointer);
-
-      vec.set(pointer.x * 2, pointer.y * 2, camera.position.z);
-      camera.position.lerp(vec, 0.025);
-      camera.lookAt(0, 0, 0);
-    }
-  );
-}
+import Box from "./Box";
 
 const App = (): React.JSX.Element => {
   return (
-    <Canvas camera={{ position: [0, 0, 5] }}>
-      <Environment preset="forest" background={true} />
-      <Center>
-        {[...Array(5).keys()].map((x: number) =>
-          [...Array(3).keys()].map((y: number) => <Button key={x + y * 5} position={[x * 2.5, y * 2.5, 0]} />)
-        )}
-      </Center>
-      <Rig />
-      <Stats />
-    </Canvas>
+    <React.Fragment>
+      <Canvas camera={{ position: [1, 2, 3] }}>
+        <Box position={[0, 0.5, 0]} />
+        <OrbitControls />
+        <axesHelper args={[5]} />
+        <gridHelper />
+        <Stats />
+      </Canvas>
+    </React.Fragment>
   );
 };
 
 export default App;
+
+// //* V5
+// import React from "react";
+// import { Canvas, useFrame, useThree } from "@react-three/fiber";
+// import { Camera, Vector3 } from "three";
+// import { Stats, Environment, Center } from "@react-three/drei";
+
+// import "./App.scss";
+// import Button from "./Button";
+
+// const vec: Vector3 = new Vector3();
+// // console.log("vec:", vec);
+
+// interface PositionI {
+//   x: number;
+//   y: number;
+// }
+
+// function Rig(): null {
+//   const state = useThree();
+//   console.log("state:", state);
+
+//   return useFrame(
+//     ({
+//       camera,
+//       pointer,
+//     }: {
+//       camera: Camera & {
+//         manual?: boolean;
+//       };
+//       pointer: PositionI;
+//     }) => {
+//       // console.log("pointer:", pointer);
+
+//       vec.set(pointer.x * 2, pointer.y * 2, camera.position.z);
+//       camera.position.lerp(vec, 0.025);
+//       camera.lookAt(0, 0, 0);
+//     }
+//   );
+// }
+
+// const App = (): React.JSX.Element => {
+//   return (
+//     <Canvas camera={{ position: [0, 0, 5] }}>
+//       <Environment preset="forest" background={true} />
+//       <Center>
+//         {[...Array(5).keys()].map((x: number) =>
+//           [...Array(3).keys()].map((y: number) => <Button key={x + y * 5} position={[x * 2.5, y * 2.5, 0]} />)
+//         )}
+//       </Center>
+//       <Rig />
+//       <Stats />
+//     </Canvas>
+//   );
+// };
+
+// export default App;
 
 // //* V4
 // import React from "react";

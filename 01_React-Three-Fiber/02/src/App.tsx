@@ -19,7 +19,10 @@ const Models: ModelI[] = [
 ];
 
 function Model({ url }: { url: string }): React.JSX.Element {
+  //* It defaults to CDN loaded draco binaries (https://www.gstatic.com/draco/v1/decoders/) which are only loaded for compressed models.
   const { scene }: { scene: Group<Object3DEventMap> } = useGLTF(url);
+  // console.log("scene:", scene);
+
   return <primitive object={scene} />;
 }
 

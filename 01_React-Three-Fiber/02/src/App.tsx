@@ -1,105 +1,128 @@
-//* V3
+//* V4
 import React from "react";
 import { Canvas } from "@react-three/fiber";
-import { Stats, OrbitControls, Environment, useGLTF, Html } from "@react-three/drei";
-import { useControls } from "leva";
-import { Group, Object3D, Object3DEventMap } from "three";
+import { OrbitControls, Environment, ContactShadows } from "@react-three/drei";
 
+import { Shoe } from "./Shoe";
 import "./App.scss";
-import Models from "./models.json";
-
-// interface ModelI {
-//   title: string;
-//   url: string;
-// }
-
-// const Models: ModelI[] = [
-//   { title: "Hammer", url: "/models/hammer.glb" },
-//   { title: "Drill", url: "/models/drill.glb" },
-//   { title: "Tape Measure", url: "/models/tapeMeasure.glb" },
-// ];
-
-interface Cache {
-  [key: string]: React.JSX.Element;
-}
-
-function Model({ url }: { url: string }): React.JSX.Element {
-  //* It defaults to CDN loaded draco binaries (https://www.gstatic.com/draco/v1/decoders/) which are only loaded for compressed models.
-  const { scene }: { scene: Group<Object3DEventMap> } = useGLTF(url);
-  // console.log("scene:", scene);
-
-  const [cache, setCache] = React.useState<Cache>({} as Cache);
-  // console.log("cache:", cache);
-
-  if (!cache[url]) {
-    const annotations = [] as React.JSX.Element[];
-
-    scene.traverse((obj: Object3D<Object3DEventMap>): void => {
-      if (obj.userData.prop) {
-        // console.log("obj.userData.prop", obj.userData.prop);
-        annotations.push(
-          <Html
-            key={obj.uuid}
-            position={[obj.position.x, obj.position.y, obj.position.z]}
-            distanceFactor={0.25}
-            occlude={false}
-            transform={false}
-          >
-            <div className="annotation">{obj.userData.prop}</div>
-          </Html>
-        );
-      }
-    });
-    // console.log("annotations:", annotations);
-
-    console.log("Caching JSX for url " + url);
-    setCache({
-      ...cache,
-      [url]: <primitive object={scene}>{annotations}</primitive>,
-    });
-  }
-  return cache[url];
-}
 
 const App = (): React.JSX.Element => {
-  // const { title }: { title: string } = useControls({
-  //   title: {
-  //     options: Models.map(({ title }: { title: string }) => title),
-  //   },
-  // });
-
-  const { model }: { model: string } = useControls({
-    model: {
-      value: "hammer",
-      options: Object.keys(Models),
-    },
-  });
-
   return (
     <React.Fragment>
-      {/* <Canvas camera={{ position: [0, 0, -0.2], near: 0.025 }}>
-        <Environment files="/img/workshop_1k.hdr" background={true} />
-        <group>
-          <Model url={Models[Models.findIndex((model: ModelI) => model.title === title)].url} />
-        </group>
-        <OrbitControls autoRotate={true} />
-        <Stats />
-      </Canvas>
-      <span id="info">The {title} is selected.</span> */}
-      <Canvas camera={{ position: [0, 0, -0.2], near: 0.025 }}>
-        <Environment files="/img/workshop_1k.hdr" background />
-        <group>
-          <Model url={Models[model as keyof typeof Models]} />
-        </group>
+      <Canvas shadows camera={{ position: [0, 0, 1.66] }}>
+        <Environment preset="forest" />
+        <Shoe />
+        <ContactShadows position={[0, -0.8, 0]} color="#ffffff" />
         <OrbitControls autoRotate />
-        <Stats />
       </Canvas>
-      <span id="info">The {model.replace(/([A-Z])/g, " $1").toLowerCase()} is selected.</span>
     </React.Fragment>
   );
 };
 
 export default App;
+
+// //* V3
+// import React from "react";
+// import { Canvas } from "@react-three/fiber";
+// import { Stats, OrbitControls, Environment, useGLTF, Html } from "@react-three/drei";
+// import { useControls } from "leva";
+// import { Group, Object3D, Object3DEventMap } from "three";
+
+// import "./App.scss";
+// import Models from "./models.json";
+
+// // interface ModelI {
+// //   title: string;
+// //   url: string;
+// // }
+
+// // const Models: ModelI[] = [
+// //   { title: "Hammer", url: "/models/hammer.glb" },
+// //   { title: "Drill", url: "/models/drill.glb" },
+// //   { title: "Tape Measure", url: "/models/tapeMeasure.glb" },
+// // ];
+
+// interface Cache {
+//   [key: string]: React.JSX.Element;
+// }
+
+// function Model({ url }: { url: string }): React.JSX.Element {
+//   //* It defaults to CDN loaded draco binaries (https://www.gstatic.com/draco/v1/decoders/) which are only loaded for compressed models.
+//   const { scene }: { scene: Group<Object3DEventMap> } = useGLTF(url);
+//   // console.log("scene:", scene);
+
+//   const [cache, setCache] = React.useState<Cache>({} as Cache);
+//   // console.log("cache:", cache);
+
+//   if (!cache[url]) {
+//     const annotations = [] as React.JSX.Element[];
+
+//     scene.traverse((obj: Object3D<Object3DEventMap>): void => {
+//       if (obj.userData.prop) {
+//         // console.log("obj.userData.prop", obj.userData.prop);
+//         annotations.push(
+//           <Html
+//             key={obj.uuid}
+//             position={[obj.position.x, obj.position.y, obj.position.z]}
+//             distanceFactor={0.25}
+//             occlude={false}
+//             transform={false}
+//           >
+//             <div className="annotation">{obj.userData.prop}</div>
+//           </Html>
+//         );
+//       }
+//     });
+//     // console.log("annotations:", annotations);
+
+//     console.log("Caching JSX for url " + url);
+//     setCache({
+//       ...cache,
+//       [url]: <primitive object={scene}>{annotations}</primitive>,
+//     });
+//   }
+//   return cache[url];
+// }
+
+// const App = (): React.JSX.Element => {
+//   // const { title }: { title: string } = useControls({
+//   //   title: {
+//   //     options: Models.map(({ title }: { title: string }) => title),
+//   //   },
+//   // });
+
+//   const { model }: { model: string } = useControls({
+//     model: {
+//       value: "hammer",
+//       options: Object.keys(Models),
+//     },
+//   });
+
+//   return (
+//     <React.Fragment>
+//       {/* <Canvas camera={{ position: [0, 0, -0.2], near: 0.025 }}>
+//         <Environment files="/img/workshop_1k.hdr" background={true} />
+//         <group>
+//           <Model url={Models[Models.findIndex((model: ModelI) => model.title === title)].url} />
+//         </group>
+//         <OrbitControls autoRotate={true} />
+//         <Stats />
+//       </Canvas>
+//       <span id="info">The {title} is selected.</span> */}
+//       <Canvas camera={{ position: [0, 0, -0.2], near: 0.025 }}>
+//         <Environment files="/img/workshop_1k.hdr" background />
+//         <group>
+//           <Model url={Models[model as keyof typeof Models]} />
+//         </group>
+//         <OrbitControls autoRotate />
+//         <Stats />
+//       </Canvas>
+//       <span id="info">The {model.replace(/([A-Z])/g, " $1").toLowerCase()} is selected.</span>
+//     </React.Fragment>
+//   );
+// };
+
+// export default App;
 
 //* V2
 // import React from "react";

@@ -1,25 +1,62 @@
-//* V4
+//* V5
 import React from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Environment, ContactShadows } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Vector3 } from "three";
+import { Stats, Environment, Center } from "@react-three/drei";
 
-import { Shoe } from "./Shoe";
 import "./App.scss";
+import Button from "./Button";
+
+const vec: Vector3 = new Vector3();
+// console.log("vec:", vec);
+
+function Rig(): null {
+  return useFrame(({ camera, pointer }) => {
+    vec.set(pointer.x * 2, pointer.y * 2, camera.position.z);
+    camera.position.lerp(vec, 0.025);
+    camera.lookAt(0, 0, 0);
+  });
+}
 
 const App = (): React.JSX.Element => {
   return (
-    <React.Fragment>
-      <Canvas shadows camera={{ position: [0, 0, 1.66] }}>
-        <Environment preset="forest" />
-        <Shoe />
-        <ContactShadows position={[0, -0.8, 0]} color="#ffffff" />
-        <OrbitControls autoRotate />
-      </Canvas>
-    </React.Fragment>
+    <Canvas camera={{ position: [0, 0, 5] }}>
+      <Environment preset="forest" background={true} />
+      <Center>
+        {[...Array(5).keys()].map((x: number) =>
+          [...Array(3).keys()].map((y: number) => <Button key={x + y * 5} position={[x * 2.5, y * 2.5, 0]} />)
+        )}
+      </Center>
+      <Rig />
+      <Stats />
+    </Canvas>
   );
 };
 
 export default App;
+
+// //* V4
+// import React from "react";
+// import { Canvas } from "@react-three/fiber";
+// import { OrbitControls, Environment, ContactShadows } from "@react-three/drei";
+
+// import { Shoe } from "./Shoe";
+// import "./App.scss";
+
+// const App = (): React.JSX.Element => {
+//   return (
+//     <React.Fragment>
+//       <Canvas shadows camera={{ position: [0, 0, 1.66] }}>
+//         <Environment preset="forest" />
+//         <Shoe />
+//         <ContactShadows position={[0, -0.8, 0]} color="#ffffff" />
+//         <OrbitControls autoRotate />
+//       </Canvas>
+//     </React.Fragment>
+//   );
+// };
+
+// export default App;
 
 // //* V3
 // import React from "react";

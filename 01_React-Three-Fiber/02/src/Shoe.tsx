@@ -25,21 +25,24 @@ export const Shoe = (): React.JSX.Element => {
   useControls("Shoe", () => {
     console.log("creating color pickers");
 
-    // using forEach
-    // const colorPickers = {}
-    // Object.keys(materials).forEach((m) => {
-    //   colorPickers[m] = {
-    //     value: '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0'),
-    //     onChange: (v) => {
-    //       materials[m].color = new Color(v)
-    //     }
-    //   }
-    // })
-    // return colorPickers
+    //* using forEach
+    // const colorPickers = {} as { [key: string]: ColorRepresentation };
+    // Object.keys(materials).forEach((m: string) => {
+    //   colorPickers[m as keyof typeof colorPickers] = {
+    //     // @ts-ignore
+    //     value: "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"),
+    //     onChange: (v: ColorRepresentation) => {
+    //       // @ts-expect-error
+    //       materials[m].color = new Color(v);
+    //     },
+    //   };
+    // });
+    // // console.log("colorPickers:", colorPickers);
+    // return colorPickers;
 
-    // using reduce
+    //* using reduce
     return Object.keys(materials).reduce(
-      (acc, m) =>
+      (acc: object, m: string) =>
         Object.assign(acc, {
           [m]: {
             value: "#" + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, "0"),

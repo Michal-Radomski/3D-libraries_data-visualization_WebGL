@@ -1,7 +1,7 @@
 //* V5
 import React from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import { Vector3 } from "three";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Camera, Vector3 } from "three";
 import { Stats, Environment, Center } from "@react-three/drei";
 
 import "./App.scss";
@@ -10,12 +10,32 @@ import Button from "./Button";
 const vec: Vector3 = new Vector3();
 // console.log("vec:", vec);
 
+interface PositionI {
+  x: number;
+  y: number;
+}
+
 function Rig(): null {
-  return useFrame(({ camera, pointer }) => {
-    vec.set(pointer.x * 2, pointer.y * 2, camera.position.z);
-    camera.position.lerp(vec, 0.025);
-    camera.lookAt(0, 0, 0);
-  });
+  const state = useThree();
+  console.log("state:", state);
+
+  return useFrame(
+    ({
+      camera,
+      pointer,
+    }: {
+      camera: Camera & {
+        manual?: boolean;
+      };
+      pointer: PositionI;
+    }) => {
+      // console.log("pointer:", pointer);
+
+      vec.set(pointer.x * 2, pointer.y * 2, camera.position.z);
+      camera.position.lerp(vec, 0.025);
+      camera.lookAt(0, 0, 0);
+    }
+  );
 }
 
 const App = (): React.JSX.Element => {

@@ -10,6 +10,7 @@ import "./App.scss";
 
 const Model = (): React.JSX.Element => {
   const { scene }: { scene: Group<Object3DEventMap> } = useLoader(GLTFLoader, "/scene.glb");
+  // console.log("scene:", scene);
 
   const { x, y, z, visible, color, metalness, roughness, clearcoat, clearcoatRoughness, transmission, ior, thickness } =
     useControls("Suzanne", {

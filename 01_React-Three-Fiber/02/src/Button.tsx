@@ -9,6 +9,7 @@ const black: Color = new Color("black");
 export default function Button(props: MeshProps): React.JSX.Element {
   // console.log("props:", props);
 
+  // const ref = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>>(null!);
   const ref = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material | Material[], Object3DEventMap>>(null);
   const [hovered, setHovered] = React.useState<boolean>(false);
   const [selected, setSelected] = React.useState<boolean>(false);

@@ -11,7 +11,18 @@ import * as dat from "dat.gui";
 
 import "./style.scss";
 
+// const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
+// console.log("boxGeometry:", boxGeometry);
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+// console.log("material:", material);
+// const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   boxGeometry,
+//   material
+// );
+// console.log("mesh:", mesh);
+
 const raycaster: THREE.Raycaster = new THREE.Raycaster();
+// console.log("raycaster:", raycaster);
 const scene: THREE.Scene = new THREE.Scene();
 const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
@@ -88,16 +99,19 @@ const planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(
   world.plane.widthSegments,
   world.plane.heightSegments
 );
+
 const planeMaterial: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
   side: THREE.DoubleSide,
   // @ts-ignore
   flatShading: THREE.FlatShading,
   vertexColors: true,
 });
+
 const planeMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshPhongMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   planeGeometry,
   planeMaterial
 );
+
 scene.add(planeMesh);
 generatePlane();
 
@@ -121,7 +135,6 @@ for (let i = 0; i < 10000; i++) {
   const z = (Math.random() - 0.5) * 2000;
   starVertices.push(x, y, z);
 }
-
 console.log("starVertices:", starVertices);
 
 starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starVertices, 3));
@@ -151,10 +164,10 @@ function animate(): void {
   // @ts-ignore
   const { array, originalPosition, randomValues } = planeMesh.geometry.attributes.position;
   for (let i = 0; i < array.length; i += 3) {
-    // x
+    // X
     array[i] = originalPosition[i] + Math.cos(frame + randomValues[i]) * 0.01;
 
-    // y
+    // Y
     array[i + 1] = originalPosition[i + 1] + Math.sin(frame + randomValues[i + 1]) * 0.001;
   }
 
@@ -179,6 +192,7 @@ function animate(): void {
     color.setX(intersects[0].face?.c, 0.1);
     color.setY(intersects[0].face?.c, 0.5);
     color.setZ(intersects[0].face?.c, 1);
+    // console.log("color:", color);
 
     // @ts-ignore
     intersects[0].object.geometry.attributes.color.needsUpdate = true;

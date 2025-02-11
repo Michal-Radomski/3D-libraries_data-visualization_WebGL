@@ -11,7 +11,24 @@ import * as dat from "dat.gui";
 
 import "./style.scss";
 
+const raycaster: THREE.Raycaster = new THREE.Raycaster();
+const scene: THREE.Scene = new THREE.Scene();
+const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
+const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
+// console.log({ innerWidth, innerHeight });
+// console.log({ outerHeight, outerWidth });
+// console.log("scene, camera, renderer:", scene, camera, renderer);
+
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(devicePixelRatio);
+document.body.appendChild(renderer.domElement);
+
+new OrbitControls(camera, renderer.domElement);
+camera.position.z = 50;
+
 const gui: dat.GUI = new dat.GUI();
+// console.log("gui:", gui);
+
 const world = {
   plane: {
     width: 400,
@@ -20,6 +37,8 @@ const world = {
     heightSegments: 50,
   },
 };
+// console.log("world:", world);
+
 gui.add(world.plane, "width", 1, 500).onChange(generatePlane);
 gui.add(world.plane, "height", 1, 500).onChange(generatePlane);
 gui.add(world.plane, "widthSegments", 1, 100).onChange(generatePlane);
@@ -62,18 +81,6 @@ function generatePlane(): void {
 
   planeMesh.geometry.setAttribute("color", new THREE.BufferAttribute(new Float32Array(colors), 3));
 }
-
-const raycaster: THREE.Raycaster = new THREE.Raycaster();
-const scene: THREE.Scene = new THREE.Scene();
-const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 1000);
-const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
-
-renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(devicePixelRatio);
-document.body.appendChild(renderer.domElement);
-
-new OrbitControls(camera, renderer.domElement);
-camera.position.z = 50;
 
 const planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(
   world.plane.width,

@@ -11,16 +11,6 @@ import * as dat from "dat.gui";
 
 import "./style.scss";
 
-// const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
-// console.log("boxGeometry:", boxGeometry);
-// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff });
-// console.log("material:", material);
-// const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-//   boxGeometry,
-//   material
-// );
-// console.log("mesh:", mesh);
-
 const raycaster: THREE.Raycaster = new THREE.Raycaster();
 // console.log("raycaster:", raycaster);
 const scene: THREE.Scene = new THREE.Scene();
@@ -32,7 +22,21 @@ const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
 
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
+// console.log({ devicePixelRatio });
 document.body.appendChild(renderer.domElement);
+
+//* -------------
+// const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
+// console.log("boxGeometry:", boxGeometry);
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+// console.log("material:", material);
+// const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   boxGeometry,
+//   material
+// );
+// console.log("mesh:", mesh);
+// scene.add(mesh);
+//* -------------
 
 new OrbitControls(camera, renderer.domElement);
 camera.position.z = 50;

@@ -23,7 +23,7 @@ const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer();
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(devicePixelRatio);
 // console.log({ devicePixelRatio });
-document.body.appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement as HTMLCanvasElement);
 
 //* -------------
 // const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(10, 10, 10);
@@ -72,7 +72,7 @@ backLight.position.set(0, 0, -1);
 scene.add(backLight);
 // console.log("light, backLight:", light, backLight);
 
-new OrbitControls(camera, renderer.domElement);
+new OrbitControls(camera, renderer.domElement as HTMLCanvasElement);
 camera.position.z = 50;
 
 const gui: dat.GUI = new dat.GUI();
@@ -125,9 +125,11 @@ function generatePlane(): void {
   planeMesh.geometry.attributes.position.randomValues = randomValues;
   // @ts-ignore
   planeMesh.geometry.attributes.position.originalPosition = planeMesh.geometry.attributes.position.array;
+  // console.log("planeMesh.geometry.attributes.position:", planeMesh.geometry.attributes.position);
 
   const colors = [] as number[];
   for (let i = 0; i < planeMesh.geometry.attributes.position.count; i++) {
+    // Todo: refactor
     colors.push(0, 0.19, 0.4);
   }
   // console.log("colors:", colors);
@@ -168,10 +170,9 @@ for (let i = 0; i < 10000; i++) {
   const z = (Math.random() - 0.5) * 2000;
   starVertices.push(x, y, z);
 }
-console.log("starVertices:", starVertices);
-
 starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starVertices, 3));
 
+console.log("starVertices:", starVertices);
 console.log("starGeometry:", starGeometry);
 console.log("starMaterial:", starMaterial);
 
@@ -209,6 +210,8 @@ function animate(): void {
   planeMesh.geometry.attributes.position.needsUpdate = true;
 
   const intersects: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>[] = raycaster.intersectObject(planeMesh);
+  // console.log("intersects:", intersects);
+
   if (intersects.length > 0) {
     // @ts-ignore
     const { color } = intersects[0].object.geometry.attributes;
@@ -232,6 +235,7 @@ function animate(): void {
     // @ts-ignore
     intersects[0].object.geometry.attributes.color.needsUpdate = true;
 
+    // Todo: refactor
     const initialColor = {
       r: 0,
       g: 0.19,
@@ -274,6 +278,7 @@ function animate(): void {
 animate();
 
 addEventListener("mousemove", (event: MouseEvent) => {
+  //* Center of the screen
   mouse.x = (event.clientX / innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / innerHeight) * 2 + 1;
 });

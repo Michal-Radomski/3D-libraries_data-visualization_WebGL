@@ -26,17 +26,51 @@ renderer.setPixelRatio(devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 //* -------------
-// const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
+// const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(10, 10, 10);
 // console.log("boxGeometry:", boxGeometry);
-// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+// // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
+// //   color: 0xff0000,
+// //   opacity: 0.5,
+// //   transparent: true,
+// //   side: THREE.DoubleSide,
+// // });
+// const material: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
+//   color: 0xff0000,
+//   opacity: 0.5,
+//   transparent: true,
+//   side: THREE.DoubleSide,
+// });
 // console.log("material:", material);
-// const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+// // const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+// //   boxGeometry,
+// //   material
+// // );
+// const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshPhongMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
 //   boxGeometry,
 //   material
 // );
 // console.log("mesh:", mesh);
 // scene.add(mesh);
+
+// function animationTest(): void {
+//   requestAnimationFrame(animationTest);
+//   renderer.render(scene, camera);
+//   mesh.rotation.x += 0.01;
+//   mesh.rotation.y += 0.01;
+//   mesh.rotation.z += 0.01;
+//   // console.log("mesh.rotation:", mesh.rotation);
+// }
+// animationTest();
 //* -------------
+
+const light: THREE.DirectionalLight = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(0, -1, 1);
+scene.add(light);
+
+const backLight: THREE.DirectionalLight = new THREE.DirectionalLight(0xffffff, 1);
+backLight.position.set(0, 0, -1);
+scene.add(backLight);
+// console.log("light, backLight:", light, backLight);
 
 new OrbitControls(camera, renderer.domElement);
 camera.position.z = 50;
@@ -69,7 +103,9 @@ function generatePlane(): void {
   );
 
   // Vertices position randomization
-  const { array }: { array: THREE.TypedArray } = planeMesh.geometry.attributes.position;
+  const { array }: { array: THREE.TypedArray } = planeMesh.geometry.attributes.position; //* Float32Array
+  // console.log("array:", array);
+
   const randomValues = [] as number[];
   for (let i = 0; i < array.length; i++) {
     if (i % 3 === 0) {
@@ -82,6 +118,7 @@ function generatePlane(): void {
       array[i + 2] = z + (Math.random() - 0.5) * 3;
     }
     randomValues.push(Math.random() * Math.PI * 2);
+    // console.log("randomValues:", randomValues);
   }
 
   // @ts-ignore
@@ -89,10 +126,11 @@ function generatePlane(): void {
   // @ts-ignore
   planeMesh.geometry.attributes.position.originalPosition = planeMesh.geometry.attributes.position.array;
 
-  const colors = [];
+  const colors = [] as number[];
   for (let i = 0; i < planeMesh.geometry.attributes.position.count; i++) {
     colors.push(0, 0.19, 0.4);
   }
+  // console.log("colors:", colors);
 
   planeMesh.geometry.setAttribute("color", new THREE.BufferAttribute(new Float32Array(colors), 3));
 }
@@ -106,8 +144,7 @@ const planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(
 
 const planeMaterial: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial({
   side: THREE.DoubleSide,
-  // @ts-ignore
-  flatShading: THREE.FlatShading,
+  flatShading: true,
   vertexColors: true,
 });
 
@@ -118,14 +155,6 @@ const planeMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshPhongMaterial, THREE.
 
 scene.add(planeMesh);
 generatePlane();
-
-const light: THREE.DirectionalLight = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(0, -1, 1);
-scene.add(light);
-
-const backLight: THREE.DirectionalLight = new THREE.DirectionalLight(0xffffff, 1);
-backLight.position.set(0, 0, -1);
-scene.add(backLight);
 
 const starGeometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
 const starMaterial: THREE.PointsMaterial = new THREE.PointsMaterial({
@@ -156,10 +185,12 @@ scene.add(stars);
 const mouse = {
   x: undefined as number | undefined,
   y: undefined as number | undefined,
-};
+} as THREE.Vector2;
 
 let frame = 0;
 function animate(): void {
+  // console.log("frame:", frame);
+
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
   raycaster.setFromCamera(mouse as THREE.Vector2, camera);
@@ -240,7 +271,6 @@ function animate(): void {
 
   stars.rotation.x += 0.0005;
 }
-
 animate();
 
 addEventListener("mousemove", (event: MouseEvent) => {

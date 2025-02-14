@@ -113,9 +113,9 @@ function generatePlane(): void {
       const y = array[i + 1];
       const z = array[i + 2];
 
-      array[i] = x + (Math.random() - 0.5) * 3;
-      array[i + 1] = y + (Math.random() - 0.5) * 3;
-      array[i + 2] = z + (Math.random() - 0.5) * 3;
+      array[i] = x + (Math.random() - 0.75) * 5;
+      array[i + 1] = y + (Math.random() - 0.75) * 5;
+      array[i + 2] = z + (Math.random() - 0.75) * 5;
     }
     randomValues.push(Math.random() * Math.PI * 2);
     // console.log("randomValues:", randomValues);
@@ -158,6 +158,7 @@ const planeMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshPhongMaterial, THREE.
 scene.add(planeMesh);
 generatePlane();
 
+//* Stars
 const starGeometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
 const starMaterial: THREE.PointsMaterial = new THREE.PointsMaterial({
   color: 0xffffff,
@@ -200,10 +201,10 @@ function animate(): void {
   // @ts-ignore
   const { array, originalPosition, randomValues } = planeMesh.geometry.attributes.position;
   for (let i = 0; i < array.length; i += 3) {
-    // X
+    // X coordinate
     array[i] = originalPosition[i] + Math.cos(frame + randomValues[i]) * 0.01;
 
-    // Y
+    // Y coordinate
     array[i + 1] = originalPosition[i + 1] + Math.sin(frame + randomValues[i + 1]) * 0.001;
   }
 
@@ -277,17 +278,19 @@ function animate(): void {
 }
 animate();
 
-addEventListener("mousemove", (event: MouseEvent) => {
+addEventListener("mousemove", (event: MouseEvent): void => {
   //* Center of the screen
   mouse.x = (event.clientX / innerWidth) * 2 - 1;
   mouse.y = -(event.clientY / innerHeight) * 2 + 1;
 });
 
+//* Text animation
+// https://gsap.com/docs/v3/Eases
 gsap.to("#MR", {
   opacity: 1,
   duration: 1.5,
   y: 0,
-  ease: "expo",
+  ease: "expo.out",
 });
 
 gsap.to("#oneWithAn", {
@@ -295,7 +298,7 @@ gsap.to("#oneWithAn", {
   duration: 1.5,
   delay: 0.3,
   y: 0,
-  ease: "expo",
+  ease: "expo.out",
 });
 
 gsap.to("#viewWorkBtn", {
@@ -303,15 +306,17 @@ gsap.to("#viewWorkBtn", {
   duration: 1.5,
   delay: 0.6,
   y: 0,
-  ease: "expo",
+  ease: "expo.out",
 });
 
-(document.querySelector("#viewWorkBtn") as HTMLButtonElement).addEventListener("click", (event: MouseEvent) => {
+//* Camera Movement
+(document.querySelector("#viewWorkBtn") as HTMLAnchorElement).addEventListener("click", (event: MouseEvent): void => {
   event.preventDefault();
   gsap.to("#container", {
     opacity: 0,
   });
 
+  // https://gsap.com/docs/v3/Eases
   gsap.to(camera.position, {
     z: 25,
     ease: "power3.inOut",
@@ -328,13 +333,15 @@ gsap.to("#viewWorkBtn", {
     ease: "power3.in",
     duration: 1,
     delay: 2,
-    onComplete: () => {
+    onComplete: (): void => {
+      // console.log("test");
       window.location = "https://michal-radomski.github.io" as string & Location;
     },
   });
 });
 
-addEventListener("resize", () => {
+addEventListener("resize", (): void => {
+  // console.log("camera.aspect:", camera.aspect);
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
 

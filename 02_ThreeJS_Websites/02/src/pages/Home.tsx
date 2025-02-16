@@ -11,7 +11,7 @@ const Home = (): React.JSX.Element => {
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  //* Render twice only in StrictMode1
+  //* Render twice only in StrictMode!
   React.useEffect(() => {
     const currentContainer = containerRef.current as HTMLDivElement;
 
@@ -341,9 +341,9 @@ const Home = (): React.JSX.Element => {
             </p>
             <a
               id="viewWorkBtn"
-              href="https://michal-radomski.github.io"
+              // href="https://michal-radomski.github.io"
               className="border px-4 py-2 rounded-lg text-sm uppercase mt-8 hover:bg-white hover:text-gray-800 inline-block opacity-0"
-              style={{ transform: "translateY(30px)" }}
+              style={{ transform: "translateY(30px)", cursor: "pointer" }}
             >
               View Work
             </a>

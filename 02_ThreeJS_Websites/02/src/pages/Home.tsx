@@ -3,11 +3,15 @@ import React from "react";
 import gsap from "gsap";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
-import * as dat from "dat.gui";
+import { GUI } from "dat.gui";
+import { useNavigate } from "react-router-dom";
 
 const Home = (): React.JSX.Element => {
+  const navigate = useNavigate();
+
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  //* Render twice only in StrictMode1
   React.useEffect(() => {
     const currentContainer = containerRef.current as HTMLDivElement;
 
@@ -33,7 +37,7 @@ const Home = (): React.JSX.Element => {
       new OrbitControls(camera, canvasElement);
       camera.position.z = 50;
 
-      const gui: dat.GUI = new dat.GUI();
+      const gui: dat.GUI = new GUI();
 
       const world = {
         plane: {
@@ -286,7 +290,8 @@ const Home = (): React.JSX.Element => {
           duration: 1,
           delay: 2,
           onComplete: (): void => {
-            window.location.href = "https://michal-radomski.github.io" as string & Location;
+            // window.location.href = "https://michal-radomski.github.io" as string & Location;
+            navigate("/work");
           },
         });
       };
@@ -307,6 +312,7 @@ const Home = (): React.JSX.Element => {
       return () => {
         if (currentContainer && renderer.domElement) {
           currentContainer.removeChild(renderer.domElement);
+          gui.destroy(); // Cleanup on unmount
 
           window.removeEventListener("mousemove", handleMouseMove);
           window.removeEventListener("resize", handleResize);
@@ -316,7 +322,7 @@ const Home = (): React.JSX.Element => {
         }
       };
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <React.Fragment>

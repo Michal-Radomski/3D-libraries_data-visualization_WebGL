@@ -6,3 +6,6 @@
 
 2. Files created during this course:
    [Modern Three.js for Real Websites](https://www.udemy.com/course/modern-threejs-for-real-websites).
+
+3. Files created during this course:
+   [Three.js, React Three Fiber, Drei, React Spring & More](https://www.udemy.com/course/learn-react-react-three-fiber-drei-react-spring-more).

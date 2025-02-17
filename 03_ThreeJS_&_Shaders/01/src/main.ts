@@ -33,4 +33,14 @@ const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas }); //add
 renderer.setSize(aspect.width, aspect.height); //Renderer size
 renderer.render(scene, camera); //display what the camera in the scene captured
 
-new OrbitControls(camera, canvas as HTMLCanvasElement);
+// Orbit Controls
+const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasElement);
+
+// Animation loop
+function animate(): void {
+  requestAnimationFrame(animate);
+  controls.update(); // IMPORTANT: Update the controls in the animation loop
+  renderer.render(scene, camera);
+}
+
+animate();

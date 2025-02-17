@@ -8,7 +8,7 @@
    [Modern Three.js for Real Websites](https://www.udemy.com/course/modern-threejs-for-real-websites).
 
 3. Files created during this course:
-   [Three.js, React Three Fiber, Drei, React Spring & More](https://www.udemy.com/course/learn-react-react-three-fiber-drei-react-spring-more).
+   [Three.Js and Shaders from scratch](https://www.udemy.com/course/learn-threejs-and-shaders-from-scratch).
 
 4. Files created during this course:
-   [Three.Js and Shaders from scratch](https://www.udemy.com/course/learn-threejs-and-shaders-from-scratch).
+   [Three.js, React Three Fiber, Drei, React Spring & More](https://www.udemy.com/course/learn-react-react-three-fiber-drei-react-spring-more).

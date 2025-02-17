@@ -4,21 +4,23 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 import "./style.scss";
 
-//Scene
+//* Scene Mesh Camera Renderer
+//* 1. Scene
 const scene: THREE.Scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xcccccc, 10, 15);
 
-//Mesh
-const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
+//* 2. Mesh (Objects)
+const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 2, 2); //* Cube
 // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple" });
 // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "#A020F0" });
-const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0xa020f0 });
+const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0xa020f0, fog: true, wireframe: false });
 const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   geometry,
   material
 );
 scene.add(mesh);
 
-//Camera
+//* 3. Camera
 const aspect = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -27,9 +29,10 @@ const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.w
 camera.position.z = 3;
 camera.position.x = 1;
 camera.position.y = 1;
+camera.zoom = 1;
 scene.add(camera);
 
-//Renderer
+//* 4. Renderer
 const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement; //select the canvas element
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas }); //add the WebGLRenderer
 renderer.setSize(aspect.width, aspect.height); //Renderer size

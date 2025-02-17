@@ -18,7 +18,11 @@ const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3
   geometry,
   material
 );
-mesh.rotation.x = Math.PI * 0.25;
+mesh.rotation.x = Math.PI * 0.25 * -1;
+// mesh.scale.x = 1;
+// mesh.scale.y = 1;
+// mesh.scale.z = 2;
+// mesh.scale.set(1, 1, 2);
 scene.add(mesh);
 
 //* 3. Camera

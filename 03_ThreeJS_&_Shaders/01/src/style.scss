@@ -42,3 +42,11 @@ body {
   margin-right: auto;
   overflow-y: hidden;
 }
+
+canvas.draw {
+  // border: 1px solid red;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  outline: none;
+}

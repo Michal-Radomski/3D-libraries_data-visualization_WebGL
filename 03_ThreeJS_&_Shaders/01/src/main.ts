@@ -18,6 +18,7 @@ const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3
   geometry,
   material
 );
+mesh.rotation.x = Math.PI * 0.25;
 scene.add(mesh);
 
 //* 3. Camera
@@ -40,6 +41,26 @@ const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, precisio
 renderer.setSize(aspect.width, aspect.height); // Renderer size
 renderer.render(scene, camera); // Display what the camera in the scene captured
 
+//* ---
+//* MeshTwo
+const geometryT = new THREE.BoxGeometry(1, 1, 1);
+const materialT = new THREE.MeshBasicMaterial({ color: "green" });
+const meshT = new THREE.Mesh(geometryT, materialT);
+meshT.position.y = 2;
+
+// Group
+const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
+
+// Adding the two meshes inside the Group Class
+group.add(mesh, meshT);
+// group.position.x = 3;
+scene.add(group);
+
+// AxesHelper
+const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(4);
+scene.add(axesHelper);
+
+//* ---
 // Orbit Controls
 const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasElement);
 // console.log("controls:", controls);

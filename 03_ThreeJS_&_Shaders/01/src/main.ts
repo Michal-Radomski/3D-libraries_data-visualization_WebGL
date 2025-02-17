@@ -9,7 +9,9 @@ const scene: THREE.Scene = new THREE.Scene();
 
 //Mesh
 const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1);
-const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple" });
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple" });
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "#A020F0" });
+const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0xa020f0 });
 const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   geometry,
   material

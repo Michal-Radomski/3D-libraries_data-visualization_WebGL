@@ -69,13 +69,16 @@ scene.add(axesHelper);
 const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasElement);
 // console.log("controls:", controls);
 
-//* Clock Class
+//* Clock Class -> fps stands for frame per second
 // const clock = new THREE.Clock();
 // console.log("clock:", clock);
 
 // Animation loop
 (function animate(): void {
-  requestAnimationFrame(animate);
+  //* RequestAnimationFrame
+  window.requestAnimationFrame(animate);
+  // requestAnimationFrame(animate);
+
   controls.update(); // IMPORTANT: Update the controls in the animation loop
   controls.autoRotate = true;
   controls.enablePan = true;
@@ -83,9 +86,6 @@ const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasEl
 
   // const elapsedTime: number = clock.getElapsedTime();
   // console.log("elapsedTime:", elapsedTime);
-
-  //* RequestAnimationFrame
-  // window.requestAnimationFrame(animate);
 
   // Update Rotation On X Axis and Y axis
   // mesh.rotation.x = elapsedTime;

@@ -69,6 +69,10 @@ scene.add(axesHelper);
 const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasElement);
 // console.log("controls:", controls);
 
+//* Clock Class
+// const clock = new THREE.Clock();
+// console.log("clock:", clock);
+
 // Animation loop
 (function animate(): void {
   requestAnimationFrame(animate);
@@ -76,4 +80,14 @@ const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasEl
   controls.autoRotate = true;
   controls.enablePan = true;
   renderer.render(scene, camera);
+
+  // const elapsedTime: number = clock.getElapsedTime();
+  // console.log("elapsedTime:", elapsedTime);
+
+  //* RequestAnimationFrame
+  // window.requestAnimationFrame(animate);
+
+  // Update Rotation On X Axis and Y axis
+  // mesh.rotation.x = elapsedTime;
+  // mesh.rotation.y = elapsedTime * Math.PI * 2; // Will rotate the cube a turn per second
 })();

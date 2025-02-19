@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 // console.log("THREE:", THREE);
+// import gsap from "gsap";
 
 import "./style.scss";
 
@@ -47,18 +48,18 @@ renderer.render(scene, camera); // Display what the camera in the scene captured
 
 //* ---
 //* MeshTwo
-const geometryT = new THREE.BoxGeometry(1, 1, 1);
-const materialT = new THREE.MeshBasicMaterial({ color: "green" });
-const meshT = new THREE.Mesh(geometryT, materialT);
-meshT.position.y = 2;
+// const geometryT = new THREE.BoxGeometry(1, 1, 1);
+// const materialT = new THREE.MeshBasicMaterial({ color: "green" });
+// const meshT = new THREE.Mesh(geometryT, materialT);
+// meshT.position.y = 2;
 
-// Group
-const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
+// // Group
+// const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
 
-// Adding the two meshes inside the Group Class
-group.add(mesh, meshT);
-// group.position.x = 3;
-scene.add(group);
+// // Adding the two meshes inside the Group Class
+// group.add(mesh, meshT);
+// // group.position.x = 3;
+// scene.add(group);
 
 // AxesHelper
 const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(4);
@@ -70,11 +71,43 @@ const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasEl
 // console.log("controls:", controls);
 
 //* Clock Class -> fps stands for frame per second
-// const clock = new THREE.Clock();
+const clock = new THREE.Clock();
 // console.log("clock:", clock);
+
+//* GSAP
+// gsap.to(mesh.position, { duration: 1, delay: 1, x: 1 });
+// gsap.to(mesh.position, { duration: 2, delay: 2, x: -1 });
 
 // Animation loop
 (function animate(): void {
+  //--------------------------------------------Linear Function-------------------------------------
+  //1)
+  // mesh.position.x = elapsedTime * 0.25;
+  // mesh.position.y = elapsedTime * 0.25;
+  //2)
+  // mesh.position.x = -elapsedTime * 0.25
+  // mesh.position.y = elapsedTime * 0.25;
+  //3)
+  // mesh.position.x = 1+elapsedTime * 0.25
+  // mesh.position.y = elapsedTime * 0.25;
+  //4)
+  // mesh.position.x = 1-elapsedTime * 0.25
+  // mesh.position.y = elapsedTime * 0.25;
+
+  //--------------------------------------------Sin Function--------------------------------------------
+  // mesh.position.x = Math.sin(elapsedTime);
+
+  //--------------------------------------------Cos Function--------------------------------------------
+  // mesh.position.x = Math.cos(elapsedTime);
+
+  //--------------------------------------------Circular Move--------------------------------------------
+  // mesh.position.x = Math.sin(elapsedTime);
+  // mesh.position.y = Math.cos(elapsedTime);
+
+  //--------------------------------------------Tan Function--------------------------------------------
+  // mesh.position.x = Math.tan(elapsedTime);
+  // mesh.position.y = Math.tan(elapsedTime);
+
   //* RequestAnimationFrame
   window.requestAnimationFrame(animate);
   // requestAnimationFrame(animate);
@@ -84,10 +117,10 @@ const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasEl
   controls.enablePan = true;
   renderer.render(scene, camera);
 
-  // const elapsedTime: number = clock.getElapsedTime();
+  const elapsedTime: number = clock.getElapsedTime();
   // console.log("elapsedTime:", elapsedTime);
 
   // Update Rotation On X Axis and Y axis
-  // mesh.rotation.x = elapsedTime;
-  // mesh.rotation.y = elapsedTime * Math.PI * 2; // Will rotate the cube a turn per second
+  mesh.rotation.x = elapsedTime;
+  mesh.rotation.y = elapsedTime * Math.PI * 0.2; // Will rotate the cube a turn per second
 })();

@@ -199,7 +199,9 @@ const cursor = {
 window.addEventListener("mousemove", (event: MouseEvent): void => {
   cursor.x = event.clientX / window.innerWidth - 0.5;
   cursor.y = event.clientY / window.innerHeight - 0.5;
-  console.log("cursor.x, cursor.y:", cursor.x, cursor.y);
+  // console.log("cursor.x, cursor.y:", cursor.x, cursor.y);
+  // console.log("event?.layerX, event?.layerY:", event?.layerX, event?.layerY);
+  // console.log("event.clientX, event.clientY:", event.clientX, event.clientY);
 });
 
 //* Camera
@@ -233,3 +235,18 @@ const animate = (): void => {
   window.requestAnimationFrame(animate);
 };
 animate();
+
+//* Resizing
+window.addEventListener("resize", (): void => {
+  // New size
+  aspect.width = window.innerWidth;
+  aspect.height = window.innerHeight;
+
+  // New AspectRatio
+  camera.aspect = aspect.width / aspect.height;
+  camera.updateProjectionMatrix();
+
+  // New RendererSize
+  renderer.setSize(aspect.width, aspect.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});

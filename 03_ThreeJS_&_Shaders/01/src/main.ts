@@ -75,8 +75,8 @@ const clock = new THREE.Clock();
 // console.log("clock:", clock);
 
 //* GSAP
-// gsap.to(mesh.position, { duration: 1, delay: 1, x: 1 });
-// gsap.to(mesh.position, { duration: 2, delay: 2, x: -1 });
+// gsap.to(mesh.position, { duration: 1, delay: 1, x: 1 }); //* x -> red axe, y -> green axe and z -> blue axe
+// gsap.to(mesh.position, { duration: 2, delay: 2, x: -1 }); //* x -> red axe, y -> green axe and z -> blue axe
 
 // Animation loop
 (function animate(): void {

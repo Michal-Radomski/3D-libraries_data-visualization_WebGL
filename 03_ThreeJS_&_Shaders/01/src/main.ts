@@ -80,47 +80,46 @@ const clock = new THREE.Clock();
 
 // Animation loop
 (function animate(): void {
-  //--------------------------------------------Linear Function-------------------------------------
-  //1)
-  // mesh.position.x = elapsedTime * 0.25;
-  // mesh.position.y = elapsedTime * 0.25;
-  //2)
-  // mesh.position.x = -elapsedTime * 0.25
-  // mesh.position.y = elapsedTime * 0.25;
-  //3)
-  // mesh.position.x = 1+elapsedTime * 0.25
-  // mesh.position.y = elapsedTime * 0.25;
-  //4)
-  // mesh.position.x = 1-elapsedTime * 0.25
-  // mesh.position.y = elapsedTime * 0.25;
-
-  //--------------------------------------------Sin Function--------------------------------------------
-  // mesh.position.x = Math.sin(elapsedTime);
-
-  //--------------------------------------------Cos Function--------------------------------------------
-  // mesh.position.x = Math.cos(elapsedTime);
-
-  //--------------------------------------------Circular Move--------------------------------------------
-  // mesh.position.x = Math.sin(elapsedTime);
-  // mesh.position.y = Math.cos(elapsedTime);
-
-  //--------------------------------------------Tan Function--------------------------------------------
-  // mesh.position.x = Math.tan(elapsedTime);
-  // mesh.position.y = Math.tan(elapsedTime);
-
   //* RequestAnimationFrame
   window.requestAnimationFrame(animate);
   // requestAnimationFrame(animate);
 
   controls.update(); // IMPORTANT: Update the controls in the animation loop
-  controls.autoRotate = true;
+  controls.autoRotate = false;
   controls.enablePan = true;
   renderer.render(scene, camera);
 
   const elapsedTime: number = clock.getElapsedTime();
   // console.log("elapsedTime:", elapsedTime);
 
-  // Update Rotation On X Axis and Y axis
+  //* Update Rotation On X Axis and Y axis
   mesh.rotation.x = elapsedTime;
-  mesh.rotation.y = elapsedTime * Math.PI * 0.2; // Will rotate the cube a turn per second
+  mesh.rotation.y = elapsedTime * Math.PI * 0.1; // Will rotate the cube a turn per second
+
+  //* Linear Function
+  // mesh.position.x = elapsedTime * 0.25;
+  // mesh.position.y = elapsedTime * 0.25;
+
+  // mesh.position.x = -elapsedTime * 0.25
+  // mesh.position.y = elapsedTime * 0.25;
+
+  // mesh.position.x = 1+elapsedTime * 0.25
+  // mesh.position.y = elapsedTime * 0.25;
+
+  // mesh.position.x = 1 - elapsedTime * 0.25;
+  // mesh.position.y = elapsedTime * 0.25;
+
+  //* Sin Function
+  // mesh.position.x = Math.sin(elapsedTime);
+
+  //* Cos Function
+  // mesh.position.x = Math.cos(elapsedTime);
+
+  //* Circular Move
+  // mesh.position.x = Math.sin(elapsedTime);
+  // mesh.position.y = Math.cos(elapsedTime);
+
+  //* Tan Function
+  // mesh.position.x = Math.tan(elapsedTime);
+  // mesh.position.y = Math.tan(elapsedTime);
 })();

@@ -346,7 +346,7 @@ const envTexture: THREE.CubeTexture = cubeTextureLoader.load([
 ]);
 scene.background = envTexture;
 
-//* MeshBasicMaterial
+//* MeshBasicMaterial (simple shaded)
 // const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 64, 64);
 // // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ map: colorTexture, color: undefined });
 // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial();
@@ -355,37 +355,38 @@ scene.background = envTexture;
 // material.color = new THREE.Color("skyblue");
 // material.transparent = true;
 // material.opacity = 0.6;
-// material.side = THREE.DoubleSide;
-// material.visible = true;
+// material.side = THREE.DoubleSide; //* FrontSide, BackSide
+// material.visible = true; //* false
 
-//* MeshDepthMaterial
+//* MeshDepthMaterial (white is nearest, black is farthest. )
 // const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 // const material: THREE.MeshDepthMaterial = new THREE.MeshDepthMaterial();
 
-//* MeshNormalMaterial
+//* MeshNormalMaterial (normal vector)
 // const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 // const material: THREE.MeshNormalMaterial = new THREE.MeshNormalMaterial();
 
-//* MeshMatcapMaterial
+//* MeshMatcapMaterial (defined by a MatCap (or Lit Sphere) texture, which encodes the material color and shading)
 // const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 // const material: THREE.MeshMatcapMaterial = new THREE.MeshMatcapMaterial();
 // material.matcap = matcapTexture;
 
-//* MeshLambertMaterial
+//* MeshLambertMaterial (a material for non-shiny surfaces, without specular highlights)
 // const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 // const material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial();
 
-//* MeshPhongMaterial
+//* MeshPhongMaterial (the material uses a non-physically based Blinn-Phong model for calculating reflectance)
 // const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 // const material: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial();
 // material.shininess = 200;
 // material.specular = new THREE.Color("green");
 
-//* MeshToonMaterial
+//* MeshToonMaterial (a material implementing toon shading)
 // const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 // const material: THREE.MeshToonMaterial = new THREE.MeshToonMaterial();
 
-//* MeshStandardMaterial
+//* MeshStandardMaterial (a standard physically based material, using Metallic-Roughness workflow)
+//* MeshPhysicalMaterial: an extension of the MeshStandardMaterial, providing more advanced physically-based rendering
 // const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
 // const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
 // material.metalness = 0.65;

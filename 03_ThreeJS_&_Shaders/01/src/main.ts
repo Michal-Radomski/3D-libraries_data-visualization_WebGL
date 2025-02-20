@@ -126,6 +126,7 @@ import "./style.scss";
 // })();
 
 //^ V2
+// console.log("window.devicePixelRatio:", window.devicePixelRatio);
 const scene: THREE.Scene = new THREE.Scene();
 
 // Mesh One
@@ -209,8 +210,11 @@ const aspect = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
-const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height);
+// const camera: THREE.OrthographicCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000); //* OrthographicCamera
+const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height); //* PerspectiveCamera
 camera.position.z = 2.5;
+camera.position.x = 2;
+camera.position.y = 2;
 
 scene.add(camera);
 
@@ -222,12 +226,19 @@ renderer.setSize(aspect.width, aspect.height);
 //* Clock Class
 // const clock: THREE.Clock = new THREE.Clock();
 
+//* OrbitControls
 const controls: OrbitControls = new OrbitControls(camera, canvas as HTMLCanvasElement);
+controls.autoRotate = true;
+controls.autoRotateSpeed = 2.0; //* Default: 2.0
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+controls.enablePan = true;
+controls.enableZoom = true;
 
 const animate = (): void => {
   controls.update(); // IMPORTANT: Update the controls in the animation loop
 
-  // const elapsedTime = clock.getElapsedTime();
+  // const elapsedTime: number = clock.getElapsedTime();
   // console.log("elapsedTime:", elapsedTime);
 
   greenMesh.lookAt(new THREE.Vector3(cursor.x, -cursor.y, 1));

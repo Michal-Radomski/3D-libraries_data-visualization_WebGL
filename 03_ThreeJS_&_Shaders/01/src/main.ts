@@ -265,7 +265,7 @@ window.addEventListener("resize", (): void => {
 const axesHelper: THREE.AxesHelper = new THREE.AxesHelper();
 scene.add(axesHelper);
 
-// * ---
+//^ ---
 const geometry8: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry(); //* A low memory alternative
 const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
 const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3); //* 3 numbers for a point
@@ -284,6 +284,7 @@ const mesh8: THREE.Mesh<
 > = new THREE.Mesh(geometry8, material8);
 scene.add(mesh8);
 
+//* Texture loader
 const loadingManager: THREE.LoadingManager = new THREE.LoadingManager();
 loadingManager.onStart = (): void => {
   void console.log("Start");
@@ -299,9 +300,9 @@ loadingManager.onError = (): void => {
 };
 
 //* This can be any image (e.g., PNG, JPG/JPEG, GIF, DDS) or video (e.g., MP4, OGG/OGV) type supported by three.js.
-const textureLoader: THREE.TextureLoader = new THREE.TextureLoader(loadingManager);
+// const textureLoader: THREE.TextureLoader = new THREE.TextureLoader(loadingManager);
 // const colorTexture = textureLoader.load("./src/texture/normal.jpg");
-const colorTexture: THREE.Texture = textureLoader.load("./src/texture/color.jpg");
+// const colorTexture: THREE.Texture = textureLoader.load("./src/texture/color.jpg");
 // console.log("colorTexture:", colorTexture);
 
 // const geometry9: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
@@ -312,10 +313,105 @@ const colorTexture: THREE.Texture = textureLoader.load("./src/texture/color.jpg"
 // );
 // scene.add(mesh9);
 
-const geometry10: THREE.SphereGeometry = new THREE.SphereGeometry(0.5, 32, 16);
-const material10: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: undefined, map: colorTexture });
-const sphere10: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry10,
-  material10
+// const geometry10: THREE.SphereGeometry = new THREE.SphereGeometry(0.5, 32, 16);
+// const material10: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: undefined, map: colorTexture });
+// const sphere10: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry10,
+//   material10
+// );
+// scene.add(sphere10);
+
+//^ ---
+//* Lights
+const ambientLight: THREE.AmbientLight = new THREE.AmbientLight(0xffffff, 0.5);
+const pointLight: THREE.PointLight = new THREE.PointLight(0xffffff, 0.5);
+pointLight.position.set(2, 2, 2);
+scene.add(ambientLight, pointLight);
+
+//* TextureLoader
+// const colorTexture: THREE.Texture = textureLoader.load("./src/texture/color.jpg");
+// const matcapTexture: THREE.Texture = textureLoader.load("./src/texture/mat2.png");
+// const bumpTexture: THREE.Texture = textureLoader.load("./src/texture/bump.jpg");
+// const displacementTexture: THREE.Texture = textureLoader.load("./src/texture/displacementMap.jpg");
+
+//* CubeTextureLoader
+const cubeTextureLoader: THREE.CubeTextureLoader = new THREE.CubeTextureLoader();
+const envTexture: THREE.CubeTexture = cubeTextureLoader.load([
+  "./src/texture/env/px.png",
+  "./src/texture/env/nx.png",
+  "./src/texture/env/py.png",
+  "./src/texture/env/ny.png",
+  "./src/texture/env/pz.png",
+  "./src/texture/env/nz.png",
+]);
+scene.background = envTexture;
+
+//* MeshBasicMaterial
+// const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 64, 64);
+// // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ map: colorTexture, color: undefined });
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial();
+// material.map = colorTexture;
+// material.wireframe = true;
+// material.color = new THREE.Color("skyblue");
+// material.transparent = true;
+// material.opacity = 0.6;
+// material.side = THREE.DoubleSide;
+// material.visible = true;
+
+//* MeshDepthMaterial
+// const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
+// const material: THREE.MeshDepthMaterial = new THREE.MeshDepthMaterial();
+
+//* MeshNormalMaterial
+// const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
+// const material: THREE.MeshNormalMaterial = new THREE.MeshNormalMaterial();
+
+//* MeshMatcapMaterial
+// const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
+// const material: THREE.MeshMatcapMaterial = new THREE.MeshMatcapMaterial();
+// material.matcap = matcapTexture;
+
+//* MeshLambertMaterial
+// const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
+// const material: THREE.MeshLambertMaterial = new THREE.MeshLambertMaterial();
+
+//* MeshPhongMaterial
+// const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
+// const material: THREE.MeshPhongMaterial = new THREE.MeshPhongMaterial();
+// material.shininess = 200;
+// material.specular = new THREE.Color("green");
+
+//* MeshToonMaterial
+// const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
+// const material: THREE.MeshToonMaterial = new THREE.MeshToonMaterial();
+
+//* MeshStandardMaterial
+// const geometry: THREE.TorusGeometry = new THREE.TorusGeometry(0.3, 0.2, 32, 32);
+// const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+// material.metalness = 0.65;
+// material.roughness = 0.5;
+
+//* BumpTexture
+// const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
+// const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+// material.map = colorTexture;
+// material.bumpMap = bumpTexture;
+
+//* DisplacementTexture
+// const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 12, 12);
+// const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+// material.map = colorTexture;
+// material.displacementMap = displacementTexture;
+
+//* CubeTexture Sphere
+const geometry: THREE.SphereGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+material.metalness = 0.9;
+material.roughness = 0.1;
+material.envMap = envTexture;
+
+const mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  geometry,
+  material
 );
-scene.add(sphere10);
+scene.add(mesh);

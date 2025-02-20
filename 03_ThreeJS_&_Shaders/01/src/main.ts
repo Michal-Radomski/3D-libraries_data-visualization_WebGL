@@ -129,68 +129,68 @@ import "./style.scss";
 // console.log("window.devicePixelRatio:", window.devicePixelRatio);
 const scene: THREE.Scene = new THREE.Scene();
 
-// Mesh One
-const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple" });
-const purpleMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry,
-  material
-);
-purpleMesh.position.x = 1;
+// // Mesh One
+// const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple" });
+// const purpleMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry,
+//   material
+// );
+// purpleMesh.position.x = 1;
 
-// Mesh Two
-const geometry2: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material2: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "yellow" });
-const yellowMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry2,
-  material2
-);
-yellowMesh.position.x = -1;
+// // Mesh Two
+// const geometry2: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+// const material2: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "yellow" });
+// const yellowMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry2,
+//   material2
+// );
+// yellowMesh.position.x = -1;
 
-// Mesh Three
-const geometry3: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material3: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "green" });
-const greenMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry3,
-  material3
-);
+// // Mesh Three
+// const geometry3: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+// const material3: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "green" });
+// const greenMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry3,
+//   material3
+// );
 
-// Mesh Four
-const geometry4: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material4: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "white" });
-const whiteMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry4,
-  material4
-);
-whiteMesh.position.set(1, 1, 0);
-// whiteMesh.position.x=1;
-// whiteMesh.position.y=1;
-// whiteMesh.position.z=0;
+// // Mesh Four
+// const geometry4: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+// const material4: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "white" });
+// const whiteMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry4,
+//   material4
+// );
+// whiteMesh.position.set(1, 1, 0);
+// // whiteMesh.position.x=1;
+// // whiteMesh.position.y=1;
+// // whiteMesh.position.z=0;
 
-// Mesh Five
-const geometry5: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material5: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "pink" });
-const pinkMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry5,
-  material5
-);
-pinkMesh.position.set(-1, 1, 0);
+// // Mesh Five
+// const geometry5: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+// const material5: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "pink" });
+// const pinkMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry5,
+//   material5
+// );
+// pinkMesh.position.set(-1, 1, 0);
 
-// Mesh Six
-const geometry6: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
-const material6: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "blue" });
-const blueMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry6,
-  material6
-);
-blueMesh.position.y = 1;
+// // Mesh Six
+// const geometry6: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+// const material6: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "blue" });
+// const blueMesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry6,
+//   material6
+// );
+// blueMesh.position.y = 1;
 
-scene.add(purpleMesh, yellowMesh, greenMesh, whiteMesh, pinkMesh, blueMesh);
+// scene.add(purpleMesh, yellowMesh, greenMesh, whiteMesh, pinkMesh, blueMesh);
 
-//* LookAt
-yellowMesh.lookAt(whiteMesh.position);
-purpleMesh.lookAt(pinkMesh.position);
-pinkMesh.lookAt(greenMesh.position);
+// //* LookAt
+// yellowMesh.lookAt(whiteMesh.position);
+// purpleMesh.lookAt(pinkMesh.position);
+// pinkMesh.lookAt(greenMesh.position);
 
 //* Mouse Listener
 const cursor = {
@@ -241,7 +241,7 @@ const animate = (): void => {
   // const elapsedTime: number = clock.getElapsedTime();
   // console.log("elapsedTime:", elapsedTime);
 
-  greenMesh.lookAt(new THREE.Vector3(cursor.x, -cursor.y, 1));
+  // greenMesh.lookAt(new THREE.Vector3(cursor.x, -cursor.y, 1));
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
 };
@@ -266,9 +266,9 @@ const axesHelper: THREE.AxesHelper = new THREE.AxesHelper();
 scene.add(axesHelper);
 
 // * ---
-const geometry8: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
+const geometry8: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry(); //* A low memory alternative
 const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
-const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3);
+const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3); //* 3 numbers for a point
 geometry8.setAttribute("position", positionAttribute);
 // console.log("geometry8:", geometry8);
 
@@ -283,3 +283,39 @@ const mesh8: THREE.Mesh<
   THREE.Object3DEventMap
 > = new THREE.Mesh(geometry8, material8);
 scene.add(mesh8);
+
+const loadingManager: THREE.LoadingManager = new THREE.LoadingManager();
+loadingManager.onStart = (): void => {
+  void console.log("Start");
+};
+loadingManager.onLoad = (): void => {
+  void console.log("Loading . . .");
+};
+loadingManager.onProgress = (): void => {
+  void console.log("Progress");
+};
+loadingManager.onError = (): void => {
+  void console.log("Error !");
+};
+
+//* This can be any image (e.g., PNG, JPG/JPEG, GIF, DDS) or video (e.g., MP4, OGG/OGV) type supported by three.js.
+const textureLoader: THREE.TextureLoader = new THREE.TextureLoader(loadingManager);
+// const colorTexture = textureLoader.load("./src/texture/normal.jpg");
+const colorTexture: THREE.Texture = textureLoader.load("./src/texture/color.jpg");
+// console.log("colorTexture:", colorTexture);
+
+// const geometry9: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
+// const material9: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ map: colorTexture });
+// const mesh9: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry9,
+//   material9
+// );
+// scene.add(mesh9);
+
+const geometry10: THREE.SphereGeometry = new THREE.SphereGeometry(0.5, 32, 16);
+const material10: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: undefined, map: colorTexture });
+const sphere10: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  geometry10,
+  material10
+);
+scene.add(sphere10);

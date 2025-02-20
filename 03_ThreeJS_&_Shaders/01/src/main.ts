@@ -261,3 +261,25 @@ window.addEventListener("resize", (): void => {
   renderer.setSize(aspect.width, aspect.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+
+const axesHelper: THREE.AxesHelper = new THREE.AxesHelper();
+scene.add(axesHelper);
+
+// * ---
+const geometry8: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
+const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3);
+geometry8.setAttribute("position", positionAttribute);
+// console.log("geometry8:", geometry8);
+
+const material8: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
+  color: "yellow",
+  wireframe: true,
+});
+
+const mesh8: THREE.Mesh<
+  THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+  THREE.MeshBasicMaterial,
+  THREE.Object3DEventMap
+> = new THREE.Mesh(geometry8, material8);
+scene.add(mesh8);

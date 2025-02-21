@@ -236,6 +236,7 @@ controls.dampingFactor = 0.05;
 controls.enablePan = true;
 controls.enableZoom = true;
 
+//* Animate
 const animate = (): void => {
   controls.update(); // IMPORTANT: Update the controls in the animation loop
 
@@ -430,6 +431,6 @@ gui.add(mesh.position, "x").min(-3).max(3).step(0.1).name("X MeshOne");
 // 2) Boolean
 gui.add(material, "wireframe");
 // 3) Color
-gui.addColor(materialColor, "color").onChange(() => {
+gui.addColor(materialColor, "color").onChange((): void => {
   material.color.set(materialColor.color);
 });

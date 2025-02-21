@@ -151,7 +151,7 @@ const clock: THREE.Clock = new THREE.Clock();
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
 
-  const elapsedTime = clock.getElapsedTime();
+  const elapsedTime: number = clock.getElapsedTime();
   boxMesh.position.x = Math.sin(elapsedTime);
   torusKnotMesh.rotation.x = Math.sin(elapsedTime);
 })();
@@ -172,7 +172,7 @@ window.addEventListener("resize", (): void => {
 });
 
 //^ ShadowMap Types
-// renderer.shadowMap.type = THREE.BasicShadowMa / p;
-// renderer.shadowMap.type = THREE.PCFShadowMap;
+// renderer.shadowMap.type = THREE.BasicShadowMap;
+renderer.shadowMap.type = THREE.PCFShadowMap; //* Percentage-Closer Filtering (PCF) algorithm (default)
 // renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-// renderer.shadowMap.type = THREE.VSMShadowMap;
+// renderer.shadowMap.type = THREE.VSMShadowMap; //* Variance Shadow Map (VSM) algorithm

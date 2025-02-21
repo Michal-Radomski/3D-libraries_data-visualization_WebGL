@@ -9,12 +9,12 @@ const scene: THREE.Scene = new THREE.Scene();
 const gui: dat.GUI = new dat.GUI();
 
 //^ Lights
-//* AmbientLight
+//* AmbientLight - This light globally illuminates all objects in the scene equally - no helper, no shadow
 // const ambientLight: THREE.AmbientLight = new THREE.AmbientLight("#ffffff", 0.5);
 // scene.add(ambientLight);
 // gui.add(ambientLight, "intensity").min(0).max(1).step(0.01).name("Intensity One");
 
-//* DirectionalLight
+//* DirectionalLight - A light that gets emitted in a specific direction
 // const directionalLight: THREE.DirectionalLight = new THREE.DirectionalLight("#ffffff", 0.5);
 // directionalLight.position.set(0, 2, 0);
 // scene.add(directionalLight);
@@ -25,14 +25,15 @@ const gui: dat.GUI = new dat.GUI();
 // const directionalLightHelper: THREE.DirectionalLightHelper = new THREE.DirectionalLightHelper(directionalLight);
 // scene.add(directionalLightHelper);
 
-//* HemisphereLight
+//* HemisphereLight -> A light source positioned directly above the scene, with color fading from the sky color to the ground color.
+//* This light cannot be used to cast shadows (2 lights).
 // const hemisphereLight: THREE.HemisphereLight = new THREE.HemisphereLight("blue", "yellow", 1);
 // scene.add(hemisphereLight);
 // //* HemisphereLightHelper
 // const hemisphereLightHelper: THREE.HemisphereLightHelper = new THREE.HemisphereLightHelper(hemisphereLight, 5);
 // scene.add(hemisphereLightHelper);
 
-//* PointLight
+//* PointLight ->  A light that gets emitted from a single point in all directions
 // const pointLight: THREE.PointLight = new THREE.PointLight("red", 0.8, 3);
 // gui.add(pointLight.position, "x").min(-3).max(3).step(0.01).name("X Point");
 // gui.add(pointLight.position, "y").min(-3).max(3).step(0.01).name("Y Point");
@@ -42,14 +43,14 @@ const gui: dat.GUI = new dat.GUI();
 // const pointLightHelper: THREE.PointLightHelper = new THREE.PointLightHelper(pointLight);
 // scene.add(pointLightHelper);
 
-//* RectAreaLight
+//* RectAreaLight -> RectAreaLight emits light uniformly across the face a rectangular plane
 // const rectAreaLight: THREE.RectAreaLight = new THREE.RectAreaLight("#5D3FD3", 3, 2, 2);
 // rectAreaLight.position.z = 0.5;
 // scene.add(rectAreaLight);
 // gui.add(rectAreaLight, "width").min(0).max(7).step(0.01).name("width");
 // gui.add(rectAreaLight, "height").min(0).max(7).step(0.01).name("height");
 
-//* SpotLight
+//* SpotLight ->  This light gets emitted from a single point in one direction, along a cone that increases in size the further from the light it gets
 const spotLight: THREE.SpotLight = new THREE.SpotLight(0xffffff, 1, 8, Math.PI * 0.25, 0.1, 1);
 gui.add(spotLight.position, "z").min(-3).max(3).step(0.01).name("Z Spot");
 gui.add(spotLight, "angle").min(0).max(3).step(0.01).name("Spot Angle");

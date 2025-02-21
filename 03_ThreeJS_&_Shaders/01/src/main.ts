@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 // console.log("THREE:", THREE);
 // import gsap from "gsap";
+import * as dat from "dat.gui";
 
 import "./style.scss";
 
@@ -416,3 +417,19 @@ const mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial, THREE.O
   material
 );
 scene.add(mesh);
+
+//* GUI patterns
+const gui: dat.GUI = new dat.GUI();
+
+const materialColor = {
+  color: 0xffffff,
+};
+
+// 1) Range
+gui.add(mesh.position, "x").min(-3).max(3).step(0.1).name("X MeshOne");
+// 2) Boolean
+gui.add(material, "wireframe");
+// 3) Color
+gui.addColor(materialColor, "color").onChange(() => {
+  material.color.set(materialColor.color);
+});

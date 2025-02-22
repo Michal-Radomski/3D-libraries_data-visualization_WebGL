@@ -24,14 +24,16 @@ const fbxloader: FBXLoader = new FBXLoader();
 
 console.log("objloader, gltfloader, dracoloader, fbxloader:", objloader, gltfloader, dracoloader, fbxloader);
 
-//* Loading OBJ Model
+//* Loading OBJ Model -> no animation!
 objloader.load("./src/models/monkey.obj", (objObject: THREE.Group<THREE.Object3DEventMap>): void => {
   console.log(1, "objObject:", objObject);
   objObject.position.y = 1;
   objObject.children[0].position.z = -3;
   // @ts-ignore
+  // console.log(" objObject.children[0].material:", objObject.children[0].material); // MeshPhongMaterial
+  // @ts-ignore
   objObject.children[0].material = new THREE.MeshNormalMaterial();
-  console.log(2, "objObject:", objObject);
+  console.log(2, "objObject:", objObject); // MeshPhongMaterial
   scene.add(objObject);
 });
 

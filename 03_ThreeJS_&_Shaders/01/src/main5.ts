@@ -17,7 +17,8 @@ const objloader: OBJLoader = new OBJLoader();
 const gltfloader: GLTFLoader = new GLTFLoader();
 
 const dracoloader: DRACOLoader = new DRACOLoader();
-dracoloader.setDecoderPath("/draco/");
+dracoloader.setDecoderConfig({ type: "js" });
+dracoloader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
 gltfloader.setDRACOLoader(dracoloader);
 
 const fbxloader: FBXLoader = new FBXLoader();
@@ -44,9 +45,15 @@ console.log("objloader, gltfloader, dracoloader, fbxloader:", objloader, gltfloa
 // });
 
 //* Loading GLTF model
-gltfloader.load("./src/models/monkeyGLTF.gltf", (gltf: GLTF): void => {
+// gltfloader.load("./src/models/monkeyGLTF.gltf", (gltf: GLTF): void => {
+//   scene.add(gltf.scene);
+//   console.log("glb.scene:", gltf.scene);
+// });
+
+//* Loading GLTF Model Using DRACOLoader
+gltfloader.load("./src/models/monkeyGLTF_compression.gltf", (gltf: GLTF) => {
+  console.log("compressed: gltf.scene:", gltf.scene);
   scene.add(gltf.scene);
-  console.log("glb.scene:", gltf.scene);
 });
 
 //- ---

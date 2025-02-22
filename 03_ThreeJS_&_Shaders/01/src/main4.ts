@@ -75,10 +75,10 @@ window.addEventListener("mousemove", (event: MouseEvent): void => {
   raycaster.setFromCamera(pointer, camera);
   const intersects = raycaster.intersectObjects(meshes);
 
-  for (let i = 0; i < intersects.length; i++) {
-    // @ts-ignore
-    intersects[i].object.material.color.set(0xff0000);
-  }
+  // for (let i = 0; i < intersects.length; i++) {
+  //   // @ts-ignore
+  //   intersects[i].object.material.color.set(0xff0000);
+  // }
 
   if (intersects.length > 0) {
     if (oneIntersectMesh.length < 1) {
@@ -93,8 +93,11 @@ window.addEventListener("mousemove", (event: MouseEvent): void => {
       z: 1.25,
     });
 
-    console.log("oneIntersectMesh:", oneIntersectMesh);
+    if (oneIntersectMesh?.length) {
+      console.log("oneIntersectMesh:", oneIntersectMesh);
+    }
   } else if (oneIntersectMesh[0] !== undefined) {
+    // console.log("oneIntersectMesh[0]:", oneIntersectMesh[0]);
     //intersects.length === 0
     // @ts-ignore
     oneIntersectMesh[0].object.material.color.set("white");
@@ -106,7 +109,10 @@ window.addEventListener("mousemove", (event: MouseEvent): void => {
     });
     oneIntersectMesh.shift();
   }
-  console.log("intersects:", intersects);
+
+  if (intersects?.length) {
+    console.log("intersects:", intersects);
+  }
 });
 
 //* OrbitControls

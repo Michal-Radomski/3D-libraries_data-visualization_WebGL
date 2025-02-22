@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { DRACOLoader, FBXLoader, GLTFLoader, OBJLoader, OrbitControls } from "three/examples/jsm/Addons.js";
+import { DRACOLoader, FBXLoader, GLTF, GLTFLoader, OBJLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 
 import "./style.scss";
 
@@ -25,16 +25,28 @@ const fbxloader: FBXLoader = new FBXLoader();
 console.log("objloader, gltfloader, dracoloader, fbxloader:", objloader, gltfloader, dracoloader, fbxloader);
 
 //* Loading OBJ Model -> no animation!
-objloader.load("./src/models/monkey.obj", (objObject: THREE.Group<THREE.Object3DEventMap>): void => {
-  console.log(1, "objObject:", objObject);
-  objObject.position.y = 1;
-  objObject.children[0].position.z = -3;
-  // @ts-ignore
-  // console.log(" objObject.children[0].material:", objObject.children[0].material); // MeshPhongMaterial
-  // @ts-ignore
-  objObject.children[0].material = new THREE.MeshNormalMaterial();
-  console.log(2, "objObject:", objObject); // MeshPhongMaterial
-  scene.add(objObject);
+// objloader.load("./src/models/monkey.obj", (objObject: THREE.Group<THREE.Object3DEventMap>): void => {
+//   console.log(1, "objObject:", objObject);
+//   objObject.position.y = 1;
+//   objObject.children[0].position.z = -3;
+//   // @ts-ignore
+//   // console.log(" objObject.children[0].material:", objObject.children[0].material); // MeshPhongMaterial
+//   // @ts-ignore
+//   objObject.children[0].material = new THREE.MeshNormalMaterial();
+//   console.log(2, "objObject:", objObject); // MeshPhongMaterial
+//   scene.add(objObject);
+// });
+
+//* Loading GLB model
+// gltfloader.load("./src/models/monkeyGLB.glb", (glb: GLTF): void => {
+//   scene.add(glb.scene);
+//   console.log("glb.scene:", glb.scene);
+// });
+
+//* Loading GLTF model
+gltfloader.load("./src/models/monkeyGLTF.gltf", (gltf: GLTF): void => {
+  scene.add(gltf.scene);
+  console.log("glb.scene:", gltf.scene);
 });
 
 //- ---

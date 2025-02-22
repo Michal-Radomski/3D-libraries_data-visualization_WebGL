@@ -51,9 +51,20 @@ console.log("objloader, gltfloader, dracoloader, fbxloader:", objloader, gltfloa
 // });
 
 //* Loading GLTF Model Using DRACOLoader
-gltfloader.load("./src/models/monkeyGLTF_compression.gltf", (gltf: GLTF) => {
-  console.log("compressed: gltf.scene:", gltf.scene);
-  scene.add(gltf.scene);
+// gltfloader.load("./src/models/monkeyGLTF_compression.gltf", (gltf: GLTF): void => {
+//   console.log("compressed: gltf.scene:", gltf.scene);
+//   scene.add(gltf.scene);
+// });
+
+//* Loading animatedCube
+let animationMixer = null as THREE.AnimationMixer | null;
+gltfloader.load("./src/models/animatedCube.glb", (glb: GLTF): void => {
+  animationMixer = new THREE.AnimationMixer(glb.scene);
+  const clipAction = animationMixer.clipAction(glb.animations[0]);
+  clipAction.play();
+  scene.add(glb.scene);
+  glb.scene.scale.set(0.5, 0.5, 0.5);
+  console.log("animated glb:", glb);
 });
 
 //- ---
@@ -90,8 +101,8 @@ window.addEventListener("resize", (): void => {
 const orbitControls = new OrbitControls(camera, canvas);
 orbitControls.enableDamping = true;
 
-// const clock: THREE.Clock = new THREE.Clock();
-// let previousTime = 0;
+const clock: THREE.Clock = new THREE.Clock();
+let previousTime = 0;
 
 //* Animate
 (function animate(): void {
@@ -100,11 +111,11 @@ orbitControls.enableDamping = true;
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
 
-  // const elapsedTime = clock.getElapsedTime();
-  // const frameTime = elapsedTime - previousTime;
-  // previousTime = elapsedTime;
+  const elapsedTime: number = clock.getElapsedTime();
+  const frameTime: number = elapsedTime - previousTime;
+  previousTime = elapsedTime;
 
-  // if (animationMixer) {
-  //   animationMixer.update(frameTime);
-  // }
+  if (animationMixer) {
+    animationMixer.update(frameTime);
+  }
 })();

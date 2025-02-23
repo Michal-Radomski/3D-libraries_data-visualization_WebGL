@@ -57,14 +57,38 @@ console.log("objloader, gltfloader, dracoloader, fbxloader:", objloader, gltfloa
 // });
 
 //* Loading animatedCube
+// let animationMixer = null as THREE.AnimationMixer | null;
+// gltfloader.load("./src/models/animatedCube.glb", (glb: GLTF): void => {
+//   animationMixer = new THREE.AnimationMixer(glb.scene);
+//   const clipAction = animationMixer.clipAction(glb.animations[0]);
+//   clipAction.play();
+//   scene.add(glb.scene);
+//   glb.scene.scale.set(0.5, 0.5, 0.5);
+//   console.log("animated glb:", glb);
+// });
+
+//* Loading FBX Model
+// let animationMixer = null as THREE.AnimationMixer | null;
+// fbxloader.load("./src/models/Taunt.fbx", (fbx: THREE.Group<THREE.Object3DEventMap>): void => {
+//   animationMixer = new THREE.AnimationMixer(fbx);
+//   const clipAction = animationMixer.clipAction(fbx.animations[0]);
+//   clipAction.play();
+//   fbx.scale.set(0.01, 0.01, 0.01);
+//   fbx.position.y = -0.8;
+//   scene.add(fbx);
+//   console.log("fbx:", fbx);
+// });
+
+//* New model with two animations
 let animationMixer = null as THREE.AnimationMixer | null;
-gltfloader.load("./src/models/animatedCube.glb", (glb: GLTF): void => {
+gltfloader.load("./src/models/newModel.glb", (glb: GLTF): void => {
   animationMixer = new THREE.AnimationMixer(glb.scene);
-  const clipAction = animationMixer.clipAction(glb.animations[0]);
+  // const clipAction = animationMixer.clipAction(glb.animations[0]); // first animation
+  const clipAction = animationMixer.clipAction(glb.animations[3]); // second animation
   clipAction.play();
+  glb.scene.position.y = -0.8;
   scene.add(glb.scene);
-  glb.scene.scale.set(0.5, 0.5, 0.5);
-  console.log("animated glb:", glb);
+  console.log("animated glb.scene:", glb.scene);
 });
 
 //- ---
@@ -79,8 +103,14 @@ scene.add(camera);
 
 //* Renderer
 const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
-const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas });
+const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 renderer.setSize(aspect.width, aspect.height);
+// @ts-ignore
+renderer.physicallyCorrectLights = true;
+// @ts-ignore
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor("#808080", 0.5);
 
 //* Resizing
 window.addEventListener("resize", (): void => {

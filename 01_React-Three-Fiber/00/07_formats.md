@@ -45,3 +45,53 @@ https://www.modelo.io/damf/article/2024/05/24/2208/understanding-obj-and-glb-fil
 https://cloudinary.com/guides/image-formats/glb-format-how-it-works-use-cases-and-pros-cons-you-should-know [6]
 https://www.a23d.co/blog/different-3d-model-formats [7] https://www.modelry.ai/blog/guide-to-3d-file-formats [8]
 https://discourse.threejs.org/t/fbx-vs-glb-files/48575
+
+The **.stl** format is a widely used file type in 3D printing and computer-aided manufacturing (CAM). Here's how it compares
+to the previously discussed formats:
+
+### Overview of STL
+
+- **Purpose**: Primarily used for 3D printing, STL files describe the surface geometry of a model using triangulated meshes.
+- **Geometry Only**: Unlike OBJ or GLTF, STL files do not store color, texture, or other attributes—only the geometric data.
+- **Tessellation**: Complex surfaces are approximated by triangles; more triangles mean smoother surfaces but larger file
+  sizes[1][6].
+
+### Comparison with OBJ, GLB/GLTF, and FBX
+
+| Format       | Description                                                                                                                              | Use Cases |
+| ------------ | ---------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| **STL**      | Stores surface geometry as triangulated meshes; no colors or textures. Ideal for 3D printing due to its simplicity and efficiency[1][5]. |
+| **OBJ**      | Text-based format that can include vertex normals but lacks animation support. Often used with MTL files for material definitions[5].    |
+| **GLB/GLTF** | Efficient binary/json formats supporting animations and textures within a single file; ideal for web applications like AR/VR[4].         |
+| **FBX**      | Proprietary format widely supported in game engines (Unity/Unreal Engine) with complex scene capabilities including animations[4].       |
+
+### Key Differences
+
+- **Geometry vs. Attributes**:
+
+  - STL focuses solely on geometry without additional attributes like color or texture.
+  - OBJ can include some basic material info via MTL files but lacks advanced features.
+  - GLB/GLTF supports both geometry and rich media content like animations.
+
+- **Use Cases**:
+  - STL is optimized for additive manufacturing processes such as FDM/SLS/SLA due to its simplicity and compatibility across
+    most slicing software.
+  - OBJ is versatile but often requires manual handling of textures/materials outside the main file.
+
+In summary, while all these formats serve different purposes in the realm of digital modeling, STL stands out as a
+fundamental choice when working specifically with additive manufacturing technologies due to its straightforward nature and
+widespread adoption.
+
+### Choosing Between Formats
+
+- Use STL when focusing on simple geometric data transfer primarily for 3D printing applications.
+- Choose OBJ if you need basic material information alongside your model's geometry (e.g., static scenes).
+- Opt for GLB/GLTF when efficiency in loading times is crucial (e.g., web-based AR/VR experiences).
+- Select FBX if working extensively within professional game engines where complex scenes are necessary.
+
+Citations: [1] https://en.wikipedia.org/wiki/STL_(file_format) [2]
+https://www.weerg.com/guides/how-to-create-and-edit-an-stl-file [3]
+https://3faktur.com/en/the-file-format-stl-and-its-importance-for-3d-printing/ [4]
+https://professional3dservices.com/blog/STL-file-format.html [5]
+https://hlhrapid.com/blog/3d-file-formats-to-use-for-manufacturing/ [6] https://firstmold.com/tips/stl-files/ [7]
+https://all3dp.com/1/stl-file-format-3d-printing/ [8] https://www.3dsystems.com/quickparts/learning-center/what-is-stl-file

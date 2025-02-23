@@ -58,7 +58,7 @@ console.log("gltfloader, fbxloader:", gltfloader, fbxloader);
 let animationMixer = null as THREE.AnimationMixer | null;
 
 gltfloader.load("./src/models2/Tpose.glb", (glb: GLTF): void => {
-  glb.scene.traverse((child: THREE.Object3D<THREE.Object3DEventMap>) => {
+  glb.scene.traverse((child: THREE.Object3D<THREE.Object3DEventMap>): void => {
     // @ts-ignore
     if (child.isMesh && child.name === "Hair") {
       // @ts-ignore

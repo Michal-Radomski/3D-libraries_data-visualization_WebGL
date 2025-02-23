@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { FBXLoader, GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
+import { FBXLoader, GLTF, GLTFLoader, OrbitControls } from "three/examples/jsm/Addons.js";
 
 import "./style.scss";
 
@@ -16,43 +16,58 @@ const fbxloader: FBXLoader = new FBXLoader();
 const gltfloader: GLTFLoader = new GLTFLoader();
 console.log("gltfloader, fbxloader:", gltfloader, fbxloader);
 
-//* Model + two animations
-const animations: { animations: THREE.AnimationClip[] }[] = [];
+// //* Model + two animations
+// const animations: { animations: THREE.AnimationClip[] }[] = [];
+// let animationMixer = null as THREE.AnimationMixer | null;
+
+// // Model
+// fbxloader.load("./src/models2/model.fbx", (fbx: THREE.Group<THREE.Object3DEventMap>): void => {
+//   animationMixer = new THREE.AnimationMixer(fbx);
+//   // const clipAction: THREE.AnimationAction = animationMixer.clipAction(animations[1].animations[0]);
+//   // clipAction.play();
+//   fbx.scale.set(0.01, 0.01, 0.01);
+//   fbx.position.y = -0.8;
+//   scene.add(fbx);
+// });
+
+// // First animation
+// fbxloader.load("./src/models2/1.fbx", (fbx: THREE.Group<THREE.Object3DEventMap>): void => {
+//   console.log("fbx_1:", fbx);
+//   animations.push(fbx);
+// });
+
+// // Second animation
+// fbxloader.load("./src/models2/2.fbx", (fbx: THREE.Group<THREE.Object3DEventMap>): void => {
+//   console.log("fbx_2:", fbx);
+//   animations.push(fbx);
+// });
+
+// window.addEventListener("keydown", (event: KeyboardEvent) => {
+//   if (event.key === "1") {
+//     animationMixer?.stopAllAction();
+//     const clipAction = animationMixer?.clipAction(animations[0].animations[0]);
+//     clipAction?.play();
+//   }
+//   if (event.key === "2") {
+//     animationMixer?.stopAllAction();
+//     const clipAction = animationMixer?.clipAction(animations[1].animations[0]);
+//     clipAction?.play();
+//   }
+// });
+
 let animationMixer = null as THREE.AnimationMixer | null;
 
-// Model
-fbxloader.load("./src/models2/model.fbx", (fbx: THREE.Group<THREE.Object3DEventMap>) => {
-  animationMixer = new THREE.AnimationMixer(fbx);
-  // const clipAction: THREE.AnimationAction = animationMixer.clipAction(animations[1].animations[0]);
-  // clipAction.play();
-  fbx.scale.set(0.01, 0.01, 0.01);
-  fbx.position.y = -0.8;
-  scene.add(fbx);
-});
-
-// First animation
-fbxloader.load("./src/models2/1.fbx", (fbx: THREE.Group<THREE.Object3DEventMap>) => {
-  console.log("fbx_1:", fbx);
-  animations.push(fbx);
-});
-
-// Second animation
-fbxloader.load("./src/models2/2.fbx", (fbx: THREE.Group<THREE.Object3DEventMap>) => {
-  console.log("fbx_2:", fbx);
-  animations.push(fbx);
-});
-
-window.addEventListener("keydown", (event: KeyboardEvent) => {
-  if (event.key === "1") {
-    animationMixer?.stopAllAction();
-    const clipAction = animationMixer?.clipAction(animations[0].animations[0]);
-    clipAction?.play();
-  }
-  if (event.key === "2") {
-    animationMixer?.stopAllAction();
-    const clipAction = animationMixer?.clipAction(animations[1].animations[0]);
-    clipAction?.play();
-  }
+gltfloader.load("./src/models2/Tpose.glb", (glb: GLTF): void => {
+  glb.scene.traverse((child: THREE.Object3D<THREE.Object3DEventMap>) => {
+    // @ts-ignore
+    if (child.isMesh && child.name === "Hair") {
+      // @ts-ignore
+      child.material = new THREE.MeshBasicMaterial({ color: "red" });
+      child.position.x = 1;
+    }
+  });
+  glb.scene.position.y = -0.8;
+  scene.add(glb.scene);
 });
 
 //- ---

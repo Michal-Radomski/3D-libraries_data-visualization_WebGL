@@ -1,9 +1,8 @@
-import "./style.scss";
-
-// Import necessary libraries
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
+
+import "./style.scss";
 
 // Set up the Three.js scene
 const scene: THREE.Scene = new THREE.Scene();

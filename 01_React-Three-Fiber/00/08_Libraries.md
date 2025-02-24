@@ -224,3 +224,59 @@ https://www.youtube.com/watch?v=CxIcRfI49DU [6]
 https://forum.babylonjs.com/t/babylonjs-vs-threejs-performance-comparison/45704 [7]
 https://news.ycombinator.com/item?id=35648122 [8]
 https://www.linkedin.com/pulse/babylonjs-vs-threejs-web-based-3d-development-kosoku-tech-jvfyc
+
+Phaser and Babylon.js are two distinct JavaScript frameworks used for creating interactive applications, primarily games, but
+they serve different purposes and have different characteristics.
+
+## **Key Differences**
+
+- **Dimensionality**:
+
+  - **Phaser**: Primarily a 2D game framework, although it can handle some basic 3D elements. It is optimized for creating
+    fast and efficient 2D games.
+  - **Babylon.js**: A full-featured 3D game engine with advanced rendering capabilities, focusing on realistic 3D graphics
+    and simulations.
+
+- **Rendering**:
+
+  - **Phaser**: Uses both Canvas and WebGL for rendering, depending on browser support. It is designed for simplicity and
+    performance in 2D rendering.
+  - **Babylon.js**: Utilizes WebGL for hardware-accelerated 3D graphics rendering, providing advanced tools for creating
+    visually impressive scenes.
+
+- **Programming Paradigm**:
+
+  - **Phaser**: Follows a component-based programming paradigm, which is straightforward and easy to use, especially for
+    beginners.
+  - **Babylon.js**: Uses an object-oriented programming paradigm, offering extensive control over 3D graphics and physics but
+    requiring more expertise.
+
+- **Community and Support**:
+
+  - **Phaser**: Has a vibrant community with comprehensive learning resources, making it suitable for indie game developers.
+  - **Babylon.js**: Backed by Microsoft, it has a large and active community with extensive documentation and support.
+
+- **Platform Support**:
+
+  - **Phaser**: Primarily targets web browsers but can be used with additional tools for other platforms.
+  - **Babylon.js**: Supports multiple platforms, including desktop browsers, mobile browsers, and native applications.
+
+- **Size and Performance**:
+  - **Phaser**: Lightweight and performs well on a wide range of devices due to its focus on 2D rendering.
+  - **Babylon.js**: Larger file size due to its advanced 3D features, which may impact performance on lower-end devices.
+
+## **Use Cases**
+
+- **Phaser**: Ideal for developing 2D games, especially for beginners or those looking for a straightforward API.
+- **Babylon.js**: Suitable for complex 3D applications, including games, simulations, and interactive experiences requiring
+  advanced graphics capabilities.
+
+In summary, the choice between Phaser and Babylon.js depends on whether you need to create 2D or 3D content and the level of
+complexity your project requires.
+
+Citations: [1] https://stackshare.io/stackups/babylonjs-vs-phaserio [2] https://aircada.com/blog/babylon-js-vs-phaser [3]
+https://www.wmtips.com/technologies/compare/babylon.js-vs-phaser/ [4]
+https://6sense.com/tech/game-development/phaser-vs-babylonjs [5] https://github.com/Shirajuki/js-game-rendering-benchmark [6]
+https://www.reddit.com/r/learnjavascript/comments/1df06oi/what_js_framework_do_you_recommend_that_has/ [7]
+https://npm-compare.com/aframe,babylonjs,matter-js,melonjs,phaser,pixi.js,planck,playcanvas,whs [8]
+https://npm-compare.com/@babylonjs/core,aframe,babylonjs,phaser,pixi.js,three

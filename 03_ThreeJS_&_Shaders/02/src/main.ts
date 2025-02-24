@@ -1,0 +1,88 @@
+import * as THREE from "three";
+import { OrbitControls } from "three/examples/jsm/Addons.js";
+import * as CANNON from "cannon-es";
+
+import "./style.scss";
+
+// Scene
+const scene: THREE.Scene = new THREE.Scene();
+
+// Lights
+const ambientLight: THREE.AmbientLight = new THREE.AmbientLight("#FFFFFF", 0.2);
+scene.add(ambientLight);
+const directionalLight: THREE.DirectionalLight = new THREE.DirectionalLight("#FFFFFF", 0.5);
+directionalLight.castShadow = true;
+directionalLight.position.set(5, 5, 0);
+scene.add(directionalLight);
+
+// Meshes
+// 1-Sphere Mesh
+const sphereGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(0.3, 32);
+const sphereMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+const sphereMesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  sphereGeometry,
+  sphereMaterial
+);
+sphereMesh.position.y = 1;
+sphereMesh.castShadow = true;
+scene.add(sphereMesh);
+
+// 2- Plane Mesh
+const planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(15, 15);
+const planeMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+const planeMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  planeGeometry,
+  planeMaterial
+);
+planeMesh.receiveShadow = true;
+planeMesh.rotation.x = -Math.PI * 0.5;
+scene.add(planeMesh);
+
+//* Camera
+const aspect = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+
+const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height);
+camera.position.z = 5;
+camera.position.y = 2;
+scene.add(camera);
+
+//* Renderer
+const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
+const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.setSize(aspect.width, aspect.height);
+
+//* OrbitControls
+const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
+orbitControls.enableDamping = true;
+orbitControls.enableZoom = true;
+orbitControls.enableRotate = true;
+orbitControls.autoRotate = true;
+orbitControls.autoRotateSpeed = 0.2;
+
+//* Animate
+(function animate(): void {
+  orbitControls.update(); // IMPORTANT: Update the controls in the animation loop
+
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+})();
+
+//* Resizing
+window.addEventListener("resize", (): void => {
+  // New size
+  aspect.width = window.innerWidth;
+  aspect.height = window.innerHeight;
+
+  // New AspectRatio
+  camera.aspect = aspect.width / aspect.height;
+  camera.updateProjectionMatrix();
+
+  // New RendererSize
+  renderer.setSize(aspect.width, aspect.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});

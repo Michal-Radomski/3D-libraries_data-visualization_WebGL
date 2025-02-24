@@ -21,6 +21,7 @@
     "babylonjs": "^7.50.0",
     "cannon-es": "^0.20.0",
     "matter-js": "^0.20.0",
+    "phaser": "^3.88.2",
     "planck": "^1.3.0",
     "three": "^0.173.0"
   }

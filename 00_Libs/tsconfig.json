@@ -3,7 +3,7 @@
     "target": "ES2020",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "ScriptHost"],
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -19,7 +19,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    "types": ["babylonjs"]
+    "typeRoots": ["./node_modules/phaser/types"]
+    // "types": ["Phaser"]
+    // "types": ["babylonjs", ]
   },
   "include": ["src"]
 }

@@ -17,7 +17,7 @@ directionalLight.position.set(5, 5, 0);
 scene.add(directionalLight);
 
 // Meshes
-// 1-Sphere Mesh
+// 1 -Sphere Mesh
 const sphereGeometry: THREE.SphereGeometry = new THREE.SphereGeometry(0.3, 32);
 const sphereMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
 const sphereMesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
@@ -28,7 +28,7 @@ sphereMesh.position.y = 1;
 sphereMesh.castShadow = true;
 scene.add(sphereMesh);
 
-// 2- Plane Mesh
+// 2 - Plane Mesh
 const planeGeometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(15, 15);
 const planeMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
 const planeMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
@@ -38,6 +38,17 @@ const planeMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THR
 planeMesh.receiveShadow = true;
 planeMesh.rotation.x = -Math.PI * 0.5;
 scene.add(planeMesh);
+
+// 3 - Box Mesh
+const boxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const boxMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+const boxMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  boxGeometry,
+  boxMaterial
+);
+boxMesh.position.set(1, 2, 0);
+boxMesh.castShadow = true;
+scene.add(boxMesh);
 
 //* Camera
 const aspect = {
@@ -78,6 +89,16 @@ const planeBody: CANNON.Body = new CANNON.Body({
 });
 planeBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI * 0.5);
 world.addBody(planeBody);
+
+//* Box
+const boxShape: CANNON.Box = new CANNON.Box(new CANNON.Vec3(0.25, 0.25, 0.25));
+const boxBody: CANNON.Body = new CANNON.Body({
+  mass: 1,
+  position: new CANNON.Vec3(1, 2, 0),
+  shape: boxShape,
+  material: plasticMaterial,
+});
+world.addBody(boxBody);
 
 const plasticConcreteContactMaterial: CANNON.ContactMaterial = new CANNON.ContactMaterial(
   plasticMaterial,
@@ -128,6 +149,9 @@ let previousElapsedTime: number = 0;
   // sphereMesh.position.y = sphereBody.position.y;
   // sphereMesh.position.z = sphereBody.position.z;
   sphereMesh.position.copy(sphereBody.position);
+  boxMesh.position.copy(boxBody.position);
+  boxMesh.quaternion.copy(boxBody.quaternion);
+  console.log("boxBody.quaternion:", boxBody.quaternion);
 })();
 
 //* Resizing

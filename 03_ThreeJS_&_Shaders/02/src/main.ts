@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import * as CANNON from "cannon-es";
+// console.log("CANNON:", CANNON);
 
 import "./style.scss";
 
@@ -49,6 +50,45 @@ camera.position.z = 5;
 camera.position.y = 2;
 scene.add(camera);
 
+//* Physics
+const world: CANNON.World = new CANNON.World();
+world.gravity.set(0, -9.81, 0);
+
+//* Physics Materials
+const concreteMaterial: CANNON.Material = new CANNON.Material("concrete");
+const plasticMaterial: CANNON.Material = new CANNON.Material("plastic");
+
+//* Sphere
+const sphericalShape: CANNON.Sphere = new CANNON.Sphere(0.3);
+const sphereBody: CANNON.Body = new CANNON.Body({
+  mass: 1,
+  position: new CANNON.Vec3(0, 1, 0),
+  shape: sphericalShape,
+  material: plasticMaterial,
+});
+world.addBody(sphereBody);
+
+//* Plane
+const planeShape: CANNON.Plane = new CANNON.Plane();
+const planeBody: CANNON.Body = new CANNON.Body({
+  mass: 0,
+  position: new CANNON.Vec3(0, 0, 0),
+  shape: planeShape,
+  material: concreteMaterial,
+});
+planeBody.quaternion.setFromAxisAngle(new CANNON.Vec3(1, 0, 0), -Math.PI * 0.5);
+world.addBody(planeBody);
+
+const plasticConcreteContactMaterial: CANNON.ContactMaterial = new CANNON.ContactMaterial(
+  plasticMaterial,
+  concreteMaterial,
+  {
+    friction: 0.3,
+    restitution: 0.7,
+  }
+);
+world.addContactMaterial(plasticConcreteContactMaterial);
+
 //* Renderer
 const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -64,12 +104,30 @@ orbitControls.enableRotate = true;
 orbitControls.autoRotate = true;
 orbitControls.autoRotateSpeed = 0.2;
 
+const clock = new THREE.Clock();
+
+let previousElapsedTime: number = 0;
+
 //* Animate
 (function animate(): void {
+  const elapsedTime: number = clock.getElapsedTime();
+  const deltaTime: number = elapsedTime - previousElapsedTime;
+  previousElapsedTime = elapsedTime;
+
   orbitControls.update(); // IMPORTANT: Update the controls in the animation loop
 
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
+
+  // Update physics world
+  world.step(Math.min(deltaTime, 0.1));
+  // console.log("sphereBody.position:", sphereBody.position);
+
+  // Update sphere position
+  // sphereMesh.position.x = sphereBody.position.x;
+  // sphereMesh.position.y = sphereBody.position.y;
+  // sphereMesh.position.z = sphereBody.position.z;
+  sphereMesh.position.copy(sphereBody.position);
 })();
 
 //* Resizing

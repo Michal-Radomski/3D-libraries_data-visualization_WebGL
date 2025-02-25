@@ -40,7 +40,7 @@ planeMesh.rotation.x = -Math.PI * 0.5;
 scene.add(planeMesh);
 
 // 3 - Box Mesh
-const boxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+const boxGeometry: THREE.BoxGeometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
 const boxMaterial: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
 const boxMesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   boxGeometry,
@@ -78,6 +78,10 @@ const sphereBody: CANNON.Body = new CANNON.Body({
   material: plasticMaterial,
 });
 world.addBody(sphereBody);
+
+setTimeout(() => {
+  sphereBody.applyLocalForce(new CANNON.Vec3(0, 1000, 0), new CANNON.Vec3(-0.3, 0, 0));
+}, 5000);
 
 //* Plane
 const planeShape: CANNON.Plane = new CANNON.Plane();
@@ -151,7 +155,10 @@ let previousElapsedTime: number = 0;
   sphereMesh.position.copy(sphereBody.position);
   boxMesh.position.copy(boxBody.position);
   boxMesh.quaternion.copy(boxBody.quaternion);
-  console.log("boxBody.quaternion:", boxBody.quaternion);
+  // console.log("boxBody.quaternion:", boxBody.quaternion);
+
+  // Apply a force
+  sphereBody.applyForce(new CANNON.Vec3(0.2, 0, 0));
 })();
 
 //* Resizing

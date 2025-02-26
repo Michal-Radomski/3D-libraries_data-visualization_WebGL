@@ -2,24 +2,35 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 import "./style.scss";
+// import { fragmentShaderSource, vertexShaderSource } from "./shaders";
+import vShader from "./shaders/vertex.glsl";
+import fShader from "./shaders/fragment.glsl";
+// console.log("vShader, fShader:", vShader, fShader);
 
-// Scene
+//* Scene
 const scene: THREE.Scene = new THREE.Scene();
 
-// Mesh
+//* Mesh
 const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
-const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
-// const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
-//   // vertexShader: vShader,
-//   // fragmentShader: fShader,
-// });
-const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+// const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+// const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry,
+//   material
+// );
+const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
+  // vertexShader: vertexShaderSource as string,
+  // fragmentShader: fragmentShaderSource as string,
+  vertexShader: vShader as string,
+  fragmentShader: fShader as string,
+  glslVersion: undefined,
+});
+const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   geometry,
   material
 );
 scene.add(mesh);
 
-// Camera
+//* Camera
 const aspect = {
   width: window.innerWidth,
   height: window.innerHeight,

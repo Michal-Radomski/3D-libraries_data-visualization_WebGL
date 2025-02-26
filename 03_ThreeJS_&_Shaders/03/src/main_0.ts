@@ -23,17 +23,21 @@ function createShader(type: number, source: string): WebGLShader {
   const shader = gl.createShader(type) as WebGLShader;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
+  //   console.log("shader:", shader);
   return shader;
 }
 
 const vertexShader: WebGLShader = createShader(gl.VERTEX_SHADER, vertexShaderSource);
 const fragmentShader: WebGLShader = createShader(gl.FRAGMENT_SHADER, fragmentShaderSource);
+// console.log("vertexShader:", vertexShader);
+// console.log("fragmentShader:", fragmentShader);
 
 // Create a program and attach shaders
 const program: WebGLProgram = gl.createProgram();
 gl.attachShader(program, vertexShader);
 gl.attachShader(program, fragmentShader);
 gl.linkProgram(program);
+// console.log("program:", program);
 
 // Use the program
 gl.useProgram(program);

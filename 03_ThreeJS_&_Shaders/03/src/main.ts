@@ -26,6 +26,7 @@ const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
   glslVersion: undefined,
   side: THREE.DoubleSide,
 });
+// console.log("material?.defaultAttributeValues:", material?.defaultAttributeValues);
 const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   geometry,
   material

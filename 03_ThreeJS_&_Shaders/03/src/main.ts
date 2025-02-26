@@ -17,12 +17,14 @@ const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
 //   geometry,
 //   material
 // );
+
 const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
   // vertexShader: vertexShaderSource as string,
   // fragmentShader: fragmentShaderSource as string,
   vertexShader: vShader as string,
   fragmentShader: fShader as string,
   glslVersion: undefined,
+  side: THREE.DoubleSide,
 });
 const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   geometry,

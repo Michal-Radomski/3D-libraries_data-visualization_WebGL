@@ -121,3 +121,5 @@ window.addEventListener("resize", (): void => {
   renderer.setSize(aspect.width, aspect.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
+
+// console.log("geometry?.attributes?.uv?.array:", geometry?.attributes?.uv?.array);

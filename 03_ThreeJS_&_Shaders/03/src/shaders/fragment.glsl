@@ -13,9 +13,11 @@ void main() {
     // }else {
     //     copy_uv.x = 1.0;
     // }
-    float copy_uvx = step(v_uv.x, 0.5);
-    
+    float copy_uvx = step(v_uv.x, 0.5); //* the same as if_condition
     gl_FragColor = vec4(copy_uv, 1.0,1.0);
+
+    vec3 mixing = mix(vec3(0.0,0.0,1.0), vec3(0.0,1.0,0.0), v_uv.x);
+    gl_FragColor = vec4(mixing, 1.0);
 }
 
 //* V1

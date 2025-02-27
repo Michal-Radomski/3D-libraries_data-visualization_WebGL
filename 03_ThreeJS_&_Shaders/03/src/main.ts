@@ -37,14 +37,14 @@ const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
   fragmentShader: fShader as string,
   glslVersion: undefined,
   side: THREE.DoubleSide,
-  wireframe: true,
-  // uniforms: {
-  //   u_amplitude: { value: 12.0 },
-  //   u_time: { value: 0.0 },
-  //   u_color: { value: new THREE.Color("purple") },
-  //   u_timecolor: { value: 0 },
-  //   u_cursorcolor: { value: new THREE.Vector2(cursor.x, cursor.y) },
-  // },
+  wireframe: false,
+  uniforms: {
+    u_amplitude: { value: 12.0 },
+    u_time: { value: 0.0 },
+    u_color: { value: new THREE.Color("purple") },
+    u_timecolor: { value: 0 },
+    u_cursorcolor: { value: new THREE.Vector2(cursor.x, cursor.y) },
+  },
 });
 // console.log("material?.defaultAttributeValues:", material?.defaultAttributeValues);
 const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
@@ -85,20 +85,20 @@ orbitControls.enableRotate = true;
 orbitControls.autoRotate = true;
 orbitControls.autoRotateSpeed = 0.2;
 
-// const clock = new THREE.Clock();
+const clock = new THREE.Clock();
 
 //* Animate
 (function animate(): void {
-  //GetElapsedTime
-  // const elapsedTime: number = clock.getElapsedTime();
+  //* GetElapsedTime
+  const elapsedTime: number = clock.getElapsedTime();
 
-  //Update u_time
-  // material.uniforms.u_time.value = elapsedTime;
+  //* Update u_time
+  material.uniforms.u_time.value = elapsedTime;
 
-  //Update u_timeColor
+  //* Update u_timeColor
   // material.uniforms.u_timecolor.value = elapsedTime;
 
-  //Update u_cursorcolor
+  //* Update u_cursorcolor
   // material.uniforms.u_cursorcolor.value.x = cursor.x;
   // material.uniforms.u_cursorcolor.value.y = cursor.y;
 

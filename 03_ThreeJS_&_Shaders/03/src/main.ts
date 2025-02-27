@@ -11,12 +11,13 @@ import fShader from "./shaders/fragment.glsl";
 const scene: THREE.Scene = new THREE.Scene();
 
 //* Mesh
-const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
+const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 64, 64);
 // const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
 // const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
 //   geometry,
 //   material
 // );
+// console.log("geometry?.attributes:", geometry?.attributes);
 
 const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
   // vertexShader: vertexShaderSource as string,
@@ -32,6 +33,16 @@ const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.RawShaderMaterial, THREE.Objec
   material
 );
 scene.add(mesh);
+
+const amount: number = geometry?.attributes?.position?.count;
+// console.log({ amount });
+const newAttributeArray: Float32Array<ArrayBuffer> = new Float32Array(amount);
+for (let i = 0; i < amount; i++) {
+  // newAttributeArray[i] = i % 2;
+  newAttributeArray[i] = Math.random();
+}
+// console.log("newAttributeArray:", newAttributeArray);
+geometry.setAttribute("a_modulus", new THREE.BufferAttribute(newAttributeArray, 1));
 
 //* Camera
 const aspect = {

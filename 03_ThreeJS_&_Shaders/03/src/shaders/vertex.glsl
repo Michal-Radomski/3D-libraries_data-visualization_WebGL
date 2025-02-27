@@ -11,6 +11,7 @@ varying vec2 v_uv;
 varying float v_a_modulus;
 
 void main() {
+   // vec4 modelPosition = modelMatrix * vec4(position * 2.0,1.0);
    vec4 modelPosition = modelMatrix * vec4(position,1.0);
    // modelPosition.x += a_modulus;
    // modelPosition.y += a_modulus;

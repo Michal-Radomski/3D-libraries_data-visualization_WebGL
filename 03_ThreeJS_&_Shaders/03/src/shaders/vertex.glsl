@@ -1,6 +1,8 @@
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
+uniform float u_amplitude;
+uniform float u_time;
 
 attribute vec3 position;
 attribute vec2 uv;
@@ -16,7 +18,10 @@ void main() {
    // modelPosition.x += a_modulus;
    // modelPosition.y += a_modulus;
    // modelPosition.z += a_modulus;
-   modelPosition.z += a_modulus *0.1;
+   // modelPosition.z += a_modulus *0.1;
+   // modelPosition.z += sin(modelPosition.x * 12.0) *0.15;
+   modelPosition.z += sin(modelPosition.x *u_amplitude+u_time) *0.15;
+
    vec4 viewPosition = viewMatrix * modelPosition;
    vec4 projectionPosition = projectionMatrix * viewPosition;
 

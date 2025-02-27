@@ -37,6 +37,7 @@ const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
   fragmentShader: fShader as string,
   glslVersion: undefined,
   side: THREE.DoubleSide,
+  wireframe: true,
   // uniforms: {
   //   u_amplitude: { value: 12.0 },
   //   u_time: { value: 0.0 },

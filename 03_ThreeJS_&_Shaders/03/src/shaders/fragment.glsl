@@ -2,12 +2,13 @@
 precision mediump float;
 
 varying vec2 v_uv;
+varying vec3 v_position;
 
 void main() {
-    // Copying uv
+    //* Copying uv
     vec2 copy_uv = v_uv;
 
-    // if_condition
+    //* if_condition
     // if(copy_uv.x>0.5){
     //     copy_uv.x = 0.0;
     // }else {
@@ -18,6 +19,25 @@ void main() {
 
     vec3 mixing = mix(vec3(0.0,0.0,1.0), vec3(0.0,1.0,0.0), v_uv.x);
     gl_FragColor = vec4(mixing, 1.0);
+
+    vec3 color = vec3(1.0,1.0,1.0);
+    // color.r = clamp(v_uv.y,0.0,1.0);
+    color.r = step(0.0, v_position.x);
+    color.r = smoothstep(0.0,0.4, v_position.x);
+    // color.g = clamp(v_uv.x,0.0,1.0);
+    color.g = step(0.0, v_position.y);
+    color.g = smoothstep(0.0,0.4, v_position.y);
+    color.b = clamp(v_uv.x,0.0,1.0);
+    gl_FragColor = vec4(color, 1.0);
+
+    float mod_ = mod(v_uv.y*5.0,1.0);
+    gl_FragColor = vec4(mod_, mod_, mod_, 1.0);
+
+    float vector_length = length(vec2(0.4,0.3)); // 0.5
+    gl_FragColor.r = vector_length;
+
+    float distance_ = distance(v_uv, vec2(0.5));
+    gl_FragColor = vec4(distance_,distance_,distance_,1.0);
 }
 
 //* V1

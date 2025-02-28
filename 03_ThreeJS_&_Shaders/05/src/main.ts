@@ -91,9 +91,11 @@ gltfLoader.load("./src/models/2.glb", (glb: GLTF): void => {
   const particlesArray: Float32Array<ArrayBuffer> = new Float32Array(particlesNumber * 3);
   for (let i = 0; i < particlesNumber; i++) {
     const particlePosition: THREE.Vector3 = new THREE.Vector3();
+    // console.log("particlePosition:", particlePosition);
     samplerMesh.sample(particlePosition);
     particlesArray.set([particlePosition.x, particlePosition.y, particlePosition.z], i * 3);
   }
+  // console.log("particlesArray:", particlesArray);
   particlesGeometry.setAttribute("position", new THREE.BufferAttribute(particlesArray, 3));
 
   // Changing model into particles

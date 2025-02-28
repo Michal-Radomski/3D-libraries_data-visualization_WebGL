@@ -21,6 +21,11 @@ window.addEventListener("mousemove", (event: MouseEvent): void => {
 //* Scene
 const scene: THREE.Scene = new THREE.Scene();
 
+//* Texture Loader
+const textureLoader: THREE.TextureLoader = new THREE.TextureLoader();
+const texture: THREE.Texture = textureLoader.load("./src/texture/flower.jpg");
+// console.log("texture:", texture);
+
 //* Mesh
 const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1, 64, 64);
 // const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
@@ -39,6 +44,7 @@ const material: THREE.RawShaderMaterial = new THREE.RawShaderMaterial({
   side: THREE.DoubleSide,
   wireframe: false,
   uniforms: {
+    u_texture: { value: texture },
     u_amplitude: { value: 12.0 },
     u_time: { value: 0.0 },
     u_color: { value: new THREE.Color("purple") },

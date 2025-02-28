@@ -4,6 +4,7 @@ precision mediump float;
 varying vec2 v_uv;
 varying vec3 v_position;
 uniform float u_time;
+uniform sampler2D u_texture;
 
 // Simplex 2D noise
 vec3 permute(vec3 x) { return mod(((x*34.0)+1.0)*x, 289.0); }
@@ -75,7 +76,13 @@ void main() {
     // gl_FragColor = vec4(simple_x,simple_x,simple_x,1.0);
     gl_FragColor = vec4(vec3(simple_x),1.0);
 
+    vec4 texture_ = texture2D(u_texture, v_uv);
+    gl_FragColor = texture_;
 
+    // vec3 color_texture = texture2D(u_texture, v_uv).rgb;
+    // vec3 color_texture = texture2D(u_texture, v_uv).bgr;
+    vec3 color_texture = texture2D(u_texture, v_uv).rrr;
+    gl_FragColor = vec4(color_texture, 1.0);
 }
 
 //* V1

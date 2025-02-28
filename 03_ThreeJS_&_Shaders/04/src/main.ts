@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { EffectComposer, OrbitControls, RenderPass, ShaderPass } from "three/examples/jsm/Addons.js";
-// import * as dat from "dat.gui";
+import { EffectComposer, OrbitControls, RenderPass, ShaderPass, UnrealBloomPass } from "three/examples/jsm/Addons.js";
+import * as dat from "dat.gui";
 
 import "./style.scss";
 import vShader from "./shaders/vertex.glsl";
@@ -8,6 +8,9 @@ import fShader from "./shaders/fragment.glsl";
 
 // Scene
 const scene: THREE.Scene = new THREE.Scene();
+
+// GUI
+const gui: dat.GUI = new dat.GUI();
 
 // Lights
 const ambientLight: THREE.AmbientLight = new THREE.AmbientLight("#FFFFFF", 0.2);
@@ -84,6 +87,18 @@ const ourShader = {
 const ourPass = new ShaderPass(ourShader);
 effectComposer.addPass(ourPass);
 
+//^ Passes
+//* UnrealBloomPass
+const unrealBloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1, 0, 0.45);
+unrealBloomPass.strength = 0.35; // default value = 1.0
+// unrealBloomPass.radius = 0.0;
+unrealBloomPass.threshold = 0.45;
+unrealBloomPass.enabled = false;
+effectComposer.addPass(unrealBloomPass);
+gui.add(unrealBloomPass, "strength").min(0.0).max(1.0).step(0.001);
+gui.add(unrealBloomPass, "threshold").min(0.0).max(1.0).step(0.001);
+gui.add(unrealBloomPass, "enabled");
+
 //* Clock
 // const clock = new THREE.Clock();
 
@@ -93,7 +108,9 @@ effectComposer.addPass(ourPass);
 
   orbitControls.update(); // IMPORTANT: Update the controls in the animation loop
 
-  renderer.render(scene, camera);
+  //* Renderer
+  // renderer.render(scene, camera);
+  effectComposer.render();
   window.requestAnimationFrame(animate);
 })();
 

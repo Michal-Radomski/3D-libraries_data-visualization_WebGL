@@ -1,0 +1,113 @@
+import * as THREE from "three";
+import { EffectComposer, OrbitControls, RenderPass, ShaderPass } from "three/examples/jsm/Addons.js";
+// import * as dat from "dat.gui";
+
+import "./style.scss";
+import vShader from "./shaders/vertex.glsl";
+import fShader from "./shaders/fragment.glsl";
+
+// Scene
+const scene: THREE.Scene = new THREE.Scene();
+
+// Lights
+const ambientLight: THREE.AmbientLight = new THREE.AmbientLight("#FFFFFF", 0.2);
+const directionalLight: THREE.DirectionalLight = new THREE.DirectionalLight("#FFFFFF", 0.5);
+directionalLight.position.z = 2;
+scene.add(ambientLight, directionalLight);
+
+// Environment Map
+const cubeTextureLoader: THREE.CubeTextureLoader = new THREE.CubeTextureLoader();
+const envTexture: THREE.CubeTexture = cubeTextureLoader.load([
+  "/cubeImages/px.png",
+  "/cubeImages/nx.png",
+  "/cubeImages/py.png",
+  "/cubeImages/ny.png",
+  "/cubeImages/pz.png",
+  "/cubeImages/nz.png",
+]);
+scene.background = envTexture;
+
+// Mesh
+const geometry: THREE.SphereGeometry = new THREE.SphereGeometry(0.8, 32, 32);
+const material: THREE.MeshStandardMaterial = new THREE.MeshStandardMaterial();
+material.metalness = 0.7;
+material.roughness = 0.1;
+material.envMap = envTexture;
+
+const mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshStandardMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  geometry,
+  material
+);
+mesh.position.z = -1.7;
+scene.add(mesh);
+
+//* Camera
+const aspect = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+
+const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height);
+camera.position.z = 2.5;
+scene.add(camera);
+
+//* Renderer
+const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
+const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setSize(aspect.width, aspect.height);
+
+//* OrbitControls
+const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
+orbitControls.enableDamping = true;
+orbitControls.enableZoom = true;
+orbitControls.enableRotate = true;
+orbitControls.autoRotate = true;
+orbitControls.autoRotateSpeed = 0.2;
+
+// EffectComposer
+const effectComposer: EffectComposer = new EffectComposer(renderer);
+effectComposer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+effectComposer.setSize(aspect.width, aspect.height);
+
+// RenderPass
+const renderPass: RenderPass = new RenderPass(scene, camera);
+effectComposer.addPass(renderPass);
+
+const ourShader = {
+  uniforms: {
+    tDiffuse: { value: null },
+  },
+  vertexShader: vShader,
+  fragmentShader: fShader,
+};
+const ourPass = new ShaderPass(ourShader);
+effectComposer.addPass(ourPass);
+
+//* Clock
+// const clock = new THREE.Clock();
+
+//* Animate
+(function animate(): void {
+  // const elapsedTime: number = clock.getElapsedTime();
+
+  orbitControls.update(); // IMPORTANT: Update the controls in the animation loop
+
+  renderer.render(scene, camera);
+  window.requestAnimationFrame(animate);
+})();
+
+//* Resizing
+window.addEventListener("resize", (): void => {
+  // New size
+  aspect.width = window.innerWidth;
+  aspect.height = window.innerHeight;
+
+  // New AspectRatio
+  camera.aspect = aspect.width / aspect.height;
+  camera.updateProjectionMatrix();
+
+  // New RendererSize
+  renderer.setSize(aspect.width, aspect.height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});

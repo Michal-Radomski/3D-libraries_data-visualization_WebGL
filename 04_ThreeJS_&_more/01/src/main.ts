@@ -32,42 +32,76 @@ const scene: THREE.Scene = new THREE.Scene();
 
 //* V2
 // Mesh
-const geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
-// const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
-const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([
-  -1.0,
-  -1.0,
-  1.0, // v0
-  1.0,
-  -1.0,
-  1.0, // v1
-  1.0,
-  1.0,
-  1.0, // v2
+// const geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
+// // const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+// const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([
+//   -1.0,
+//   -1.0,
+//   1.0, // v0
+//   1.0,
+//   -1.0,
+//   1.0, // v1
+//   1.0,
+//   1.0,
+//   1.0, // v2
 
-  1.0,
-  1.0,
-  1.0, // v3
-  -1.0,
-  1.0,
-  1.0, // v4
-  -1.0,
-  -1.0,
-  1.0, // v5
-]);
-const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3);
-geometry.setAttribute("position", positionAttribute);
-// console.log("geometry:", geometry);
+//   1.0,
+//   1.0,
+//   1.0, // v3
+//   -1.0,
+//   1.0,
+//   1.0, // v4
+//   -1.0,
+//   -1.0,
+//   1.0, // v5
+// ]);
+// const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3);
+// geometry.setAttribute("position", positionAttribute);
+// // console.log("geometry:", geometry);
 
-const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
-  color: "purple",
-  wireframe: true,
-});
-const mesh: THREE.Mesh<
-  THREE.BufferGeometry<THREE.NormalBufferAttributes>,
-  THREE.MeshBasicMaterial,
-  THREE.Object3DEventMap
-> = new THREE.Mesh(geometry, material);
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
+//   color: "purple",
+//   wireframe: true,
+// });
+// const mesh: THREE.Mesh<
+//   THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+//   THREE.MeshBasicMaterial,
+//   THREE.Object3DEventMap
+// > = new THREE.Mesh(geometry, material);
+// scene.add(mesh);
+
+//* V3
+// Loading Manager
+const loadingManager: THREE.LoadingManager = new THREE.LoadingManager();
+loadingManager.onStart = (): void => {
+  console.log("Start");
+};
+loadingManager.onLoad = (): void => {
+  console.log("Loading . . .");
+};
+loadingManager.onProgress = (): void => {
+  console.log("Progress");
+};
+loadingManager.onError = (): void => {
+  console.log("Error !");
+};
+
+//* Texture Loader
+const textureLoader: THREE.TextureLoader = new THREE.TextureLoader(loadingManager);
+const colorTexture: THREE.Texture = textureLoader.load("./src/texture/color.jpg");
+
+// Mesh
+// const geometry: THREE.PlaneGeometry = new THREE.PlaneGeometry(1, 1);
+const geometry: THREE.SphereGeometry = new THREE.SphereGeometry(1, 32, 16);
+const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, map: colorTexture });
+// const mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry,
+//   material
+// );
+const mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  geometry,
+  material
+);
 scene.add(mesh);
 
 // AxesHelper

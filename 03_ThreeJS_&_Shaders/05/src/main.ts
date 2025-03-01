@@ -3,6 +3,7 @@ import { DRACOLoader, GLTF, GLTFLoader, MeshSurfaceSampler, OrbitControls } from
 import gsap from "gsap";
 
 import "./style.scss";
+//* Shaders
 import vShader from "./shaders/vertex.glsl";
 import fShader from "./shaders/fragment.glsl";
 
@@ -43,6 +44,7 @@ const secondModelColor1 = "blue";
 const secondModelColor2 = "white";
 const modelArray = [] as THREE.Group<THREE.Object3DEventMap>[];
 
+// Todo: refactor
 //* Loading Models
 // Model One
 gltfLoader.load("./src/models/1.glb", (glb: GLTF): void => {
@@ -63,8 +65,8 @@ gltfLoader.load("./src/models/1.glb", (glb: GLTF): void => {
   glb.scene.children[0] = new THREE.Points(
     particlesGeometry,
     new THREE.RawShaderMaterial({
-      vertexShader: vShader,
-      fragmentShader: fShader,
+      vertexShader: vShader as string,
+      fragmentShader: fShader as string,
       uniforms: {
         u_color_1: { value: new THREE.Color(`${firstModelColor1}`) },
         u_color_2: { value: new THREE.Color(`${firstModelColor2}`) },

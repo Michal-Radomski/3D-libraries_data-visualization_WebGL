@@ -11,7 +11,7 @@ void main() {
    vec3 copy_position = position;
    copy_position.y *=u_scale+1.0/sin(copy_position.z*10.0) * (1.0-u_scale);
    copy_position.x *=u_scale+1.0/cos(copy_position.y*10.0) * (1.0-u_scale);
-   copy_position.z *=u_scale+1.0/sin(copy_position.x*10.0) * (1.0-u_scale);
+   copy_position.z *=u_scale+1.0/tan(copy_position.x*10.0) * (1.0-u_scale);
 
    copy_position *=u_scale;
 

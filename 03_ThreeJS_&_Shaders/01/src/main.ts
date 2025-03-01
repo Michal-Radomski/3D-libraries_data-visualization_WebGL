@@ -13,7 +13,7 @@ import "./style.scss";
 // scene.fog = new THREE.Fog(0xcccccc, 1, 200);
 
 // //* 2. Mesh (Objects)
-// const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 2, 2); //* Cube
+// const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 2, 2, 2); //* Cube
 // // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple" });
 // // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "#A020F0" });
 // const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: 0xa020f0, fog: true, wireframe: true });

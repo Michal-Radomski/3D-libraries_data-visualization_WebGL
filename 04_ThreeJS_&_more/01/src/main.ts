@@ -7,14 +7,31 @@ import "./style.scss";
 const scene: THREE.Scene = new THREE.Scene();
 
 // Mesh
-const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 1, 1);
+const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4);
 const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple", wireframe: true });
 const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   geometry,
   material
 );
+// scene.add(mesh);
 
-scene.add(mesh);
+//* MeshTwo
+const geometryT = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
+const materialT = new THREE.MeshBasicMaterial({ color: "green" });
+const meshT = new THREE.Mesh(geometryT, materialT);
+meshT.position.y = 2;
+
+// Group
+const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
+
+// Adding the two meshes inside the Group Class
+group.add(mesh, meshT);
+// group.position.x = 3;
+scene.add(group);
+
+// AxesHelper
+const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(4);
+scene.add(axesHelper);
 
 // Camera
 const aspect = {
@@ -29,7 +46,7 @@ scene.add(camera);
 
 // Renderer
 const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
-const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas });
+const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 renderer.setSize(aspect.width, aspect.height); //Renderer size
 renderer.render(scene, camera); //display what the camera in the scene captured
 

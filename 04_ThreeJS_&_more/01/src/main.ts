@@ -13,21 +13,21 @@ const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3
   geometry,
   material
 );
-// scene.add(mesh);
+scene.add(mesh);
 
 //* MeshTwo
-const geometryT = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
-const materialT = new THREE.MeshBasicMaterial({ color: "green" });
-const meshT = new THREE.Mesh(geometryT, materialT);
-meshT.position.y = 2;
+// const geometryT = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
+// const materialT = new THREE.MeshBasicMaterial({ color: "green" });
+// const meshT = new THREE.Mesh(geometryT, materialT);
+// meshT.position.y = 2;
 
-// Group
-const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
+// // Group
+// const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
 
-// Adding the two meshes inside the Group Class
-group.add(mesh, meshT);
-// group.position.x = 3;
-scene.add(group);
+// // Adding the two meshes inside the Group Class
+// group.add(mesh, meshT);
+// // group.position.x = 3;
+// scene.add(group);
 
 // AxesHelper
 const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(4);
@@ -58,8 +58,18 @@ orbitControls.enableRotate = true;
 orbitControls.autoRotate = true;
 orbitControls.autoRotateSpeed = 0.2;
 
+//Clock Class
+const clock = new THREE.Clock();
+
 //* Animate
 (function animate(): void {
+  //GetElapsedTime
+  const elapsedTime: number = clock.getElapsedTime();
+
+  //Update Rotation On X Axis and Y axis
+  mesh.rotation.x = elapsedTime;
+  mesh.rotation.y = elapsedTime * Math.PI * 0.1; //will rotate the cube a turn per second
+
   orbitControls.update(); // IMPORTANT: Update the controls in the animation loop
 
   //* Renderer

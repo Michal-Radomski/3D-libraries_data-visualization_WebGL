@@ -6,14 +6,15 @@ import "./style.scss";
 // Scene
 const scene: THREE.Scene = new THREE.Scene();
 
+//* V1
 // Mesh
-const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4);
-const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple", wireframe: true });
-const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  geometry,
-  material
-);
-scene.add(mesh);
+// const geometry: THREE.BoxGeometry = new THREE.BoxGeometry(1, 1, 1, 4, 4, 4);
+// const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({ color: "purple", wireframe: true });
+// const mesh: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//   geometry,
+//   material
+// );
+// scene.add(mesh);
 
 //* MeshTwo
 // const geometryT = new THREE.BoxGeometry(1, 1, 1, 1, 1, 1);
@@ -28,6 +29,25 @@ scene.add(mesh);
 // group.add(mesh, meshT);
 // // group.position.x = 3;
 // scene.add(group);
+
+//* V2
+// Mesh
+const geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
+const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3);
+geometry.setAttribute("position", positionAttribute);
+console.log("geometry:", geometry);
+
+const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
+  color: "purple",
+  wireframe: true,
+});
+const mesh: THREE.Mesh<
+  THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+  THREE.MeshBasicMaterial,
+  THREE.Object3DEventMap
+> = new THREE.Mesh(geometry, material);
+scene.add(mesh);
 
 // AxesHelper
 const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(4);

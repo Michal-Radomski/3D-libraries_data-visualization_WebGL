@@ -33,10 +33,31 @@ const scene: THREE.Scene = new THREE.Scene();
 //* V2
 // Mesh
 const geometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
-const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+// const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([0, 0, 0, 0, 1, 0, 1, 0, 0]);
+const verticesArray: Float32Array<ArrayBuffer> = new Float32Array([
+  -1.0,
+  -1.0,
+  1.0, // v0
+  1.0,
+  -1.0,
+  1.0, // v1
+  1.0,
+  1.0,
+  1.0, // v2
+
+  1.0,
+  1.0,
+  1.0, // v3
+  -1.0,
+  1.0,
+  1.0, // v4
+  -1.0,
+  -1.0,
+  1.0, // v5
+]);
 const positionAttribute: THREE.BufferAttribute = new THREE.BufferAttribute(verticesArray, 3);
 geometry.setAttribute("position", positionAttribute);
-console.log("geometry:", geometry);
+// console.log("geometry:", geometry);
 
 const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial({
   color: "purple",

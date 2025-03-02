@@ -1,5 +1,5 @@
 import React from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, RootState } from "@react-three/fiber";
 // import * as THREE from "three";
 
 // import Exercises from "./Exercises";
@@ -45,17 +45,28 @@ import Scene from "./Scene";
 // })();
 
 const App = (): React.JSX.Element => {
+  const creatingCanvasHandler = (state: RootState): void => {
+    state.gl.setClearColor("cyan", 0.5);
+  };
+
   return (
     <React.Fragment>
       {/* <Exercises /> */}
 
       <Canvas
+        gl={{
+          antialias: true,
+          alpha: true,
+        }}
+        // orthographic={true}
         camera={{
           fov: 75,
           near: 0.1,
           far: 100,
           position: [2, 2, 5],
+          // zoom: 120,
         }}
+        onCreated={creatingCanvasHandler}
       >
         <Scene />
 

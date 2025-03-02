@@ -8,8 +8,9 @@ import {
 import * as THREE from "three";
 // import { OrbitControls } from "three/examples/jsm/Addons.js"; //* V1
 // extend({ OrbitControls: OrbitControls }); //* V1
-
 import { OrbitControls } from "@react-three/drei"; //* V2
+
+import Custom from "./Custom";
 
 const Scene = (): React.JSX.Element => {
   const cubeRef =
@@ -41,6 +42,11 @@ const Scene = (): React.JSX.Element => {
       {/* <orbitControls args={[camera, gl.domElement]} /> */}
       {/* //* V2 */}
       <OrbitControls />
+
+      <Custom />
+
+      <axesHelper args={[3]} />
+      <gridHelper args={[20, 20, 0xff0000, "cyan"]} />
 
       <group>
         <mesh ref={planeRef} position-x={-2}>

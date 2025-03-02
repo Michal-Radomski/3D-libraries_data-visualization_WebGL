@@ -13,7 +13,7 @@ html {
 body {
   box-sizing: border-box;
   margin: 0;
-  background-color: whitesmoke;
+  background-color: #444;
   color: initial;
   width: 100%;
   height: 100%;
@@ -24,6 +24,11 @@ body {
   overflow-y: hidden;
 }
 
+// canvas#canvas {
+//   border: 1px solid red;
+//   width: 100%;
+//   height: 100vh;
+// }
 canvas {
   border: 1px solid red;
   width: 100%;

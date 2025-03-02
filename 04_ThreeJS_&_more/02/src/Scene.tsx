@@ -8,27 +8,21 @@ import { OrbitControls } from "@react-three/drei"; // Temp
 
 const Scene = (): React.JSX.Element => {
   const cubeRef =
-    React.useRef<
-      THREE.Mesh<
-        THREE.BufferGeometry<THREE.NormalBufferAttributes>,
-        THREE.Material | THREE.Material[],
-        THREE.Object3DEventMap
-      >
-    >(null);
+    React.useRef<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material, THREE.Object3DEventMap>>(
+      null
+    );
+
   const planeRef =
-    React.useRef<
-      THREE.Mesh<
-        THREE.BufferGeometry<THREE.NormalBufferAttributes>,
-        THREE.Material | THREE.Material[],
-        THREE.Object3DEventMap
-      >
-    >(null);
+    React.useRef<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material, THREE.Object3DEventMap>>(
+      null
+    );
 
   const { gl, camera } = useThree();
   console.log("gl:", gl);
   console.log("camera:", camera);
   camera.position.x = 5;
 
+  //* Equivalent of animate function
   useFrame((state: RootState, delta: number) => {
     cubeRef.current!.rotation.y += delta;
     planeRef.current!.rotation.y += delta;
@@ -41,15 +35,17 @@ const Scene = (): React.JSX.Element => {
       {/* <orbitControls args={[camera, gl.domElement]} /> */}
       <OrbitControls />
 
-      <mesh ref={planeRef} position-x={-2}>
-        <planeGeometry args={[2, 2]} />
-        <meshBasicMaterial color="orange" side={THREE.DoubleSide} />
-      </mesh>
+      <group>
+        <mesh ref={planeRef} position-x={-2}>
+          <planeGeometry args={[2, 2]} />
+          <meshBasicMaterial color="orange" side={THREE.DoubleSide} wireframe={false} />
+        </mesh>
 
-      <mesh ref={cubeRef} position-x={2}>
-        <boxGeometry />
-        <meshBasicMaterial color="#7A00CA" />
-      </mesh>
+        <mesh ref={cubeRef} position={[2, 0, 0]} scale={[1, 1, 1]}>
+          <boxGeometry args={[2, 2, 2, 2, 2, 2]} />
+          <meshBasicMaterial color="#7A00CA" wireframe={true} />
+        </mesh>
+      </group>
     </React.Fragment>
   );
 };

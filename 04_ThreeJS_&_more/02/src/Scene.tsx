@@ -4,6 +4,7 @@ import {
   // extend, //* V1
   useThree,
   RootState,
+  useLoader,
 } from "@react-three/fiber";
 import * as THREE from "three";
 // import { OrbitControls } from "three/examples/jsm/Addons.js"; //* V1
@@ -13,6 +14,9 @@ import { OrbitControls } from "@react-three/drei"; //* V2
 import Custom from "./Custom";
 
 const Scene = (): React.JSX.Element => {
+  const texture: THREE.Texture = useLoader(THREE.TextureLoader, "./img/1.png");
+  // console.log("texture:", texture);
+
   const cubeRef =
     React.useRef<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material, THREE.Object3DEventMap>>(
       null
@@ -50,8 +54,8 @@ const Scene = (): React.JSX.Element => {
 
       <group>
         <mesh ref={planeRef} position-x={-2}>
-          <planeGeometry args={[2, 2]} />
-          <meshBasicMaterial color="orange" side={THREE.DoubleSide} wireframe={false} />
+          <planeGeometry args={[4, 4]} />
+          <meshBasicMaterial color="orange" side={THREE.DoubleSide} wireframe={false} map={texture} />
         </mesh>
 
         <mesh ref={cubeRef} position={[2, 0, 0]} scale={[1, 1, 1]}>

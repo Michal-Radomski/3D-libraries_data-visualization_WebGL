@@ -46,7 +46,7 @@ import Scene from "./Scene";
 
 const App = (): React.JSX.Element => {
   const creatingCanvasHandler = (state: RootState): void => {
-    state.gl.setClearColor("cyan", 0.5);
+    state.gl.setClearColor("cyan", 0.2);
   };
 
   return (
@@ -55,8 +55,8 @@ const App = (): React.JSX.Element => {
 
       <Canvas
         gl={{
-          antialias: true,
-          alpha: true,
+          antialias: true, //* default: true
+          alpha: true, //* default: true
         }}
         // orthographic={true}
         camera={{

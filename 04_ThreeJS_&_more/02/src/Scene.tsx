@@ -29,7 +29,7 @@ const Scene = (): React.JSX.Element => {
   // camera.position.x = 5;
 
   //* Equivalent of animate function
-  useFrame((state: RootState, delta: number) => {
+  useFrame((state: RootState, delta: number): void => {
     cubeRef.current!.rotation.y += delta;
     planeRef.current!.rotation.y += delta;
     state.camera.position.x = Math.sin(state.clock.elapsedTime);

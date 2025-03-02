@@ -25,7 +25,7 @@ const Scene = (): React.JSX.Element => {
   const { gl, camera } = useThree();
   console.log("gl:", gl);
   console.log("camera:", camera);
-  camera.position.x = 5;
+  // camera.position.x = 5;
 
   //* Equivalent of animate function
   useFrame((state: RootState, delta: number) => {

@@ -12,6 +12,7 @@ import * as THREE from "three";
 import { OrbitControls } from "@react-three/drei"; //* V2
 
 import Custom from "./Custom";
+import Particles from "./Particles";
 
 const Scene = (): React.JSX.Element => {
   const texture: THREE.Texture = useLoader(THREE.TextureLoader, "./img/1.png");
@@ -48,6 +49,7 @@ const Scene = (): React.JSX.Element => {
       <OrbitControls />
 
       <Custom />
+      <Particles />
 
       <axesHelper args={[3]} />
       <gridHelper args={[20, 20, 0xff0000, "cyan"]} />

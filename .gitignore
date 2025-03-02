@@ -32,9 +32,11 @@ out
 # My Entries
 .vscode/
 notes.txt
-lara_1.gltf
-lara_2.gltf
-lara_1.glb
-lara_2.glb
-1.glb
-2.glb
+# lara_1.gltf
+# lara_2.gltf
+# lara_1.glb
+# lara_2.glb
+# 1.glb
+# 2.glb
+*.glb
+*gltf

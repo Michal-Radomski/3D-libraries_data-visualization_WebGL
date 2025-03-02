@@ -5,11 +5,7 @@ import * as THREE from "three";
 const Particles = (): React.JSX.Element => {
   const particles =
     React.useRef<
-      THREE.Points<
-        THREE.BufferGeometry<THREE.NormalOrGLBufferAttributes>,
-        THREE.Material | THREE.Material[],
-        THREE.Object3DEventMap
-      >
+      THREE.Points<THREE.BufferGeometry<THREE.NormalOrGLBufferAttributes>, THREE.Material, THREE.Object3DEventMap>
     >(null);
 
   useFrame((_: RootState, delta: number) => {
@@ -27,18 +23,20 @@ const Particles = (): React.JSX.Element => {
   }
 
   return (
-    <points ref={particles}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={positionArray.length / 3} // Should be divided by three
-          itemSize={3}
-          array={positionArray}
-          args={[positionArray, 3, undefined]}
-        />
-      </bufferGeometry>
-      <pointsMaterial size={0.06} alphaMap={texture} transparent depthTest={false} />
-    </points>
+    <React.Fragment>
+      <points ref={particles}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={positionArray.length / 3} // Should be divided by three
+            itemSize={3}
+            array={positionArray}
+            args={[positionArray, 3, undefined]}
+          />
+        </bufferGeometry>
+        <pointsMaterial size={0.06} alphaMap={texture} transparent={true} depthTest={false} />
+      </points>
+    </React.Fragment>
   );
 };
 

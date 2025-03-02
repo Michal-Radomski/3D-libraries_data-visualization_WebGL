@@ -1,6 +1,7 @@
 import React from "react";
 import { Canvas, RootState } from "@react-three/fiber";
 // import * as THREE from "three";
+import { Perf } from "r3f-perf";
 
 // import Exercises from "./Exercises";
 import "./App.scss";
@@ -72,6 +73,8 @@ const App = (): React.JSX.Element => {
 
         <ambientLight intensity={0.1} />
         <directionalLight position={[0, 0, 5]} color="red" />
+
+        <Perf position="top-left" />
       </Canvas>
     </React.Fragment>
   );

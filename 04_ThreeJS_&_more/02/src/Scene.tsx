@@ -1,10 +1,15 @@
 import React from "react";
-import { useFrame, extend, useThree, RootState } from "@react-three/fiber";
+import {
+  useFrame,
+  // extend, //* V1
+  useThree,
+  RootState,
+} from "@react-three/fiber";
 import * as THREE from "three";
-// import { OrbitControls } from "three/examples/jsm/Addons.js";
-import { OrbitControls } from "@react-three/drei"; // Temp
+// import { OrbitControls } from "three/examples/jsm/Addons.js"; //* V1
+// extend({ OrbitControls: OrbitControls }); //* V1
 
-// extend({ OrbitControls: OrbitControls });
+import { OrbitControls } from "@react-three/drei"; //* V2
 
 const Scene = (): React.JSX.Element => {
   const cubeRef =
@@ -32,7 +37,9 @@ const Scene = (): React.JSX.Element => {
 
   return (
     <React.Fragment>
+      {/* //* V1 */}
       {/* <orbitControls args={[camera, gl.domElement]} /> */}
+      {/* //* V2 */}
       <OrbitControls />
 
       <group>

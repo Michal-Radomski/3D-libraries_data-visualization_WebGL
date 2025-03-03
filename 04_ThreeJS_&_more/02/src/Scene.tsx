@@ -1,50 +1,131 @@
-//* V2
+//* V3
 import React from "react";
 import { OrbitControls } from "@react-three/drei";
-import { button, useControls } from "leva";
+import { ThreeEvent } from "@react-three/fiber";
+import { BufferGeometry, Material, Mesh, NormalBufferAttributes, Object3DEventMap } from "three";
 
 const Scene = (): React.JSX.Element => {
-  const { position, color, wireframe, scale } = useControls("cube", {
-    position: {
-      value: {
-        x: 0,
-        y: 0,
-        z: 0,
-      },
-      min: -10,
-      max: 10,
-      step: 0.01,
-    },
-    color: "#ffffff",
-    wireframe: false,
-    click: button((): void => {
-      console.log("Clicked");
-    }),
-    scale: { options: [1, 2, 3] },
-  });
-  console.log("scale:", scale);
+  const [active, setActive] = React.useState<boolean>(false);
 
-  const sphereTweak = useControls("sphere", {
-    xRotation: 0,
-  });
-  console.log("sphereTweak:", sphereTweak);
+  const clickHandler = (event: ThreeEvent<MouseEvent>): void => {
+    console.log("event:", event);
+    setActive(!active);
+    // console.log("active:", active);
+  };
 
   return (
     <React.Fragment>
       <OrbitControls />
 
-      <ambientLight />
-      <directionalLight position={[0, 2, 4]} />
-
-      <mesh position={[position.x, position.y, position.z]} scale={scale}>
+      <mesh
+        onClick={clickHandler}
+        position-x={1}
+        onContextMenu={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("Right Click");
+          console.log("event:", event);
+        }}
+        onDoubleClick={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("double click");
+          console.log("event:", event);
+        }}
+        onWheel={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("wheel spins");
+          console.log("event:", event);
+        }}
+        onPointerUp={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("up");
+          console.log("event:", event);
+        }}
+        onPointerDown={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("down");
+          console.log("event:", event);
+        }}
+        onPointerOver={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("over");
+          console.log("event:", event);
+        }}
+        onPointerOut={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("out");
+          console.log("event:", event);
+        }}
+        onPointerMove={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("event:", event);
+          console.log("move");
+        }}
+        onPointerMissed={(): void => console.log("missed")}
+        onUpdate={(self: Mesh<BufferGeometry<NormalBufferAttributes>, Material, Object3DEventMap>): void => {
+          console.log("props have been updated");
+          console.log("self:", self);
+        }}
+      >
         <boxGeometry />
-        <meshStandardMaterial color={color} wireframe={wireframe} />
+        <meshBasicMaterial color={active ? "pink" : "orange"} />
+      </mesh>
+
+      <mesh
+        onClick={(event: ThreeEvent<MouseEvent>): void => {
+          console.log("event:", event);
+          event.stopPropagation();
+        }}
+        position-x={-1}
+      >
+        <boxGeometry />
+        <meshBasicMaterial color="purple" />
       </mesh>
     </React.Fragment>
   );
 };
 
 export default Scene;
+
+//* V2
+// import React from "react";
+// import { OrbitControls } from "@react-three/drei";
+// import { button, useControls } from "leva";
+
+// const Scene = (): React.JSX.Element => {
+//   const { position, color, wireframe, scale } = useControls("cube", {
+//     position: {
+//       value: {
+//         x: 0,
+//         y: 0,
+//         z: 0,
+//       },
+//       min: -10,
+//       max: 10,
+//       step: 0.01,
+//     },
+//     color: "#ffffff",
+//     wireframe: false,
+//     click: button((): void => {
+//       console.log("Clicked");
+//     }),
+//     scale: { options: [1, 2, 3] },
+//   });
+//   console.log("scale:", scale);
+
+//   //* Other tweak
+//   const sphereTweak = useControls("sphere", {
+//     xRotation: 0,
+//   });
+//   console.log("sphereTweak:", sphereTweak);
+
+//   return (
+//     <React.Fragment>
+//       <OrbitControls />
+
+//       <ambientLight />
+//       <directionalLight position={[0, 2, 4]} />
+
+//       <mesh position={[position.x, position.y, position.z]} scale={scale}>
+//         <boxGeometry />
+//         <meshStandardMaterial color={color} wireframe={wireframe} />
+//       </mesh>
+//     </React.Fragment>
+//   );
+// };
+
+// export default Scene;
 
 //* V1
 // import React from "react";

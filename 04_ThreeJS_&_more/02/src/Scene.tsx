@@ -14,6 +14,7 @@ import { OrbitControls } from "@react-three/drei"; //* V2
 import Custom from "./Custom";
 import Particles from "./Particles";
 import Model from "./Model";
+import { Bike } from "./Bike";
 
 const Scene = (): React.JSX.Element => {
   const texture: THREE.Texture = useLoader(THREE.TextureLoader, "./img/1.png");
@@ -76,9 +77,8 @@ const Scene = (): React.JSX.Element => {
         }
       >
         <Model />
+        <Bike scale={0.85} position={[-0.5, 0.75, 0]} />
       </React.Suspense>
-
-      {/* <Bike scale={0.85} position={[-0.5, 0.75, 0]} /> */}
     </React.Fragment>
   );
 };

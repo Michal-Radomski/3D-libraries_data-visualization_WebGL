@@ -2,6 +2,7 @@ import React from "react";
 import { Canvas } from "@react-three/fiber";
 
 import "./App.scss";
+import Scene from "./Scene";
 
 const App = (): React.JSX.Element => {
   return (
@@ -20,6 +21,8 @@ const App = (): React.JSX.Element => {
       >
         <ambientLight intensity={0.1} />
         <directionalLight position={[0, 0, 5]} color="red" />
+
+        <Scene />
       </Canvas>
     </React.Fragment>
   );

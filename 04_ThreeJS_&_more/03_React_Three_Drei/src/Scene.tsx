@@ -11,12 +11,12 @@ import PivotControl from "./PivotControl";
 const Scene = (): React.JSX.Element => {
   return (
     <React.Fragment>
-      {/* <CameraControl />
+      <CameraControl />
       <OrbitControl />
       <PresentationControl />
       <ScrollControl />
       <TransformControl />
-      <PivotControl /> */}
+      <PivotControl />
     </React.Fragment>
   );
 };

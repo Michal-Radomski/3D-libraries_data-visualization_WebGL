@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React from "react";
 import {
   OrbitControls,
@@ -10,6 +9,7 @@ import {
   Cloud,
   Environment,
   Lightformer,
+  Clouds,
 } from "@react-three/drei";
 import * as THREE from "three";
 import { useControls } from "leva";
@@ -41,11 +41,23 @@ const Scene = (): React.JSX.Element => {
       <Sparkles count={300} speed={0.2} opacity={3} color="#68C2ED" size={1} scale={[10, 10, 10]} />
       <Stars radius={2} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
 
-      {/* @ts-expect-error */}
-      <Cloud opacity={1} speed={0.2} width={10} depth={1.5} segments={40} depthTest={false} />
+      {/* <Cloud opacity={1} speed={0.2} segments={40} /> */}
+      <Clouds material={THREE.MeshBasicMaterial}>
+        <Cloud segments={40} bounds={[10, 2, 2]} volume={10} color="orange" opacity={0.2} />
+        <Cloud seed={1} scale={2} volume={5} color="hotpink" fade={100} opacity={0.2} />
+      </Clouds>
+
       <Sky sunPosition={sunPosition} />
       <Environment
         files={"./envMap/1.hdr"}
+        // files={[
+        //   "./envMap/px.png",
+        //   "./envMap/nx.png",
+        //   "./envMap/py.png",
+        //   "./envMap/ny.png",
+        //   "./envMap/pz.png",
+        //   "./envMap/nz.png",
+        // ]}
         ground={{
           height: height,
           radius: radius,
@@ -66,8 +78,9 @@ const Scene = (): React.JSX.Element => {
         <planeGeometry />
         <meshBasicMaterial color="orange" />
       </mesh>
+
       <Lightformer position-z={-1} scale={5} color="orange" intensity={5} />
-      <Environment files="./envMap/1.hdr" ground={{ height: height, radius: radius, scale: scale }} />
+
       <mesh castShadow position-y={1}>
         <boxGeometry />
         <meshStandardMaterial color="#C7CAC7" envMapIntensity={meshIntensity} />

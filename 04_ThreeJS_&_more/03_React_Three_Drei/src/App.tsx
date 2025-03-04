@@ -13,12 +13,13 @@ const App = (): React.JSX.Element => {
           alpha: true, //* default: true
         }}
         shadows={true}
-        camera={{
-          fov: 75,
-          near: 0.1,
-          far: 100,
-          position: [1, 3, 6],
-        }}
+        // camera={{
+        //   fov: 75,
+        //   near: 0.1,
+        //   far: 100,
+        //   position: [1, 3, 6],
+        // }}
+        camera={{ position: [0, 2, 5], fov: 75 }}
       >
         <Scene />
       </Canvas>

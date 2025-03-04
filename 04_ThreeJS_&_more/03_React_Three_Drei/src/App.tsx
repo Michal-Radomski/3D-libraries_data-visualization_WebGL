@@ -12,16 +12,14 @@ const App = (): React.JSX.Element => {
           antialias: true, //* default: true
           alpha: true, //* default: true
         }}
+        shadows={true}
         camera={{
           fov: 75,
           near: 0.1,
           far: 100,
-          position: [2, 2, 5],
+          position: [1, 3, 6],
         }}
       >
-        <ambientLight intensity={0.1} />
-        <directionalLight position={[0, 0, 5]} color="red" />
-
         <Scene />
       </Canvas>
     </React.Fragment>

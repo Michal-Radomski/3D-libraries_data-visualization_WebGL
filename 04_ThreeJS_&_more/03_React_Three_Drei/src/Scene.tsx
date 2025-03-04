@@ -13,16 +13,6 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 import { useControls } from "leva";
-import { useFrame, useThree } from "@react-three/fiber";
-
-const Rig = (): React.JSX.Element => {
-  const [vec] = React.useState<THREE.Vector3>(() => new THREE.Vector3());
-  const { camera, mouse } = useThree();
-  useFrame(() => camera.position.lerp(vec.set(mouse.x * 2, 1, 60), 0.05));
-  return (
-    <CameraShake maxYaw={0.01} maxPitch={0.01} maxRoll={0.01} yawFrequency={0.5} pitchFrequency={0.5} rollFrequency={0.4} />
-  );
-};
 
 const Scene = (): React.JSX.Element => {
   const directionalLight = React.useRef<THREE.DirectionalLight>(null) as React.RefObject<THREE.DirectionalLight>;
@@ -44,8 +34,9 @@ const Scene = (): React.JSX.Element => {
 
   return (
     <React.Fragment>
-      <ambientLight />
-      <directionalLight ref={directionalLight} castShadow />
+      <ambientLight intensity={0.5} />
+      <directionalLight ref={directionalLight} castShadow={true} position={[0, 0, 5]} color="yellow" />
+
       <OrbitControls />
       <Sparkles count={300} speed={0.2} opacity={3} color="#68C2ED" size={1} scale={[10, 10, 10]} />
       <Stars radius={2} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
@@ -61,7 +52,15 @@ const Scene = (): React.JSX.Element => {
           scale: scale,
         }}
       />
-      <Rig />
+
+      <CameraShake
+        maxYaw={0.01}
+        maxPitch={0.01}
+        maxRoll={0.01}
+        yawFrequency={0.5}
+        pitchFrequency={0.5}
+        rollFrequency={0.4}
+      />
 
       <mesh position-z={-1} scale={5}>
         <planeGeometry />

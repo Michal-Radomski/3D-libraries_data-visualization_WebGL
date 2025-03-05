@@ -1,22 +1,49 @@
-//* V1
+//* V3
 import React from "react";
-
-import CameraControl from "./CameraControl";
-import OrbitControl from "./OrbitControl";
-import PresentationControl from "./PresentationControl";
-import ScrollControl from "./ScrollControl";
-import TransformControl from "./TransformControl";
-import PivotControl from "./PivotControl";
+import { OrbitControls, Text, Text3D, Center, Float, Html } from "@react-three/drei";
+import { Object3D, Object3DEventMap } from "three";
 
 const Scene = (): React.JSX.Element => {
+  const cubeRef = React.useRef<Object3D<Object3DEventMap>>(null) as React.RefObject<Object3D<Object3DEventMap>>;
+
   return (
     <React.Fragment>
-      <CameraControl />
-      <OrbitControl />
-      <PresentationControl />
-      <ScrollControl />
-      <TransformControl />
-      <PivotControl />
+      <OrbitControls />
+
+      <Text
+        fontSize={0.4}
+        color="orange"
+        font="./fonts/1.ttf" //* Monsarrat fonts
+        position-y={1.5}
+        rotation-y={Math.PI * 0.1}
+        maxWidth={2}
+        textAlign="center"
+      >
+        This is a Text
+      </Text>
+
+      <Center>
+        <Float speed={5} floatIntensity={4}>
+          {/* //* Monsarrat fonts - https://gero3.github.io/facetype.js */}
+          <Text3D font="./fonts/2.json" height={1} size={1.1} letterSpacing={-0.1} bevelEnabled={true} bevelSegments={20}>
+            Hello
+            <meshNormalMaterial />
+          </Text3D>
+        </Float>
+      </Center>
+
+      <mesh position-x={1} ref={cubeRef}>
+        <boxGeometry />
+        <meshBasicMaterial color="orange" />
+        <Html position={[-0.7, 0.5, 0.5]} wrapperClass="text" distanceFactor={5} occlude={[cubeRef]}>
+          R3F
+        </Html>
+      </mesh>
+
+      <mesh position-x={-1}>
+        <boxGeometry />
+        <meshBasicMaterial color="purple" />
+      </mesh>
     </React.Fragment>
   );
 };
@@ -24,6 +51,31 @@ const Scene = (): React.JSX.Element => {
 export default Scene;
 
 //* V2
+// import React from "react";
+
+// import CameraControl from "./CameraControl";
+// import OrbitControl from "./OrbitControl";
+// import PresentationControl from "./PresentationControl";
+// import ScrollControl from "./ScrollControl";
+// import TransformControl from "./TransformControl";
+// import PivotControl from "./PivotControl";
+
+// const Scene = (): React.JSX.Element => {
+//   return (
+//     <React.Fragment>
+//       <CameraControl />
+//       <OrbitControl />
+//       <PresentationControl />
+//       <ScrollControl />
+//       <TransformControl />
+//       <PivotControl />
+//     </React.Fragment>
+//   );
+// };
+
+// export default Scene;
+
+//* V1
 // import React from "react";
 // import {
 //   OrbitControls,

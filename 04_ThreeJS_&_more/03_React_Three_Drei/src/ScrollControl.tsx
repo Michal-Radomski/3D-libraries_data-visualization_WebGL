@@ -13,7 +13,7 @@ const ScrollControl = (): React.JSX.Element => {
       <ambientLight intensity={4} />
       <directionalLight />
 
-      <ScrollControls pages={3} damping={0.4} infinite horizontal>
+      <ScrollControls pages={3} damping={0.4} infinite={false} horizontal={false}>
         <Scroll>
           <Images />
           <primitive object={model.scene} position={[1.5, -1, 0]} scale={0.5} />

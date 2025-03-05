@@ -5,11 +5,11 @@ import { PresentationControls } from "@react-three/drei";
 const PresentationControl = (): React.JSX.Element => {
   return (
     <PresentationControls
-      global
+      global={true}
       polar={[-Math.PI / 3, Math.PI / 3]}
       azimuth={[-Math.PI / 1.4, Math.PI / 2]}
       // @ts-expect-error
-      config={{ mass: 2, tension: 500, friction: 26 }}
+      config={{ mass: 4, tension: 500, friction: 26 }}
       snap={true}
     >
       <mesh>

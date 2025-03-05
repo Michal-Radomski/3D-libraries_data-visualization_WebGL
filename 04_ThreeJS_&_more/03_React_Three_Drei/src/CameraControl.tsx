@@ -6,10 +6,11 @@ import * as THREE from "three";
 const CameraControl = (): React.JSX.Element => {
   const cameraControlRef = React.useRef<CameraControls>(null);
 
-  const { DEG2RAD } = THREE.MathUtils;
-  console.log(DEG2RAD);
+  const { DEG2RAD }: { DEG2RAD: number } = THREE.MathUtils;
+  // console.log("DEG2RAD:", DEG2RAD);
 
-  const cameraControls = useControls("Camera Controls", {
+  // const cameraControls =
+  useControls("Camera Controls", {
     horizontalRotation: buttonGroup({
       label: "Horizontal R",
       opts: {
@@ -44,7 +45,7 @@ const CameraControl = (): React.JSX.Element => {
       cameraControlRef.current?.setLookAt(0, 1, 3, 0, 0, 0, true);
     }),
   });
-  console.log("cameraControls:", cameraControls);
+  // console.log("cameraControls:", cameraControls);
 
   return (
     <React.Fragment>

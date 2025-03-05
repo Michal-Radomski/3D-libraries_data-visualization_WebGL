@@ -5,7 +5,7 @@ import { TransformControls, OrbitControls } from "@react-three/drei";
 const TransformControl = (): React.JSX.Element => {
   return (
     <React.Fragment>
-      <OrbitControls makeDefault />
+      <OrbitControls makeDefault={true} />
 
       <TransformControls position-x={2} mode="translate">
         <mesh>

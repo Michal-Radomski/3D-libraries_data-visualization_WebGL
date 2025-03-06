@@ -1,5 +1,6 @@
 import React from "react";
-import { a, useSpring } from "@react-spring/three";
+import { a, useSpring } from "react-spring";
+// import { a, useSpring } from "@react-spring/three";
 
 const Scene = (): React.JSX.Element => {
   const [click, setClick] = React.useState<boolean>(false);

@@ -22,7 +22,7 @@ const Scene = (): React.JSX.Element => {
 
   useCursor(hover);
 
-  const { lerp } = THREE.MathUtils;
+  const { lerp } = THREE.MathUtils as { lerp: (x: number, y: number, t: number) => number };
 
   useFrame(() => {
     // @ts-expect-error
@@ -58,7 +58,7 @@ const Scene = (): React.JSX.Element => {
       <mesh ref={planeRef} onPointerOver={() => setHover(true)} onPointerOut={() => setHover(false)}>
         <planeGeometry args={[2, 3, 64, 64]} />
         <MeshDistortMaterial speed={3} distort={0}>
-          <GradientTexture colors={["aquamarine", "hotpink"]} stops={[0, 1]} />
+          <GradientTexture colors={["aquamarine", "hotpink", "blue"]} stops={[0, 0.5, 1]} />
         </MeshDistortMaterial>
       </mesh>
     </React.Fragment>

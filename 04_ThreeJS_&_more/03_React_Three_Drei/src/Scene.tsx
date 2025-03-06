@@ -1,65 +1,134 @@
-//* V3
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+//* V4
 import React from "react";
-import { OrbitControls, Text, Text3D, Center, Float, Html, PositionalAudio } from "@react-three/drei";
-import { Object3D, Object3DEventMap } from "three";
+import {
+  OrbitControls,
+  MeshReflectorMaterial,
+  MeshWobbleMaterial,
+  MeshDistortMaterial,
+  GradientTexture,
+  Environment,
+  useCursor,
+} from "@react-three/drei";
+import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 
 const Scene = (): React.JSX.Element => {
-  const cubeRef = React.useRef<Object3D<Object3DEventMap>>(null) as React.RefObject<Object3D<Object3DEventMap>>;
-  const [play, setPlay] = React.useState<boolean>(false);
+  const [hover, setHover] = React.useState<boolean>(false);
+  const planeRef =
+    React.useRef<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material, THREE.Object3DEventMap>>(
+      null
+    );
 
-  const clickHandler = (): void => {
-    setPlay(!play);
-  };
+  useCursor(hover);
+
+  const { lerp } = THREE.MathUtils;
+
+  useFrame(() => {
+    // @ts-expect-error
+    planeRef.current!.material.distort = lerp(planeRef.current!.material.distort, hover ? 0.4 : 0, hover ? 0.05 : 0.01);
+  });
+
+  React.useEffect(() => {
+    if (hover) {
+      // @ts-expect-error
+      planeRef.current!.material.distort = 0.4;
+    } else {
+      // @ts-expect-error
+      planeRef.current!.material.distort = 0;
+    }
+  }, [hover]);
 
   return (
     <React.Fragment>
       <OrbitControls />
+      <ambientLight />
+      <Environment background={true} files="./envMap/3.hdr" />
 
-      <Text
-        fontSize={0.4}
-        color="orange"
-        font="./fonts/1.ttf" //* Monsarrat fonts
-        position-y={1.5}
-        rotation-y={Math.PI * 0.1}
-        maxWidth={2}
-        textAlign="center"
-      >
-        This is a Text
-      </Text>
-
-      <Center>
-        <Float speed={5} floatIntensity={4}>
-          {/* //* Monsarrat fonts -> https://gero3.github.io/facetype.js */}
-          <Text3D font="./fonts/2.json" height={1} size={1.1} letterSpacing={-0.1} bevelEnabled={true} bevelSegments={20}>
-            Hello
-            <meshNormalMaterial />
-          </Text3D>
-        </Float>
-      </Center>
-
-      <mesh position-x={1} ref={cubeRef}>
-        <boxGeometry />
-        <meshBasicMaterial color="orange" />
-        <Html position={[0.7, 0.5, 0.5]} wrapperClass="text" distanceFactor={5} occlude={[cubeRef]}>
-          React Three Fiber
-        </Html>
+      <mesh>
+        <boxGeometry args={[1, 1, 1, 32, 32, 32]} />
+        <MeshWobbleMaterial color={"#F76E53"} factor={3} speed={0.4} />
       </mesh>
 
-      <mesh position-x={-1}>
-        <boxGeometry />
-        <meshBasicMaterial color="purple" />
+      <mesh rotation-x={-Math.PI * 0.5} position-y={-0.75}>
+        <planeGeometry args={[6, 6]} />
+        <MeshReflectorMaterial resolution={512} color={"gray"} blur={[1000, 1000]} mixBlur={1} mirror={1} />
       </mesh>
 
-      {play && <PositionalAudio url="./sound/sound.mp3" autoplay={true} loop={true} distance={5} />}
-      <mesh onClick={clickHandler} position-x={-4}>
-        <boxGeometry />
-        <meshBasicMaterial color="deeppink" />
+      <mesh ref={planeRef} onPointerOver={() => setHover(true)} onPointerOut={() => setHover(false)}>
+        <planeGeometry args={[2, 3, 64, 64]} />
+        <MeshDistortMaterial speed={3} distort={0}>
+          <GradientTexture colors={["aquamarine", "hotpink"]} stops={[0, 1]} />
+        </MeshDistortMaterial>
       </mesh>
     </React.Fragment>
   );
 };
 
 export default Scene;
+
+//* V3
+// import React from "react";
+// import { OrbitControls, Text, Text3D, Center, Float, Html, PositionalAudio } from "@react-three/drei";
+// import { Object3D, Object3DEventMap } from "three";
+
+// const Scene = (): React.JSX.Element => {
+//   const cubeRef = React.useRef<Object3D<Object3DEventMap>>(null) as React.RefObject<Object3D<Object3DEventMap>>;
+//   const [play, setPlay] = React.useState<boolean>(false);
+
+//   const clickHandler = (): void => {
+//     setPlay(!play);
+//   };
+
+//   return (
+//     <React.Fragment>
+//       <OrbitControls />
+
+//       <Text
+//         fontSize={0.4}
+//         color="orange"
+//         font="./fonts/1.ttf" //* Monsarrat fonts
+//         position-y={1.5}
+//         rotation-y={Math.PI * 0.1}
+//         maxWidth={2}
+//         textAlign="center"
+//       >
+//         This is a Text
+//       </Text>
+
+//       <Center>
+//         <Float speed={5} floatIntensity={4}>
+//           {/* //* Monsarrat fonts -> https://gero3.github.io/facetype.js */}
+//           <Text3D font="./fonts/2.json" height={1} size={1.1} letterSpacing={-0.1} bevelEnabled={true} bevelSegments={20}>
+//             Hello
+//             <meshNormalMaterial />
+//           </Text3D>
+//         </Float>
+//       </Center>
+
+//       <mesh position-x={1} ref={cubeRef}>
+//         <boxGeometry />
+//         <meshBasicMaterial color="orange" />
+//         <Html position={[0.7, 0.5, 0.5]} wrapperClass="text" distanceFactor={5} occlude={[cubeRef]}>
+//           React Three Fiber
+//         </Html>
+//       </mesh>
+
+//       <mesh position-x={-1}>
+//         <boxGeometry />
+//         <meshBasicMaterial color="purple" />
+//       </mesh>
+
+//       {play && <PositionalAudio url="./sound/sound.mp3" autoplay={true} loop={true} distance={5} />}
+//       <mesh onClick={clickHandler} position-x={-4}>
+//         <boxGeometry />
+//         <meshBasicMaterial color="deeppink" />
+//       </mesh>
+//     </React.Fragment>
+//   );
+// };
+
+// export default Scene;
 
 //* V2
 // import React from "react";

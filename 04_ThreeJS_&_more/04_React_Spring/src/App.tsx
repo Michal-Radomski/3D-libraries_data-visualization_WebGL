@@ -12,7 +12,6 @@ const App = (): React.JSX.Element => {
           antialias: true, //* default: true
           alpha: true, //* default: true
         }}
-        shadows={true}
         camera={{
           fov: 45,
           near: 0.1,

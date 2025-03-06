@@ -1,6 +1,5 @@
 import React from "react";
-// import { a, useSpring } from "@react-spring/three"; //* V1
-import { a, useSpring } from "react-spring"; //* V2
+import { animated, useSpring } from "@react-spring/three"; //* V1
 import { BufferGeometry, Material, Mesh, NormalBufferAttributes, Object3DEventMap } from "three";
 
 const Scene = (): React.JSX.Element => {
@@ -10,10 +9,15 @@ const Scene = (): React.JSX.Element => {
 
   const { scale, color } = useSpring({
     from: { scale: click ? 1 : 2, color: click ? "orange" : "hotpink" },
-    scale: click ? 2 : 1,
-    color: click ? "hotpink" : "orange",
+    to: { scale: click ? 2 : 1, color: click ? "hotpink" : "orange" },
   });
   console.log("scale:", scale);
+
+  React.useEffect(() => {
+    if (meshRef?.current) {
+      console.log("meshRef?.current:", meshRef?.current);
+    }
+  }, []);
 
   const clickHandler = (): void => {
     setClick(!click);
@@ -21,10 +25,10 @@ const Scene = (): React.JSX.Element => {
 
   return (
     <React.Fragment>
-      <a.mesh onClick={clickHandler} scale={scale} ref={meshRef}>
-        <boxGeometry />
-        <a.meshBasicMaterial color={color} />
-      </a.mesh>
+      <animated.mesh onClick={clickHandler} scale={scale} ref={meshRef}>
+        <animated.boxGeometry />
+        <animated.meshBasicMaterial color={color} />
+      </animated.mesh>
     </React.Fragment>
   );
 };

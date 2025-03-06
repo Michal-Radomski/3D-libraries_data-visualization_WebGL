@@ -1,10 +1,15 @@
 //* V3
 import React from "react";
-import { OrbitControls, Text, Text3D, Center, Float, Html } from "@react-three/drei";
+import { OrbitControls, Text, Text3D, Center, Float, Html, PositionalAudio } from "@react-three/drei";
 import { Object3D, Object3DEventMap } from "three";
 
 const Scene = (): React.JSX.Element => {
   const cubeRef = React.useRef<Object3D<Object3DEventMap>>(null) as React.RefObject<Object3D<Object3DEventMap>>;
+  const [play, setPlay] = React.useState<boolean>(false);
+
+  const clickHandler = (): void => {
+    setPlay(!play);
+  };
 
   return (
     <React.Fragment>
@@ -24,7 +29,7 @@ const Scene = (): React.JSX.Element => {
 
       <Center>
         <Float speed={5} floatIntensity={4}>
-          {/* //* Monsarrat fonts - https://gero3.github.io/facetype.js */}
+          {/* //* Monsarrat fonts -> https://gero3.github.io/facetype.js */}
           <Text3D font="./fonts/2.json" height={1} size={1.1} letterSpacing={-0.1} bevelEnabled={true} bevelSegments={20}>
             Hello
             <meshNormalMaterial />
@@ -35,14 +40,20 @@ const Scene = (): React.JSX.Element => {
       <mesh position-x={1} ref={cubeRef}>
         <boxGeometry />
         <meshBasicMaterial color="orange" />
-        <Html position={[-0.7, 0.5, 0.5]} wrapperClass="text" distanceFactor={5} occlude={[cubeRef]}>
-          R3F
+        <Html position={[0.7, 0.5, 0.5]} wrapperClass="text" distanceFactor={5} occlude={[cubeRef]}>
+          React Three Fiber
         </Html>
       </mesh>
 
       <mesh position-x={-1}>
         <boxGeometry />
         <meshBasicMaterial color="purple" />
+      </mesh>
+
+      {play && <PositionalAudio url="./sound/sound.mp3" autoplay={true} loop={true} distance={5} />}
+      <mesh onClick={clickHandler} position-x={-4}>
+        <boxGeometry />
+        <meshBasicMaterial color="deeppink" />
       </mesh>
     </React.Fragment>
   );

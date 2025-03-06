@@ -1,71 +1,140 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-//* V4
+//* V5
 import React from "react";
 import {
-  OrbitControls,
-  MeshReflectorMaterial,
-  MeshWobbleMaterial,
-  MeshDistortMaterial,
-  GradientTexture,
-  Environment,
-  useCursor,
+  // OrbitControls,
+  useGLTF,
+  useTexture,
+  MeshPortalMaterial,
+  RoundedBox,
+  Text,
+  CameraControls,
 } from "@react-three/drei";
 import * as THREE from "three";
-import { useFrame } from "@react-three/fiber";
+import { easing } from "maath";
+import { MathProps, ReactProps, RootState, useFrame } from "@react-three/fiber";
 
 const Scene = (): React.JSX.Element => {
-  const [hover, setHover] = React.useState<boolean>(false);
-  const planeRef =
-    React.useRef<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material, THREE.Object3DEventMap>>(
-      null
-    );
+  const [active, setActive] = React.useState<boolean>(false);
 
-  useCursor(hover);
+  const meshPortalMaterialRef = React.useRef<MathProps<THREE.ShaderMaterial> & ReactProps<THREE.ShaderMaterial>>(null);
+  const cameraControlsRef = React.useRef<CameraControls>(null);
 
-  const { lerp } = THREE.MathUtils as { lerp: (x: number, y: number, t: number) => number };
-
-  useFrame(() => {
-    // @ts-expect-error
-    planeRef.current!.material.distort = lerp(planeRef.current!.material.distort, hover ? 0.4 : 0, hover ? 0.05 : 0.01);
+  useFrame((_: RootState, delta: number) => {
+    easing.damp(meshPortalMaterialRef.current!, "blend", active ? 1 : 0, 0.2, delta);
   });
 
   React.useEffect(() => {
-    if (hover) {
-      // @ts-expect-error
-      planeRef.current!.material.distort = 0.4;
+    if (active) {
+      cameraControlsRef.current?.setLookAt(0, 0, 3, 0, 0, 0, true);
     } else {
-      // @ts-expect-error
-      planeRef.current!.material.distort = 0;
+      cameraControlsRef.current?.setLookAt(0, 0, 5, 0, 0, 0, true);
     }
-  }, [hover]);
+  }, [active]);
+
+  const model = useGLTF("./model/1.glb");
+  const texture = useTexture("./texture/1.png");
+
+  const doubleClickHandler = (): void => {
+    setActive(!active);
+  };
 
   return (
     <React.Fragment>
-      <OrbitControls />
-      <ambientLight />
-      <Environment background={true} files="./envMap/3.hdr" />
+      {/* <OrbitControls /> */}
 
-      <mesh>
-        <boxGeometry args={[1, 1, 1, 32, 32, 32]} />
-        <MeshWobbleMaterial color={"#F76E53"} factor={3} speed={0.4} />
-      </mesh>
+      <CameraControls ref={cameraControlsRef} />
 
-      <mesh rotation-x={-Math.PI * 0.5} position-y={-0.75}>
-        <planeGeometry args={[6, 6]} />
-        <MeshReflectorMaterial resolution={512} color={"gray"} blur={[1000, 1000]} mixBlur={1} mirror={1} />
-      </mesh>
+      <Text font="./fonts/bold.ttf" position={[0, 1.5, 0.1]} fontSize={0.6}>
+        Eggs
+        <meshBasicMaterial toneMapped={false} />
+      </Text>
 
-      <mesh ref={planeRef} onPointerOver={() => setHover(true)} onPointerOut={() => setHover(false)}>
-        <planeGeometry args={[2, 3, 64, 64]} />
-        <MeshDistortMaterial speed={3} distort={0}>
-          <GradientTexture colors={["aquamarine", "hotpink", "blue"]} stops={[0, 0.5, 1]} />
-        </MeshDistortMaterial>
-      </mesh>
+      <RoundedBox args={[3, 4, 0.1]} radius={0.1} onDoubleClick={doubleClickHandler}>
+        {/* @ts-expect-error */}
+        <MeshPortalMaterial ref={meshPortalMaterialRef} resolution={0} blur={0}>
+          <primitive object={model.scene} scale={0.6} position-y={0.6} />
+
+          <mesh>
+            <sphereGeometry args={[5, 64, 64]} />
+            <meshBasicMaterial map={texture} side={THREE.BackSide} />
+          </mesh>
+        </MeshPortalMaterial>
+      </RoundedBox>
     </React.Fragment>
   );
 };
 
 export default Scene;
+
+// /* eslint-disable @typescript-eslint/ban-ts-comment */
+// //* V4
+// import React from "react";
+// import {
+//   OrbitControls,
+//   MeshReflectorMaterial,
+//   MeshWobbleMaterial,
+//   MeshDistortMaterial,
+//   GradientTexture,
+//   Environment,
+//   useCursor,
+// } from "@react-three/drei";
+// import * as THREE from "three";
+// import { useFrame } from "@react-three/fiber";
+
+// const Scene = (): React.JSX.Element => {
+//   const [hover, setHover] = React.useState<boolean>(false);
+//   const planeRef =
+//     React.useRef<THREE.Mesh<THREE.BufferGeometry<THREE.NormalBufferAttributes>, THREE.Material, THREE.Object3DEventMap>>(
+//       null
+//     );
+
+//   useCursor(hover);
+
+//   const { lerp } = THREE.MathUtils as { lerp: (x: number, y: number, t: number) => number };
+
+//   useFrame(() => {
+//     // @ts-expect-error
+//     planeRef.current!.material.distort = lerp(planeRef.current!.material.distort, hover ? 0.4 : 0, hover ? 0.05 : 0.01);
+//   });
+
+//   React.useEffect(() => {
+//     if (hover) {
+//       // @ts-expect-error
+//       planeRef.current!.material.distort = 0.4;
+//     } else {
+//       // @ts-expect-error
+//       planeRef.current!.material.distort = 0;
+//     }
+//   }, [hover]);
+
+//   return (
+//     <React.Fragment>
+//       <OrbitControls />
+//       <ambientLight />
+//       <Environment background={true} files="./envMap/3.hdr" />
+
+//       <mesh>
+//         <boxGeometry args={[1, 1, 1, 32, 32, 32]} />
+//         <MeshWobbleMaterial color={"#F76E53"} factor={3} speed={0.4} />
+//       </mesh>
+
+//       <mesh rotation-x={-Math.PI * 0.5} position-y={-0.75}>
+//         <planeGeometry args={[6, 6]} />
+//         <MeshReflectorMaterial resolution={512} color={"gray"} blur={[1000, 1000]} mixBlur={1} mirror={1} />
+//       </mesh>
+
+//       <mesh ref={planeRef} onPointerOver={() => setHover(true)} onPointerOut={() => setHover(false)}>
+//         <planeGeometry args={[2, 3, 64, 64]} />
+//         <MeshDistortMaterial speed={3} distort={0}>
+//           <GradientTexture colors={["aquamarine", "hotpink", "blue"]} stops={[0, 0.5, 1]} />
+//         </MeshDistortMaterial>
+//       </mesh>
+//     </React.Fragment>
+//   );
+// };
+
+// export default Scene;
 
 //* V3
 // import React from "react";

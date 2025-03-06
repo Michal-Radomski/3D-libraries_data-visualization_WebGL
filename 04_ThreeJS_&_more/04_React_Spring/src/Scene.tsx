@@ -1,33 +1,53 @@
 import React from "react";
-import { animated, useSpring } from "@react-spring/three"; //* V1
+import { animated, SpringRef, SpringValue, useSpring } from "@react-spring/three"; //* V1
 import { BufferGeometry, Material, Mesh, NormalBufferAttributes, Object3DEventMap } from "three";
+import { useFrame } from "@react-three/fiber";
 
 const Scene = (): React.JSX.Element => {
-  const [click, setClick] = React.useState<boolean>(false);
+  // const [click, setClick] = React.useState<boolean>(false);
 
   const meshRef = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material, Object3DEventMap>>(null);
 
-  const { scale, color } = useSpring({
-    from: { scale: click ? 1 : 2, color: click ? "orange" : "hotpink" },
-    to: { scale: click ? 2 : 1, color: click ? "hotpink" : "orange" },
+  // const { scale, color }: { scale: SpringValue<number>; color: SpringValue<string> } = useSpring({
+  //   from: { scale: click ? 1 : 2, color: click ? "orange" : "hotpink" },
+  //   to: { scale: click ? 2 : 1, color: click ? "hotpink" : "orange" },
+  // });
+  // console.log("scale:", scale);
+
+  // React.useEffect(() => {
+  //   if (meshRef?.current) {
+  //     console.log("meshRef?.current:", meshRef?.current);
+  //   }
+  // }, []);
+
+  // const clickHandler = (): void => {
+  //   setClick(!click);
+  // };
+
+  useFrame(() => {
+    console.log("spring.x.get():", spring.x.get());
   });
-  console.log("scale:", scale);
 
-  React.useEffect(() => {
-    if (meshRef?.current) {
-      console.log("meshRef?.current:", meshRef?.current);
-    }
-  }, []);
+  const [spring, api]: [spring: { x: SpringValue<number> }, api: SpringRef<{ x: number }>] = useSpring(() => ({
+    from: { x: 0 },
+  }));
 
-  const clickHandler = (): void => {
-    setClick(!click);
+  const handleClick = (): void => {
+    api.start({
+      to: { x: spring.x.get() === 1 ? 0 : 1 },
+    });
   };
 
   return (
     <React.Fragment>
-      <animated.mesh onClick={clickHandler} scale={scale} ref={meshRef}>
+      {/* <animated.mesh onClick={clickHandler} scale={scale} ref={meshRef}>
         <animated.boxGeometry />
         <animated.meshBasicMaterial color={color} />
+      </animated.mesh> */}
+
+      <animated.mesh onClick={handleClick} position-x={spring.x} ref={meshRef}>
+        <boxGeometry />
+        <animated.meshBasicMaterial color="orange" />
       </animated.mesh>
     </React.Fragment>
   );

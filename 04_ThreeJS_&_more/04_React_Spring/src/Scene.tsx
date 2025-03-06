@@ -2,6 +2,7 @@ import React from "react";
 import { animated, SpringRef, SpringValue, useSpring } from "@react-spring/three"; //* V1
 import { BufferGeometry, Material, Mesh, NormalBufferAttributes, Object3DEventMap } from "three";
 import { useFrame } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 const Scene = (): React.JSX.Element => {
   // const [click, setClick] = React.useState<boolean>(false);
@@ -31,6 +32,8 @@ const Scene = (): React.JSX.Element => {
   const [spring, api]: [spring: { x: SpringValue<number> }, api: SpringRef<{ x: number }>] = useSpring(() => ({
     from: { x: 0 },
   }));
+  // console.log("spring:", spring);
+  // console.log("api:", api);
 
   const handleClick = (): void => {
     api.start({
@@ -40,6 +43,8 @@ const Scene = (): React.JSX.Element => {
 
   return (
     <React.Fragment>
+      <OrbitControls />
+
       {/* <animated.mesh onClick={clickHandler} scale={scale} ref={meshRef}>
         <animated.boxGeometry />
         <animated.meshBasicMaterial color={color} />

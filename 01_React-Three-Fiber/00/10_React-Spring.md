@@ -77,8 +77,6 @@ In summary:
 Using the specific packages (`@react-spring/web`, `@react-spring/three`) is generally preferred over the general
 `react-spring` package for better performance and to avoid unnecessary dependencies.
 
-<div style="text-align: center">⁂</div>
-
 [^1]: https://www.react-spring.dev/docs/getting-started
 [^2]: https://github.com/pmndrs/react-spring/issues/1586
 [^3]: https://aleclarson.github.io/react-spring/v9/

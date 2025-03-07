@@ -1,42 +1,39 @@
-//* V4
+//* V5
 import React from "react";
 import { OrbitControls } from "@react-three/drei";
-import { animated, SpringValue, useSprings } from "@react-spring/three";
-import { Vector3 } from "three";
+import { animated, SpringValue, useTrail } from "@react-spring/three";
 
-const items = [
-  {
-    initialPosition: [-3.5, 0, 0],
-    finalPosition: [-1.5, 0, 0],
-  },
-  {
-    initialPosition: [0, 3.5, 0],
-    finalPosition: [0, 0, 0],
-  },
-  {
-    initialPosition: [3.5, 0, 0],
-    finalPosition: [1.5, 0, 0],
-  },
-] as { initialPosition: number[]; finalPosition: number[] }[];
+const Scene = (): React.JSX.Element => {
+  const [trail, api] = useTrail(3, () => ({
+    from: { scale: 0 },
+  }));
 
-const Scene = (): JSX.Element => {
-  const springs = useSprings(
-    items.length,
-    items.map((item: { initialPosition: number[]; finalPosition: number[] }) => ({
-      from: { position: item.initialPosition },
-      to: { position: item.finalPosition },
-    }))
-  ) as { position: SpringValue<number[]> }[];
-  console.log("springs:", springs);
+  let active: boolean = true;
+
+  const missedHandler = (): void => {
+    if (active) {
+      active = false;
+
+      api.start({
+        to: { scale: 0.6 },
+      });
+    } else {
+      active = true;
+
+      api.start({
+        to: { scale: 0.0 },
+      });
+    }
+  };
 
   return (
     <React.Fragment>
       <OrbitControls />
 
-      {springs.map((item, index) => (
-        <animated.mesh scale={0.5} position={item.position as unknown as Vector3} key={index}>
+      {trail.map((item: { scale: SpringValue<number> }, index: number) => (
+        <animated.mesh key={index} scale={item.scale} position-x={-1 + index} onPointerMissed={missedHandler}>
           <boxGeometry />
-          <meshBasicMaterial color="orange" wireframe={true} />
+          <meshBasicMaterial color="orange" />
         </animated.mesh>
       ))}
     </React.Fragment>
@@ -44,6 +41,53 @@ const Scene = (): JSX.Element => {
 };
 
 export default Scene;
+
+//* V4
+// import React from "react";
+// import { OrbitControls } from "@react-three/drei";
+// import { animated, SpringValue, useSprings } from "@react-spring/three";
+// import { Vector3 } from "three";
+
+// const items = [
+//   {
+//     initialPosition: [-3.5, 0, 0],
+//     finalPosition: [-1.5, 0, 0],
+//   },
+//   {
+//     initialPosition: [0, 3.5, 0],
+//     finalPosition: [0, 0, 0],
+//   },
+//   {
+//     initialPosition: [3.5, 0, 0],
+//     finalPosition: [1.5, 0, 0],
+//   },
+// ] as { initialPosition: number[]; finalPosition: number[] }[];
+
+// const Scene = (): JSX.Element => {
+//   const springs = useSprings(
+//     items.length,
+//     items.map((item: { initialPosition: number[]; finalPosition: number[] }) => ({
+//       from: { position: item.initialPosition },
+//       to: { position: item.finalPosition },
+//     }))
+//   ) as { position: SpringValue<number[]> }[];
+//   console.log("springs:", springs);
+
+//   return (
+//     <React.Fragment>
+//       <OrbitControls />
+
+//       {springs.map((item, index) => (
+//         <animated.mesh scale={0.5} position={item.position as unknown as Vector3} key={index}>
+//           <boxGeometry />
+//           <meshBasicMaterial color="orange" wireframe={true} />
+//         </animated.mesh>
+//       ))}
+//     </React.Fragment>
+//   );
+// };
+
+// export default Scene;
 
 //* V3
 // import React from "react";

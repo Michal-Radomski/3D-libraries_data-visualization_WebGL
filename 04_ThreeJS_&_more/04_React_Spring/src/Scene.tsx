@@ -1,51 +1,98 @@
-//* V3
+//* V4
 import React from "react";
-import { animated, Lookup, SpringRef, useSpring, useSpringRef } from "@react-spring/three";
+import { OrbitControls } from "@react-three/drei";
+import { animated, SpringValue, useSprings } from "@react-spring/three";
+import { Vector3 } from "three";
 
-const Scene = (): React.JSX.Element => {
-  // const [spring, api] = useSpring(() => ({
-  //   from: { x: -2 },
-  // }));
-  // console.log("api:", api);
+const items = [
+  {
+    initialPosition: [-3.5, 0, 0],
+    finalPosition: [-1.5, 0, 0],
+  },
+  {
+    initialPosition: [0, 3.5, 0],
+    finalPosition: [0, 0, 0],
+  },
+  {
+    initialPosition: [3.5, 0, 0],
+    finalPosition: [1.5, 0, 0],
+  },
+] as { initialPosition: number[]; finalPosition: number[] }[];
 
-  const springRef: SpringRef<Lookup<unknown>> = useSpringRef();
-
-  const spring = useSpring({
-    ref: springRef,
-    from: { x: -2 },
-  });
-
-  const clickHandler = (): void => {
-    springRef.start({
-      to: { x: 2 },
-      config: { duration: 5000 },
-    });
-  };
-
-  const pointerOverHandler = (): void => {
-    springRef.pause();
-  };
-
-  const pointerOutHandler = (): void => {
-    springRef.resume();
-  };
+const Scene = (): JSX.Element => {
+  const springs = useSprings(
+    items.length,
+    items.map((item: { initialPosition: number[]; finalPosition: number[] }) => ({
+      from: { position: item.initialPosition },
+      to: { position: item.finalPosition },
+    }))
+  ) as { position: SpringValue<number[]> }[];
+  console.log("springs:", springs);
 
   return (
     <React.Fragment>
-      <animated.mesh
-        position-x={spring.x}
-        onClick={clickHandler}
-        onPointerOver={pointerOverHandler}
-        onPointerOut={pointerOutHandler}
-      >
-        <boxGeometry />
-        <meshBasicMaterial color="orange" />
-      </animated.mesh>
+      <OrbitControls />
+
+      {springs.map((item, index) => (
+        <animated.mesh scale={0.5} position={item.position as unknown as Vector3} key={index}>
+          <boxGeometry />
+          <meshBasicMaterial color="orange" wireframe={true} />
+        </animated.mesh>
+      ))}
     </React.Fragment>
   );
 };
 
 export default Scene;
+
+//* V3
+// import React from "react";
+// import { animated, Lookup, SpringRef, useSpring, useSpringRef } from "@react-spring/three";
+
+// const Scene = (): React.JSX.Element => {
+//   // const [spring, api] = useSpring(() => ({
+//   //   from: { x: -2 },
+//   // }));
+//   // console.log("api:", api);
+
+//   const springRef: SpringRef<Lookup<unknown>> = useSpringRef();
+
+//   const spring = useSpring({
+//     ref: springRef,
+//     from: { x: -2 },
+//   });
+
+//   const clickHandler = (): void => {
+//     springRef.start({
+//       to: { x: 2 },
+//       config: { duration: 5000 },
+//     });
+//   };
+
+//   const pointerOverHandler = (): void => {
+//     springRef.pause();
+//   };
+
+//   const pointerOutHandler = (): void => {
+//     springRef.resume();
+//   };
+
+//   return (
+//     <React.Fragment>
+//       <animated.mesh
+//         position-x={spring.x}
+//         onClick={clickHandler}
+//         onPointerOver={pointerOverHandler}
+//         onPointerOut={pointerOutHandler}
+//       >
+//         <boxGeometry />
+//         <meshBasicMaterial color="orange" />
+//       </animated.mesh>
+//     </React.Fragment>
+//   );
+// };
+
+// export default Scene;
 
 //* V2
 // import React from "react";

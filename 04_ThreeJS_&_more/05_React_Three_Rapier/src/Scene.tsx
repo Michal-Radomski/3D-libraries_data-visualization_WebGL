@@ -9,7 +9,7 @@ const Scene = (): CustomElem => {
     <React.Fragment>
       <OrbitControls />
       <ambientLight intensity={0.5} />
-      <directionalLight position={[2, 2, 3]} castShadow />
+      <directionalLight position={[2, 2, 3]} castShadow={true} />
       <PhysicsScene />
     </React.Fragment>
   );

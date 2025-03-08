@@ -1,26 +1,34 @@
 import React from "react";
 import { OrbitControls } from "@react-three/drei";
-// import { Bloom, DepthOfField, EffectComposer, Noise, Vignette } from "@react-three/postprocessing";
+import { BufferGeometry, Material, Mesh, NormalBufferAttributes, Object3DEventMap } from "three";
 
 import { CustomElem } from "./Interfaces";
-import PhysicsScene from "./PhysicsScene";
+import Effect from "./Effect";
 
 const Scene = (): CustomElem => {
+  const circleRef = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material, Object3DEventMap>>(null);
+  console.log("circleRef:", circleRef);
+
   return (
     <React.Fragment>
-      {/* <EffectComposer>
-        <DepthOfField focusDistance={0} focalLength={0.02} bokehScale={2} height={480} />
-        <Bloom luminanceThreshold={0} luminanceSmoothing={0.9} height={300} />
-        <Noise opacity={0.02} />
-        <Vignette eskil={false} offset={0.1} darkness={1.1} />
-      </EffectComposer> */}
-
       <OrbitControls />
 
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[2, 2, 3]} castShadow />
+      <Effect ref={circleRef} />
 
-      <PhysicsScene />
+      <mesh position-x={1}>
+        <boxGeometry />
+        <meshBasicMaterial color="orange" />
+      </mesh>
+
+      <mesh position-x={-1}>
+        <boxGeometry />
+        <meshBasicMaterial color="rgb(106,115,180)" />
+      </mesh>
+
+      <mesh position-z={-12} ref={circleRef}>
+        <circleGeometry args={[7, 64]} />
+        <meshBasicMaterial color="orange" />
+      </mesh>
     </React.Fragment>
   );
 };

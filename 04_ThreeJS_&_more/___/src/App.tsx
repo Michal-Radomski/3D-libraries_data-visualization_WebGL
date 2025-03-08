@@ -17,10 +17,9 @@ const App = (): React.JSX.Element => {
           fov: 45,
           near: 0.1,
           far: 100,
-          position: [2, 2, 6],
+          position: [0, 3, 12],
         }}
       >
-        <color args={["#ffffff"]} attach="background" />
         <Scene />
       </Canvas>
     </React.Fragment>

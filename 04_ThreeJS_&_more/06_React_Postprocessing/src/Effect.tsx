@@ -25,10 +25,10 @@ const Effect: React.ForwardRefExoticComponent<object & React.RefAttributes<unkno
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const scanline = React.useRef<MathProps<any>>(null);
 
-    React.useEffect(() => {
-      console.log("ref:", ref);
-    });
-    console.log("BlendFunction:", BlendFunction);
+    // React.useEffect(() => {
+    //   console.log("ref:", ref);
+    // });
+    // console.log("BlendFunction:", BlendFunction);
 
     const { brightness, contrast }: { brightness: number; contrast: number } = useControls({
       brightness: { value: 0, min: -1, max: 1, step: 0.01 },

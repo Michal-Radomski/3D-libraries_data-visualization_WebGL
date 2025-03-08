@@ -7,7 +7,7 @@ import Effect from "./Effect";
 
 const Scene = (): CustomElem => {
   const circleRef = React.useRef<Mesh<BufferGeometry<NormalBufferAttributes>, Material, Object3DEventMap>>(null);
-  console.log("circleRef:", circleRef);
+  // console.log("circleRef:", circleRef);
 
   return (
     <React.Fragment>

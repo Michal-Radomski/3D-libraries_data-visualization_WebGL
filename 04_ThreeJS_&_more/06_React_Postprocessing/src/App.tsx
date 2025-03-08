@@ -20,7 +20,7 @@ const App = (): React.JSX.Element => {
           position: [2, 2, 6],
         }}
       >
-        <color args={["#ffffff"]} attach="background" />
+        {/* <color args={["#ffffff"]} attach="background" /> */}
         <Scene />
       </Canvas>
     </React.Fragment>

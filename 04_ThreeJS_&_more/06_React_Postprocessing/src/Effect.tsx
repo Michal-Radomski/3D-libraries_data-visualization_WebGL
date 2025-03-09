@@ -35,29 +35,32 @@ const Effect: React.ForwardRefExoticComponent<object & React.RefAttributes<unkno
       contrast: { value: 0, min: -1, max: 1, step: 0.01 },
     });
 
-    useFrame((_: RootState, delta: number) => {
+    useFrame((_: RootState, delta: number): void => {
       scanline.current!.density += delta * 0.5;
     });
 
     return (
-      <EffectComposer>
-        <Pixelation granularity={10} />
-        <Vignette offset={0.2} darkness={1.2} eskill={false} blendFunction={BlendFunction.NORMAL} />
-        <BrightnessContrast brightness={brightness} contrast={contrast} />
-        <ChromaticAberration offset={[0.02, 0.02]} />
-        <Scanline density={7} ref={scanline} />
-        <Grid scale={0.25} lineWidth={0.1} />
-        <DotScreen scale={0.1} angle={Math.PI * 0.25} />
-        <Noise />
-        <Glitch
-          delay={[1.5, 3.5] as unknown as Vector2}
-          duration={[1, 10] as unknown as Vector2}
-          strength={[3, 10.0] as unknown as Vector2}
-          active={true}
-          ratio={0.85}
-        />
-        {ref!.current! && <GodRays sun={ref!.current as never} samples={60} density={0.45} />}
-      </EffectComposer>
+      <React.Fragment>
+        {" "}
+        <EffectComposer>
+          <Pixelation granularity={10} />
+          <Vignette offset={0.2} darkness={1.2} eskill={false} blendFunction={BlendFunction.NORMAL} />
+          <BrightnessContrast brightness={brightness} contrast={contrast} />
+          <ChromaticAberration offset={[0.02, 0.02]} />
+          <Scanline density={7} ref={scanline} />
+          <Grid scale={0.25} lineWidth={0.1} />
+          <DotScreen scale={0.1} angle={Math.PI * 0.25} />
+          <Noise />
+          <Glitch
+            delay={[1.5, 3.5] as unknown as Vector2}
+            duration={[1, 10] as unknown as Vector2}
+            strength={[3, 10.0] as unknown as Vector2}
+            active={true}
+            ratio={0.85}
+          />
+          {ref!.current! && <GodRays sun={ref!.current as never} samples={60} density={0.45} />}
+        </EffectComposer>
+      </React.Fragment>
     );
   }
 );

@@ -22,7 +22,7 @@ const PhysicsScene = (): CustomElem => {
   const isJump = React.useRef<boolean>(false);
 
   // @ts-expect-error
-  const allKeys = useKeyboardControls<Controls>((keys) => keys) as unknown as Controls;
+  const allKeys = useKeyboardControls<Controls>((keys: KeyboardControlsState<Controls>) => keys) as unknown as Controls;
   // console.log("allKeys:", allKeys);
 
   const cubeClickHandler = (): void => {

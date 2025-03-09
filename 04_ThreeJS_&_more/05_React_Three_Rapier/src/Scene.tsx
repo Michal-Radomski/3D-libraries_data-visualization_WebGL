@@ -1,5 +1,8 @@
 import React from "react";
-import { KeyboardControls, OrbitControls } from "@react-three/drei";
+import {
+  // KeyboardControls,
+  OrbitControls,
+} from "@react-three/drei";
 
 import { CustomElem } from "./Interfaces";
 import PhysicsScene from "./PhysicsScene";
@@ -11,7 +14,7 @@ const Scene = (): CustomElem => {
       <ambientLight intensity={0.5} />
       <directionalLight position={[2, 2, 3]} castShadow={true} />
       {/* <PhysicsScene /> */} //* V1
-      <KeyboardControls
+      {/* <KeyboardControls
         map={[
           { name: "forward", keys: ["ArrowUp", "KeyW"] },
           { name: "backward", keys: ["ArrowDown", "KeyS"] },
@@ -21,7 +24,8 @@ const Scene = (): CustomElem => {
         ]}
       >
         <PhysicsScene /> //* V2
-      </KeyboardControls>
+      </KeyboardControls> */}
+      <PhysicsScene /> //* V3
     </React.Fragment>
   );
 };

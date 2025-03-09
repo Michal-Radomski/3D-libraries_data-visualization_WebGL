@@ -1,121 +1,177 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-//* V4
+//* V5 (from docs)
 import React from "react";
-import { Physics, RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { RootState, useFrame } from "@react-three/fiber";
-import { useKeyboardControls } from "@react-three/drei";
-import * as THREE from "three";
+import { InstancedRigidBodies, InstancedRigidBodyProps, Physics, RapierRigidBody } from "@react-three/rapier";
 
 import { CustomElem } from "./Interfaces";
 
-enum Controls {
-  forward = "forward",
-  back = "back",
-  left = "left",
-  right = "right",
-  jump = "jump",
-}
-
 const PhysicsScene = (): CustomElem => {
-  const cubeRef = React.useRef<RapierRigidBody>(null);
-  const spinner = React.useRef<RapierRigidBody>(null);
-  const isJump = React.useRef<boolean>(false);
+  const COUNT = 1000;
 
-  // @ts-expect-error
-  const allKeys = useKeyboardControls<Controls>((keys: KeyboardControlsState<Controls>) => keys) as unknown as Controls;
-  // console.log("allKeys:", allKeys);
+  const rigidBodies = React.useRef<RapierRigidBody[]>(null);
 
-  const cubeClickHandler = (): void => {
-    cubeRef.current!.applyImpulse({ x: -25, y: 0, z: 0 }, true);
-  };
-
-  const cubeMovementHandler = (): void => {
-    // @ts-expect-error
-    if (allKeys.forward) {
-      cubeRef.current!.applyImpulse({ x: 0, y: 0, z: -0.3 }, true);
-    }
-    // @ts-expect-error
-    if (allKeys.backward) {
-      cubeRef.current!.applyImpulse({ x: 0, y: 0, z: 0.3 }, true);
-    }
-    // @ts-expect-error
-    if (allKeys.leftward) {
-      cubeRef.current!.applyImpulse({ x: -0.3, y: 0, z: 0 }, true);
-    }
-    // @ts-expect-error
-    if (allKeys.rightward) {
-      cubeRef.current!.applyImpulse({ x: 0.3, y: 0, z: 0 }, true);
+  React.useEffect(() => {
+    if (!rigidBodies.current) {
+      return;
     }
 
-    if (isJump.current) {
-      // @ts-expect-error
-      if (allKeys.jump) {
-        console.log("jump");
-        cubeRef.current!.applyImpulse({ x: 0, y: 40, z: 0 }, true);
-        isJump.current = false;
-      }
-    }
-  };
+    // You can access individual instanced by their index
+    rigidBodies.current[40].applyImpulse({ x: 0, y: 10, z: 0 }, true);
+    rigidBodies.current.at(100)?.applyImpulse({ x: 0, y: 10, z: 0 }, true);
 
-  useFrame((state: RootState): void => {
-    const getElapsedTime: number = state.clock.getElapsedTime();
-    // console.log("getElapsedTime:", getElapsedTime);
-
-    //* 1) setNextKinematicTranslation({x:0,y:0,z:0}) // Moving
-    //* 2) setNextKinematicRotation(Quaternion)    // Rotating
-
-    //* Moving the Spinner
-    spinner.current!.setNextKinematicTranslation({
-      x: 0,
-      y: Math.abs(Math.sin(getElapsedTime)),
-      z: 0,
+    // Or update all instances
+    rigidBodies.current.forEach((api: RapierRigidBody) => {
+      api.applyImpulse({ x: 0, y: 10, z: 0 }, true);
     });
+  }, []);
 
-    //* Rotating the Spinner
-    const eulerRotationAngle: THREE.Euler = new THREE.Euler(0, getElapsedTime, 0);
-    const quaternionRotation: THREE.Quaternion = new THREE.Quaternion();
-    quaternionRotation.setFromEuler(eulerRotationAngle);
-    spinner.current!.setNextKinematicRotation(quaternionRotation);
-    // console.log("eulerRotationAngle, quaternionRotation:", eulerRotationAngle, quaternionRotation);
+  // We can set the initial positions, and rotations, and scales, of
+  // the instances by providing an array of InstancedRigidBodyProps
+  // which is the same as RigidBodyProps, but with an additional "key" prop.
+  const instances = React.useMemo(() => {
+    const instances: InstancedRigidBodyProps[] = [];
 
-    //* Cube Movement Handler
-    cubeMovementHandler();
-  });
+    for (let i = 0; i < COUNT; i++) {
+      instances.push({
+        key: "instance_" + Math.random(),
+        position: [Math.random() * 10, Math.random() * 10, Math.random() * 10],
+        rotation: [Math.random(), Math.random(), Math.random()],
+      });
+    }
+
+    return instances;
+  }, []);
 
   return (
     <React.Fragment>
-      <Physics debug={true}>
-        <RigidBody
-          ref={cubeRef}
-          position={[2.5, 2.5, 0]}
-          onCollisionEnter={() => (isJump.current = true)}
-          onCollisionExit={() => (isJump.current = false)}
-        >
-          <mesh castShadow={true} onClick={cubeClickHandler}>
-            <boxGeometry args={[1.75, 1.75, 1.75]} />
-            <meshStandardMaterial color="#CC3941" />
-          </mesh>
-        </RigidBody>
-
-        <RigidBody ref={spinner} position-y={-0.65} type="kinematicPosition">
-          <mesh receiveShadow={true}>
-            <boxGeometry args={[1, 0.35, 15]} />
-            <meshStandardMaterial color="orange" />
-          </mesh>
-        </RigidBody>
-
-        <RigidBody type="fixed" position-y={-1} rotation-x={-Math.PI * 0.5} restitution={0.5}>
-          <mesh receiveShadow={true}>
-            <boxGeometry args={[15, 15, 0.35]} />
-            <meshStandardMaterial color="#C7CAC7" />
-          </mesh>
-        </RigidBody>
+      <Physics debug={false}>
+        <InstancedRigidBodies ref={rigidBodies} instances={instances} colliders="ball">
+          <instancedMesh args={[undefined, undefined, COUNT]} count={COUNT} />
+        </InstancedRigidBodies>
       </Physics>
     </React.Fragment>
   );
 };
 
 export default PhysicsScene;
+
+//* V4
+// /* eslint-disable @typescript-eslint/ban-ts-comment */
+// import React from "react";
+// import { Physics, RapierRigidBody, RigidBody } from "@react-three/rapier";
+// import { RootState, useFrame } from "@react-three/fiber";
+// import { useKeyboardControls } from "@react-three/drei";
+// import * as THREE from "three";
+
+// import { CustomElem } from "./Interfaces";
+
+// enum Controls {
+//   forward = "forward",
+//   backward = "back",
+//   leftward = "left",
+//   rightward = "right",
+//   jump = "jump",
+// }
+
+// const PhysicsScene = (): CustomElem => {
+//   const cubeRef = React.useRef<RapierRigidBody>(null);
+//   const spinner = React.useRef<RapierRigidBody>(null);
+//   const isJump = React.useRef<boolean>(false);
+
+//   // @ts-expect-error
+//   const allKeys = useKeyboardControls<Controls>((keys: KeyboardControlsState<Controls>) => keys) as unknown as Controls;
+//   // console.log("allKeys:", allKeys);
+
+//   const cubeClickHandler = (): void => {
+//     cubeRef.current!.applyImpulse({ x: -25, y: 0, z: 0 }, true);
+//   };
+
+//   const cubeMovementHandler = (): void => {
+//     // @ts-expect-error
+//     if (allKeys.forward) {
+//       cubeRef.current!.applyImpulse({ x: 0, y: 0, z: -0.3 }, true);
+//     }
+//     // @ts-expect-error
+//     if (allKeys.backward) {
+//       cubeRef.current!.applyImpulse({ x: 0, y: 0, z: 0.3 }, true);
+//     }
+//     // @ts-expect-error
+//     if (allKeys.leftward) {
+//       cubeRef.current!.applyImpulse({ x: -0.3, y: 0, z: 0 }, true);
+//     }
+//     // @ts-expect-error
+//     if (allKeys.rightward) {
+//       cubeRef.current!.applyImpulse({ x: 0.3, y: 0, z: 0 }, true);
+//     }
+
+//     if (isJump.current) {
+//       // @ts-expect-error
+//       if (allKeys.jump) {
+//         console.log("jump");
+//         cubeRef.current!.applyImpulse({ x: 0, y: 40, z: 0 }, true);
+//         isJump.current = false;
+//       }
+//     }
+//   };
+
+//   useFrame((state: RootState): void => {
+//     const getElapsedTime: number = state.clock.getElapsedTime();
+//     // console.log("getElapsedTime:", getElapsedTime);
+
+//     //* 1) setNextKinematicTranslation({x:0,y:0,z:0}) // Moving
+//     //* 2) setNextKinematicRotation(Quaternion)    // Rotating
+
+//     //* Moving the Spinner
+//     spinner.current!.setNextKinematicTranslation({
+//       x: 0,
+//       y: Math.abs(Math.sin(getElapsedTime)),
+//       z: 0,
+//     });
+
+//     //* Rotating the Spinner
+//     const eulerRotationAngle: THREE.Euler = new THREE.Euler(0, getElapsedTime, 0);
+//     const quaternionRotation: THREE.Quaternion = new THREE.Quaternion();
+//     quaternionRotation.setFromEuler(eulerRotationAngle);
+//     spinner.current!.setNextKinematicRotation(quaternionRotation);
+//     // console.log("eulerRotationAngle, quaternionRotation:", eulerRotationAngle, quaternionRotation);
+
+//     //* Cube Movement Handler
+//     cubeMovementHandler();
+//   });
+
+//   return (
+//     <React.Fragment>
+//       <Physics debug={true}>
+//         <RigidBody
+//           ref={cubeRef}
+//           position={[2.5, 2.5, 0]}
+//           onCollisionEnter={() => (isJump.current = true)}
+//           onCollisionExit={() => (isJump.current = false)}
+//         >
+//           <mesh castShadow={true} onClick={cubeClickHandler}>
+//             <boxGeometry args={[1.75, 1.75, 1.75]} />
+//             <meshStandardMaterial color="#CC3941" />
+//           </mesh>
+//         </RigidBody>
+
+//         <RigidBody ref={spinner} position-y={-0.65} type="kinematicPosition">
+//           <mesh receiveShadow={true}>
+//             <boxGeometry args={[1, 0.35, 15]} />
+//             <meshStandardMaterial color="orange" />
+//           </mesh>
+//         </RigidBody>
+
+//         <RigidBody type="fixed" position-y={-1} rotation-x={-Math.PI * 0.5} restitution={0.5}>
+//           <mesh receiveShadow={true}>
+//             <boxGeometry args={[15, 15, 0.35]} />
+//             <meshStandardMaterial color="#C7CAC7" />
+//           </mesh>
+//         </RigidBody>
+//       </Physics>
+//     </React.Fragment>
+//   );
+// };
+
+// export default PhysicsScene;
 
 //* V3
 // import React from "react";

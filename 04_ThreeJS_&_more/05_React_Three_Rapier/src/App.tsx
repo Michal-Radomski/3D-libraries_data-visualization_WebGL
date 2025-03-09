@@ -17,7 +17,7 @@ const App = (): React.JSX.Element => {
           fov: 45,
           near: 0.1,
           far: 100,
-          position: [0, 7, 20],
+          position: [0, 3, 10],
         }}
       >
         <Scene />

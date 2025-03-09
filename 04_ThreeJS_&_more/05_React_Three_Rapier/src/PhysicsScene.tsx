@@ -14,6 +14,7 @@ const PhysicsScene = (): CustomElem => {
 
   const secondCubeClickHandler = (): void => {
     secondCubeRef.current!.applyImpulse({ x: 8, y: 0, z: 0 }, true);
+    // secondCubeRef.current!.applyTorqueImpulse({ x: 8, y: 0, z: 0 }, true);
   };
 
   return (
@@ -38,7 +39,7 @@ const PhysicsScene = (): CustomElem => {
         <RigidBody ref={secondCubeRef}>
           <mesh castShadow={true} position={[-1.5, 2.5, 0]} onClick={secondCubeClickHandler}>
             <boxGeometry />
-            <meshStandardMaterial color="#CC3941" />
+            <meshStandardMaterial color="orange" />
           </mesh>
         </RigidBody>
 

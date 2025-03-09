@@ -29,14 +29,15 @@ const PhysicsScene = (): CustomElem => {
           gravityScale={1}
           restitution={0}
           friction={0}
+          mass={20}
         >
-          <mesh castShadow={true} position={[1.5, 2.5, 0]} onClick={cubeClickHandler}>
+          <mesh castShadow={true} position={[1.5, 2.5, 0]} onClick={cubeClickHandler} scale={1}>
             <boxGeometry />
             <meshStandardMaterial color="#CC3941" />
           </mesh>
         </RigidBody>
 
-        <RigidBody ref={secondCubeRef}>
+        <RigidBody ref={secondCubeRef} mass={200}>
           <mesh castShadow={true} position={[-1.5, 2.5, 0]} onClick={secondCubeClickHandler}>
             <boxGeometry />
             <meshStandardMaterial color="orange" />

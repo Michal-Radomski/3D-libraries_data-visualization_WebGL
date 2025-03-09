@@ -23,7 +23,7 @@ const PhysicsScene = (): CustomElem => {
 
   // @ts-expect-error
   const allKeys = useKeyboardControls<Controls>((keys) => keys) as unknown as Controls;
-  console.log("allKeys:", allKeys);
+  // console.log("allKeys:", allKeys);
 
   const cubeClickHandler = (): void => {
     cubeRef.current!.applyImpulse({ x: -25, y: 0, z: 0 }, true);
@@ -33,13 +33,16 @@ const PhysicsScene = (): CustomElem => {
     // @ts-expect-error
     if (allKeys.forward) {
       cubeRef.current!.applyImpulse({ x: 0, y: 0, z: -0.3 }, true);
-    } // @ts-expect-error
+    }
+    // @ts-expect-error
     if (allKeys.backward) {
       cubeRef.current!.applyImpulse({ x: 0, y: 0, z: 0.3 }, true);
-    } // @ts-expect-error
+    }
+    // @ts-expect-error
     if (allKeys.leftward) {
       cubeRef.current!.applyImpulse({ x: -0.3, y: 0, z: 0 }, true);
-    } // @ts-expect-error
+    }
+    // @ts-expect-error
     if (allKeys.rightward) {
       cubeRef.current!.applyImpulse({ x: 0.3, y: 0, z: 0 }, true);
     }
@@ -56,25 +59,26 @@ const PhysicsScene = (): CustomElem => {
 
   useFrame((state: RootState): void => {
     const getElapsedTime: number = state.clock.getElapsedTime();
-    console.log(getElapsedTime);
+    // console.log("getElapsedTime:", getElapsedTime);
 
-    // 1) setNextKinematicTranslation({x:0,y:0,z:0}) // Moving
-    // 2) setNextKinematicRotation(Quaternion)    // Rotating
+    //* 1) setNextKinematicTranslation({x:0,y:0,z:0}) // Moving
+    //* 2) setNextKinematicRotation(Quaternion)    // Rotating
 
-    // Moving the Spinner
+    //* Moving the Spinner
     spinner.current!.setNextKinematicTranslation({
       x: 0,
       y: Math.abs(Math.sin(getElapsedTime)),
       z: 0,
     });
 
-    // Rotating the Spinner
-    const eulerRotationAngle = new THREE.Euler(0, getElapsedTime, 0);
-    const quaternionRotation = new THREE.Quaternion();
+    //* Rotating the Spinner
+    const eulerRotationAngle: THREE.Euler = new THREE.Euler(0, getElapsedTime, 0);
+    const quaternionRotation: THREE.Quaternion = new THREE.Quaternion();
     quaternionRotation.setFromEuler(eulerRotationAngle);
     spinner.current!.setNextKinematicRotation(quaternionRotation);
+    // console.log("eulerRotationAngle, quaternionRotation:", eulerRotationAngle, quaternionRotation);
 
-    // Cube Movement Handler
+    //* Cube Movement Handler
     cubeMovementHandler();
   });
 

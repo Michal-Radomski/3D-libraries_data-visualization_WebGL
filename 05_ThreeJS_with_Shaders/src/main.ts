@@ -2,12 +2,14 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 
 import "./style.scss";
+import vertexShader from "./shaders/vertex.glsl";
+import fragmentShader from "./shaders/fragment.glsl";
 
 //* Scene
 const scene: THREE.Scene = new THREE.Scene();
 
 //* AxesHelper
-const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(10);
+const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(8);
 scene.add(axesHelper);
 
 //* Camera
@@ -32,9 +34,19 @@ const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
 //-----------
 
 //* Create a sphere
-const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   new THREE.SphereGeometry(5, 50, 50),
-  new THREE.MeshBasicMaterial({ color: undefined, map: new THREE.TextureLoader().load("./img/globe.jpeg") })
+  // new THREE.MeshBasicMaterial({ color: undefined, map: new THREE.TextureLoader().load("./img/globe.jpeg") })
+
+  new THREE.ShaderMaterial({
+    vertexShader,
+    fragmentShader,
+    uniforms: {
+      globeTexture: {
+        value: new THREE.TextureLoader().load("./img/globe.jpeg"),
+      },
+    },
+  })
 );
 // console.log("sphere:", sphere);
 scene.add(sphere);

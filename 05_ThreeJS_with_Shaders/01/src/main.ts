@@ -7,7 +7,7 @@ import "./style.scss";
 const scene: THREE.Scene = new THREE.Scene();
 
 //* AxesHelper
-const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(4);
+const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(10);
 scene.add(axesHelper);
 
 //* Camera
@@ -16,15 +16,16 @@ const aspect = {
   height: window.innerHeight,
 };
 const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height, 0.1, 1000);
-camera.position.z = 10;
+camera.position.z = 15;
 scene.add(camera);
 
 //* Renderer
 const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setSize(aspect.width, aspect.height); //Renderer size
+renderer.setSize(aspect.width, aspect.height);
 renderer.setPixelRatio(window.devicePixelRatio);
-renderer.render(scene, camera); //display what the camera in the scene captured
+// console.log("window.devicePixelRatio:", window.devicePixelRatio);
+renderer.render(scene, camera);
 
 //* OrbitControls
 const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
@@ -33,9 +34,9 @@ const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
 //* Create a sphere
 const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   new THREE.SphereGeometry(5, 50, 50),
-  new THREE.MeshBasicMaterial({ color: 0xff0000 })
+  new THREE.MeshBasicMaterial({ color: undefined, map: new THREE.TextureLoader().load("./img/globe.jpeg") })
 );
-console.log("sphere:", sphere);
+// console.log("sphere:", sphere);
 scene.add(sphere);
 
 //----------

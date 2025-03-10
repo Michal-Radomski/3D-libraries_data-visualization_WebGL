@@ -37,10 +37,9 @@ const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
 const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   new THREE.SphereGeometry(5, 50, 50),
   // new THREE.MeshBasicMaterial({ color: undefined, map: new THREE.TextureLoader().load("./img/globe.jpeg") })
-
   new THREE.ShaderMaterial({
-    vertexShader,
-    fragmentShader,
+    vertexShader: vertexShader as string,
+    fragmentShader: fragmentShader as string,
     uniforms: {
       globeTexture: {
         value: new THREE.TextureLoader().load("./img/globe.jpeg"),

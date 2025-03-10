@@ -15,18 +15,30 @@ const aspect = {
   width: window.innerWidth,
   height: window.innerHeight,
 };
-const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height, 0.1, 1000); // near value is 1, and far value is 2000
+const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height, 0.1, 1000);
+camera.position.z = 10;
 scene.add(camera);
 
 //* Renderer
 const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
 renderer.setSize(aspect.width, aspect.height); //Renderer size
+renderer.setPixelRatio(window.devicePixelRatio);
 renderer.render(scene, camera); //display what the camera in the scene captured
 
 //* OrbitControls
 const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
+//-----------
 
+//* Create a sphere
+const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  new THREE.SphereGeometry(5, 50, 50),
+  new THREE.MeshBasicMaterial({ color: 0xff0000 })
+);
+console.log("sphere:", sphere);
+scene.add(sphere);
+
+//----------
 //* Animate
 (function animate(): void {
   orbitControls.update(); // IMPORTANT: Update the controls in the animation loop

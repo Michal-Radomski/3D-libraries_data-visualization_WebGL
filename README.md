@@ -12,3 +12,6 @@
 
 4. Files created during this course:
    [Three.js, React Three Fiber, Drei, React Spring & More](https://www.udemy.com/course/learn-react-react-three-fiber-drei-react-spring-more).
+
+5. Files created during this course:
+   [Intermediate Three.js with Shaders](https://www.udemy.com/course/intermediate-threejs-with-shaders).

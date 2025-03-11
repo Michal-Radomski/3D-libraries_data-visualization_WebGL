@@ -70,6 +70,29 @@ const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
 group.add(sphere);
 scene.add(group);
 
+//* Stars
+const starGeometry: THREE.BufferGeometry<THREE.NormalBufferAttributes> = new THREE.BufferGeometry();
+const starMaterial: THREE.PointsMaterial = new THREE.PointsMaterial({
+  color: 0xffffff,
+});
+
+const starVertices = [] as number[];
+for (let i = 0; i < 10000; i++) {
+  const x = (Math.random() - 0.5) * 2000;
+  const y = (Math.random() - 0.5) * 2000;
+  const z = -Math.random() * 3000;
+  starVertices.push(x, y, z);
+}
+
+starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starVertices, 3));
+
+const stars: THREE.Points<
+  THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+  THREE.PointsMaterial,
+  THREE.Object3DEventMap
+> = new THREE.Points(starGeometry, starMaterial);
+scene.add(stars);
+
 //* Mouse
 const mouse = {
   x: undefined as number | undefined,

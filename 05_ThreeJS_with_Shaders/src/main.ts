@@ -4,6 +4,8 @@ import { OrbitControls } from "three/examples/jsm/Addons.js";
 import "./style.scss";
 import vertexShader from "./shaders/vertex.glsl";
 import fragmentShader from "./shaders/fragment.glsl";
+import atmosphereVertexShader from "./shaders/atmosphereVertex.glsl";
+import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl";
 
 //* Scene
 const scene: THREE.Scene = new THREE.Scene();
@@ -49,6 +51,20 @@ const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Objec
 );
 // console.log("sphere:", sphere);
 scene.add(sphere);
+
+//* Create atmosphere
+const atmosphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+  new THREE.SphereGeometry(5, 50, 50),
+  new THREE.ShaderMaterial({
+    vertexShader: atmosphereVertexShader as string,
+    fragmentShader: atmosphereFragmentShader as string,
+    blending: THREE.AdditiveBlending,
+    side: THREE.BackSide,
+  })
+);
+atmosphere.scale.set(1.1, 1.1, 1.1);
+// console.log("atmosphere:", atmosphere);
+scene.add(atmosphere);
 
 //----------
 //* Animate

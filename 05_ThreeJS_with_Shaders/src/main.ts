@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
+import gsap from "gsap";
 
 import "./style.scss";
 import vertexShader from "./shaders/vertex.glsl";
@@ -33,9 +34,8 @@ renderer.render(scene, camera);
 
 //* OrbitControls
 const orbitControls: OrbitControls = new OrbitControls(camera, canvas);
-//-----------
 
-//* Create a sphere
+//^ Create a sphere
 const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
   new THREE.SphereGeometry(5, 50, 50),
   // new THREE.MeshBasicMaterial({ color: undefined, map: new THREE.TextureLoader().load("./img/globe.jpeg") })
@@ -50,7 +50,7 @@ const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Objec
   })
 );
 // console.log("sphere:", sphere);
-scene.add(sphere);
+// scene.add(sphere); //* added in group!
 
 //* Create atmosphere
 const atmosphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
@@ -62,18 +62,39 @@ const atmosphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.O
     side: THREE.BackSide,
   })
 );
-atmosphere.scale.set(1.1, 1.1, 1.1);
+atmosphere.scale.set(1.075, 1.075, 1.075);
 // console.log("atmosphere:", atmosphere);
 scene.add(atmosphere);
 
-//----------
-//* Animate
+const group: THREE.Group<THREE.Object3DEventMap> = new THREE.Group();
+group.add(sphere);
+scene.add(group);
+
+//* Mouse
+const mouse = {
+  x: undefined as number | undefined,
+  y: undefined as number | undefined,
+  down: false,
+  xPrev: undefined as number | undefined,
+  yPrev: undefined as number | undefined,
+};
+
+//^ Animate
 (function animate(): void {
   orbitControls.update(); // IMPORTANT: Update the controls in the animation loop
 
   //* Renderer
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
+  sphere.rotation.y += 0.002;
+
+  if (mouse.x) {
+    gsap.to(group.rotation, {
+      x: (-mouse.y! as number) * 0.5,
+      y: mouse.x * 0.3,
+      duration: 2,
+    });
+  }
 })();
 
 //* Resizing
@@ -89,4 +110,10 @@ window.addEventListener("resize", (): void => {
   // New RendererSize
   renderer.setSize(aspect.width, aspect.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+//* EventListeners
+addEventListener("mousemove", (event: MouseEvent): void => {
+  mouse.x = ((event.clientX - innerWidth / 2) / (innerWidth / 2)) * 2 - 1;
+  mouse.y = -(event.clientY / innerHeight) * 2 + 1;
 });

@@ -8,6 +8,10 @@ import fragmentShader from "./shaders/fragment.glsl";
 import atmosphereVertexShader from "./shaders/atmosphereVertex.glsl";
 import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl";
 
+//* HTML
+const canvasContainer = document.querySelector("#canvasContainer") as HTMLDivElement;
+// console.log("canvasContainer:", canvasContainer);
+
 //* Scene
 const scene: THREE.Scene = new THREE.Scene();
 
@@ -17,8 +21,10 @@ scene.add(axesHelper);
 
 //* Camera
 const aspect = {
-  width: window.innerWidth,
-  height: window.innerHeight,
+  // width: window.innerWidth,
+  // height: window.innerHeight,
+  width: canvasContainer.offsetWidth,
+  height: canvasContainer.offsetHeight,
 };
 const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height, 0.1, 1000);
 camera.position.z = 15;
@@ -135,7 +141,7 @@ window.addEventListener("resize", (): void => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 
-//* EventListeners
+//^ Other EventListeners
 addEventListener("mousemove", (event: MouseEvent): void => {
   mouse.x = ((event.clientX - innerWidth / 2) / (innerWidth / 2)) * 2 - 1;
   mouse.y = -(event.clientY / innerHeight) * 2 + 1;

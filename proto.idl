@@ -1,3 +1,5 @@
+syntax = "proto3";
+
 // vehicle location message
 
 message VehicleLocation {

@@ -63,7 +63,7 @@ const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Objec
 
 //* Create atmosphere
 const atmosphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-  new THREE.SphereGeometry(5, 50, 50),
+  new THREE.SphereGeometry(1, 50, 50),
   new THREE.ShaderMaterial({
     vertexShader: atmosphereVertexShader as string,
     fragmentShader: atmosphereFragmentShader as string,
@@ -102,6 +102,93 @@ const stars: THREE.Points<
 > = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
+//* Singular box
+const createBox = ({
+  lat,
+  lng,
+  country,
+  population,
+}: {
+  lat: number;
+  lng: number;
+  country: string;
+  population: string;
+}): void => {
+  const box: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+    new THREE.BoxGeometry(0.2, 0.2, 0.8),
+    new THREE.MeshBasicMaterial({
+      color: "#3BF7FF",
+      opacity: 0.4,
+      transparent: true,
+    })
+  );
+
+  // 23.6345° N, 102.5528° W = mexico
+  const latitude: number = (lat / 180) * Math.PI;
+  const longitude: number = (lng / 180) * Math.PI;
+  const radius: number = 5;
+
+  //* Spherical coordinate system: https://en.wikipedia.org/wiki/Spherical_coordinate_system
+  const x: number = radius * Math.cos(latitude) * Math.sin(longitude);
+  const y: number = radius * Math.sin(latitude);
+  const z: number = radius * Math.cos(latitude) * Math.cos(longitude);
+
+  box.position.x = x;
+  box.position.y = y;
+  box.position.z = z;
+
+  box.lookAt(0, 0, 0);
+  box.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -0.4));
+
+  group.add(box);
+
+  gsap.to(box.scale, {
+    z: 1.4,
+    duration: 2,
+    yoyo: true,
+    repeat: -1,
+    ease: "linear",
+    delay: Math.random(),
+  });
+  // box.scale.z =
+
+  // @ts-ignore
+  box.country = country;
+  // @ts-ignore
+  box.population = population;
+};
+
+createBox({
+  lat: 23.6345,
+  lng: -102.5528,
+  country: "Mexico",
+  population: "127.6 million",
+});
+createBox({
+  lat: -14.235,
+  lng: -51.9253,
+  country: "Brazil",
+  population: "211 million",
+});
+createBox({
+  lat: 20.5937,
+  lng: 78.9629,
+  country: "India",
+  population: "1.366 billion",
+});
+createBox({
+  lat: 35.8617,
+  lng: 104.1954,
+  country: "China",
+  population: "1.398 billion",
+});
+createBox({
+  lat: 37.0902,
+  lng: -95.7129,
+  country: "USA",
+  population: "328.2 million",
+});
+
 //* Mouse
 const mouse = {
   x: undefined as number | undefined,
@@ -118,7 +205,7 @@ const mouse = {
   //* Renderer
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
-  sphere.rotation.y += 0.002;
+  // sphere.rotation.y += 0.002;
 
   if (mouse.x) {
     gsap.to(group.rotation, {

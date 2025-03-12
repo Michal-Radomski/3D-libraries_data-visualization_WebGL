@@ -58,6 +58,7 @@ const sphere: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial, THREE.Objec
     },
   })
 );
+sphere.rotation.y = -Math.PI / 2;
 // console.log("sphere:", sphere);
 // scene.add(sphere); //* added in group!
 
@@ -127,11 +128,13 @@ const createBox = ({
   const latitude: number = (lat / 180) * Math.PI;
   const longitude: number = (lng / 180) * Math.PI;
   const radius: number = 5;
+  // console.log({ latitude, longitude });
 
   //* Spherical coordinate system: https://en.wikipedia.org/wiki/Spherical_coordinate_system
   const x: number = radius * Math.cos(latitude) * Math.sin(longitude);
   const y: number = radius * Math.sin(latitude);
   const z: number = radius * Math.cos(latitude) * Math.cos(longitude);
+  // console.log({ x, y, z });
 
   box.position.x = x;
   box.position.y = y;
@@ -205,7 +208,8 @@ const mouse = {
   //* Renderer
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
-  // sphere.rotation.y += 0.002;
+  // sphere.rotation.y += 0.001;
+  group.rotation.y += 0.001;
 
   if (mouse.x) {
     gsap.to(group.rotation, {

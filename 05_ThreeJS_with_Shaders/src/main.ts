@@ -23,6 +23,8 @@ scene.add(axesHelper);
 const aspectCanvas = {
   // width: window.innerWidth,
   // height: window.innerHeight,
+
+  //* https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetWidth
   width: canvasContainer.offsetWidth,
   height: canvasContainer.offsetHeight,
 };

@@ -20,20 +20,21 @@ const axesHelper: THREE.AxesHelper = new THREE.AxesHelper(8);
 scene.add(axesHelper);
 
 //* Camera
-const aspect = {
+const aspectCanvas = {
   // width: window.innerWidth,
   // height: window.innerHeight,
   width: canvasContainer.offsetWidth,
   height: canvasContainer.offsetHeight,
 };
-const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspect.width / aspect.height, 0.1, 1000);
+
+const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspectCanvas.width / aspectCanvas.height, 0.1, 1000);
 camera.position.z = 15;
 scene.add(camera);
 
 //* Renderer
 const canvas = document.querySelector("canvas.draw") as HTMLCanvasElement;
 const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-renderer.setSize(aspect.width, aspect.height);
+renderer.setSize(aspectCanvas.width, aspectCanvas.height);
 renderer.setPixelRatio(window.devicePixelRatio);
 // console.log("window.devicePixelRatio:", window.devicePixelRatio);
 renderer.render(scene, camera);
@@ -129,15 +130,15 @@ const mouse = {
 //* Resizing
 window.addEventListener("resize", (): void => {
   // New size
-  aspect.width = window.innerWidth;
-  aspect.height = window.innerHeight;
+  aspectCanvas.width = canvasContainer.offsetWidth;
+  aspectCanvas.height = canvasContainer.offsetHeight;
 
   // New AspectRatio
-  camera.aspect = aspect.width / aspect.height;
+  camera.aspect = aspectCanvas.width / aspectCanvas.height;
   camera.updateProjectionMatrix();
 
   // New RendererSize
-  renderer.setSize(aspect.width, aspect.height);
+  renderer.setSize(aspectCanvas.width, aspectCanvas.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 });
 

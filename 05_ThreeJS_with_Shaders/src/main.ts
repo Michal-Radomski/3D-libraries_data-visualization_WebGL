@@ -213,10 +213,10 @@ const mouse = {
   // sphere.rotation.y += 0.001;
   group.rotation.y += 0.001;
 
-  if (mouse.x) {
+  if (mouse?.x || mouse?.y) {
     gsap.to(group.rotation, {
       x: (-mouse.y! as number) * 0.5,
-      y: mouse.x * 0.3,
+      y: (mouse.x! as number) * 0.3,
       duration: 2,
     });
   }

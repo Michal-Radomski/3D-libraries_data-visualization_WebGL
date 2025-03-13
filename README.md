@@ -15,3 +15,5 @@
 
 5. Files created during this course:
    [Intermediate Three.js with Shaders](https://www.udemy.com/course/intermediate-threejs-with-shaders).
+
+6. Files created during this course: [WebGL 2D/3D Programming](https://www.udemy.com/course/webgl-programming).

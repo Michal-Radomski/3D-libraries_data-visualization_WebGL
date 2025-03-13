@@ -147,15 +147,15 @@ const createBox = ({
 
   group.add(box);
 
+  // box.scale.z = 2;
   gsap.to(box.scale, {
     z: 1.4,
     duration: 2,
     yoyo: true,
-    repeat: -1,
+    repeat: -1, //* Infinitely
     ease: "linear",
     delay: Math.random(),
   });
-  // box.scale.z =
 
   // @ts-ignore
   box.country = country;

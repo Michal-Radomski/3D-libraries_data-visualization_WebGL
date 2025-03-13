@@ -201,7 +201,13 @@ const mouse = {
   down: false,
   xPrev: undefined as number | undefined,
   yPrev: undefined as number | undefined,
-};
+} as unknown as THREE.Vector2;
+
+const raycaster: THREE.Raycaster = new THREE.Raycaster();
+// console.log("raycaster:", raycaster);
+const popUpEl = document.querySelector("#popUpEl") as HTMLDivElement;
+const populationEl = document.querySelector("#populationEl") as HTMLSpanElement;
+const populationValueEl = document.querySelector("#populationValueEl") as HTMLParagraphElement;
 
 //^ Animate
 (function animate(): void {
@@ -211,14 +217,47 @@ const mouse = {
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
   // sphere.rotation.y += 0.001;
-  group.rotation.y += 0.001;
+  // group.rotation.y += 0.001;
 
-  if (mouse?.x || mouse?.y) {
-    gsap.to(group.rotation, {
-      x: (-mouse.y! as number) * 0.5,
-      y: (mouse.x! as number) * 0.3,
-      duration: 2,
+  // if (mouse?.x || mouse?.y) {
+  //   gsap.to(group.rotation, {
+  //     x: (-mouse.y! as number) * 0.5,
+  //     y: (mouse.x! as number) * 0.3,
+  //     duration: 2,
+  //   });
+  // }
+
+  // Update the picking ray with the camera and mouse position
+  raycaster.setFromCamera(mouse, camera);
+
+  // Calculate objects intersecting the picking ray
+  const intersects = raycaster.intersectObjects(
+    group.children.filter((mesh: THREE.Object3D<THREE.Object3DEventMap>) => {
+      // @ts-ignore
+      return mesh.geometry.type === "BoxGeometry";
+    })
+  );
+
+  group.children.forEach((mesh: THREE.Object3D<THREE.Object3DEventMap>) => {
+    // @ts-ignore
+    mesh.material.opacity = 0.4;
+  });
+
+  gsap.set(popUpEl, {
+    display: "none",
+  });
+
+  for (let i = 0; i < intersects.length; i++) {
+    const box = intersects[i].object;
+    // @ts-ignore
+    box.material.opacity = 1;
+    gsap.set(popUpEl, {
+      display: "block",
     });
+    // @ts-ignore
+    populationEl.innerHTML = box.country;
+    // @ts-ignore
+    populationValueEl.innerHTML = box.population;
   }
 })();
 

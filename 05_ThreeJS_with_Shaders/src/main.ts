@@ -203,6 +203,7 @@ const mouse = {
   yPrev: undefined as number | undefined,
 } as unknown as THREE.Vector2;
 
+//* Raycaster
 const raycaster: THREE.Raycaster = new THREE.Raycaster();
 // console.log("raycaster:", raycaster);
 const popUpEl = document.querySelector("#popUpEl") as HTMLDivElement;
@@ -217,7 +218,7 @@ const populationValueEl = document.querySelector("#populationValueEl") as HTMLPa
   renderer.render(scene, camera);
   window.requestAnimationFrame(animate);
   // sphere.rotation.y += 0.001;
-  // group.rotation.y += 0.001;
+  group.rotation.y += 0.001;
 
   // if (mouse?.x || mouse?.y) {
   //   gsap.to(group.rotation, {
@@ -231,12 +232,15 @@ const populationValueEl = document.querySelector("#populationValueEl") as HTMLPa
   raycaster.setFromCamera(mouse, camera);
 
   // Calculate objects intersecting the picking ray
-  const intersects = raycaster.intersectObjects(
+  const intersects: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>[] = raycaster.intersectObjects(
     group.children.filter((mesh: THREE.Object3D<THREE.Object3DEventMap>) => {
       // @ts-ignore
       return mesh.geometry.type === "BoxGeometry";
     })
   );
+  // if (intersects?.length) {
+  //   console.log("intersects:", intersects);
+  // }
 
   group.children.forEach((mesh: THREE.Object3D<THREE.Object3DEventMap>) => {
     // @ts-ignore

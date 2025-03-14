@@ -9,6 +9,8 @@ import vertexShader from "./shaders/vertex.glsl";
 import fragmentShader from "./shaders/fragment.glsl";
 import atmosphereVertexShader from "./shaders/atmosphereVertex.glsl";
 import atmosphereFragmentShader from "./shaders/atmosphereFragment.glsl";
+import countries from "./data/countries.json";
+// console.log("countries:", countries);
 
 //* HTML
 const canvasContainer = document.querySelector("#canvasContainer") as HTMLDivElement;
@@ -105,94 +107,154 @@ const stars: THREE.Points<
 > = new THREE.Points(starGeometry, starMaterial);
 scene.add(stars);
 
-//* Singular box
-const createBox = ({
-  lat,
-  lng,
-  country,
-  population,
-}: {
-  lat: number;
-  lng: number;
-  country: string;
-  population: string;
-}): void => {
-  const box: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
-    new THREE.BoxGeometry(0.2, 0.2, 0.8),
-    new THREE.MeshBasicMaterial({
-      color: "#3BF7FF",
-      opacity: 0.4,
-      transparent: true,
-    })
-  );
+//* V1: Singular box
+// const createBox = ({
+//   lat,
+//   lng,
+//   country,
+//   population,
+// }: {
+//   lat: number;
+//   lng: number;
+//   country: string;
+//   population: string;
+// }): void => {
+//   const box: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+//     new THREE.BoxGeometry(0.2, 0.2, 0.8),
+//     new THREE.MeshBasicMaterial({
+//       color: "#3BF7FF",
+//       opacity: 0.4,
+//       transparent: true,
+//     })
+//   );
 
-  // 23.6345° N, 102.5528° W = mexico
-  const latitude: number = (lat / 180) * Math.PI;
-  const longitude: number = (lng / 180) * Math.PI;
-  const radius: number = 5;
-  // console.log({ latitude, longitude });
+//   // 23.6345° N, 102.5528° W = mexico
+//   const latitude: number = (lat / 180) * Math.PI;
+//   const longitude: number = (lng / 180) * Math.PI;
+//   const radius: number = 5;
+//   // console.log({ latitude, longitude });
 
-  //* Spherical coordinate system: https://en.wikipedia.org/wiki/Spherical_coordinate_system
-  const x: number = radius * Math.cos(latitude) * Math.sin(longitude);
-  const y: number = radius * Math.sin(latitude);
-  const z: number = radius * Math.cos(latitude) * Math.cos(longitude);
-  // console.log({ x, y, z });
+//   //* Spherical coordinate system: https://en.wikipedia.org/wiki/Spherical_coordinate_system
+//   const x: number = radius * Math.cos(latitude) * Math.sin(longitude);
+//   const y: number = radius * Math.sin(latitude);
+//   const z: number = radius * Math.cos(latitude) * Math.cos(longitude);
+//   // console.log({ x, y, z });
 
-  box.position.x = x;
-  box.position.y = y;
-  box.position.z = z;
+//   box.position.x = x;
+//   box.position.y = y;
+//   box.position.z = z;
 
-  box.lookAt(0, 0, 0);
-  box.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -0.4));
+//   box.lookAt(0, 0, 0);
+//   box.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -0.4));
 
-  group.add(box);
+//   group.add(box);
 
-  // box.scale.z = 2;
-  gsap.to(box.scale, {
-    z: 1.4,
-    duration: 2,
-    yoyo: true,
-    repeat: -1, //* Infinitely
-    ease: "linear",
-    delay: Math.random(),
+//   // box.scale.z = 2;
+//   gsap.to(box.scale, {
+//     z: 1.4,
+//     duration: 2,
+//     yoyo: true,
+//     repeat: -1, //* Infinitely
+//     ease: "linear",
+//     delay: Math.random(),
+//   });
+
+//   // @ts-ignore
+//   box.country = country;
+//   // @ts-ignore
+//   box.population = population;
+// };
+
+// createBox({
+//   lat: 23.6345,
+//   lng: -102.5528,
+//   country: "Mexico",
+//   population: "127.6 million",
+// });
+// createBox({
+//   lat: -14.235,
+//   lng: -51.9253,
+//   country: "Brazil",
+//   population: "211 million",
+// });
+// createBox({
+//   lat: 20.5937,
+//   lng: 78.9629,
+//   country: "India",
+//   population: "1.366 billion",
+// });
+// createBox({
+//   lat: 35.8617,
+//   lng: 104.1954,
+//   country: "China",
+//   population: "1.398 billion",
+// });
+// createBox({
+//   lat: 37.0902,
+//   lng: -95.7129,
+//   country: "USA",
+//   population: "328.2 million",
+// });
+
+//* V2: All Countries
+const createBoxes = (countries: Country[]): void => {
+  countries.forEach((country: Country) => {
+    const scale: number = country.population / 1000000000;
+    const lat: number = country.latlng[0];
+    const lng: number = country.latlng[1];
+    const zScale: number = 0.8 * scale;
+
+    const box: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial, THREE.Object3DEventMap> = new THREE.Mesh(
+      new THREE.BoxGeometry(Math.max(0.1, 0.2 * scale), Math.max(0.1, 0.2 * scale), Math.max(zScale, 0.4 * Math.random())),
+      new THREE.MeshBasicMaterial({
+        color: "#3BF7FF",
+        opacity: 0.4,
+        transparent: true,
+      })
+    );
+
+    const latitude: number = (lat / 180) * Math.PI;
+    const longitude: number = (lng / 180) * Math.PI;
+    const radius = 5;
+
+    const x: number = radius * Math.cos(latitude) * Math.sin(longitude);
+    const y: number = radius * Math.sin(latitude);
+    const z: number = radius * Math.cos(latitude) * Math.cos(longitude);
+
+    box.position.x = x;
+    box.position.y = y;
+    box.position.z = z;
+
+    box.lookAt(0, 0, 0);
+    box.geometry.applyMatrix4(new THREE.Matrix4().makeTranslation(0, 0, -zScale / 2));
+
+    group.add(box);
+
+    gsap.to(box.scale, {
+      z: 1.4,
+      duration: 2,
+      yoyo: true,
+      repeat: -1,
+      ease: "linear",
+      delay: Math.random(),
+    });
+
+    // @ts-ignore
+    box.country = country.name;
+    // @ts-ignore
+    box.population = new Intl.NumberFormat().format(country.population);
   });
-
-  // @ts-ignore
-  box.country = country;
-  // @ts-ignore
-  box.population = population;
 };
 
-createBox({
-  lat: 23.6345,
-  lng: -102.5528,
-  country: "Mexico",
-  population: "127.6 million",
+const mappedCountries: Country[] = countries?.map((elem) => {
+  return {
+    population: elem.population,
+    latlng: elem.latlng as [number, number],
+    name: elem.name,
+  };
 });
-createBox({
-  lat: -14.235,
-  lng: -51.9253,
-  country: "Brazil",
-  population: "211 million",
-});
-createBox({
-  lat: 20.5937,
-  lng: 78.9629,
-  country: "India",
-  population: "1.366 billion",
-});
-createBox({
-  lat: 35.8617,
-  lng: 104.1954,
-  country: "China",
-  population: "1.398 billion",
-});
-createBox({
-  lat: 37.0902,
-  lng: -95.7129,
-  country: "USA",
-  population: "328.2 million",
-});
+
+createBoxes(mappedCountries);
 
 //* Mouse
 const mouse = {

@@ -198,8 +198,11 @@ scene.add(stars);
 
 //* V2: All Countries
 const createBoxes = (countries: Country[]): void => {
-  countries.forEach((country: Country) => {
-    const scale: number = country.population / 1000000000;
+  // const num = 1e9; //* Equivalent to 1 * 10^9 -> scientific notation
+  // console.log({ num }); //* Output: 1000000000
+
+  countries.forEach((country: Country): void => {
+    const scale: number = country.population / 1e9; //* Equivalent to 1 * 10^9 -> 1000000000
     const lat: number = country.latlng[0];
     const lng: number = country.latlng[1];
     const zScale: number = 0.8 * scale;
@@ -242,11 +245,11 @@ const createBoxes = (countries: Country[]): void => {
     // @ts-ignore
     box.country = country.name;
     // @ts-ignore
-    box.population = new Intl.NumberFormat().format(country.population);
+    box.population = new Intl.NumberFormat("pl-PL").format(country.population);
   });
 };
 
-const mappedCountries: Country[] = countries?.map((elem) => {
+const mappedCountries: Country[] = countries?.map((elem): Country => {
   return {
     population: elem.population,
     latlng: elem.latlng as [number, number],

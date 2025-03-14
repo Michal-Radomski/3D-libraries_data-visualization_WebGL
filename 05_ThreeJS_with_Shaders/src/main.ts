@@ -259,6 +259,12 @@ const mappedCountries: Country[] = countries?.map((elem): Country => {
 
 createBoxes(mappedCountries);
 
+// @ts-ignore
+group.rotation.offset = {
+  x: 0,
+  y: 0,
+};
+
 //* Mouse
 const mouse = {
   x: undefined as number | undefined,
@@ -373,19 +379,23 @@ addEventListener("mousemove", (event: MouseEvent): void => {
   });
 
   if (mouse.down) {
-    event.preventDefault();
-    console.log("Turn the earth");
+    event.preventDefault(); //* Not to select text
+    // console.log("Turn the earth");
     const deltaX: number = event?.clientX - mouse?.xPrev!;
     const deltaY: number = event?.clientY - mouse?.yPrev!;
     // console.log({ deltaX, deltaY });
 
-    group.rotation.x += deltaY * 0.005;
-    group.rotation.y += deltaX * 0.005;
+    // @ts-ignore
+    group.rotation.offset.x += deltaY * 0.005;
+    // @ts-ignore
+    group.rotation.offset.y += deltaX * 0.005;
     console.log("group.rotation:", group.rotation);
 
     gsap.to(group.rotation, {
-      y: group.rotation.y,
-      x: group.rotation.x,
+      // @ts-ignore
+      y: group.rotation.offset.y,
+      // @ts-ignore
+      x: group.rotation.offset.x,
       duration: 2,
     });
     mouse.xPrev = event.clientX;
@@ -426,18 +436,22 @@ addEventListener(
       });
 
       event.preventDefault();
-      // console.log('turn the earth')
+      // console.log("turn the earth");
       // @ts-ignore
       const deltaX = event.clientX - mouse.xPrev!;
       // @ts-ignore
       const deltaY = event.clientY - mouse.yPrev!;
 
-      group.rotation.x += deltaY * 0.005;
-      group.rotation.y += deltaX * 0.005;
+      // @ts-ignore
+      group.rotation.offset.x += deltaY * 0.005;
+      // @ts-ignore
+      group.rotation.offset.y += deltaX * 0.005;
 
       gsap.to(group.rotation, {
-        y: group.rotation.y,
-        x: group.rotation.x,
+        // @ts-ignore
+        y: group.rotation.offset.y,
+        // @ts-ignore
+        x: group.rotation.offset.x,
         duration: 2,
       });
       // @ts-ignore

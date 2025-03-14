@@ -33,7 +33,7 @@ const aspectCanvas = {
   height: canvasContainer.offsetHeight,
 };
 
-const camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspectCanvas.width / aspectCanvas.height, 0.1, 1000);
+let camera: THREE.PerspectiveCamera = new THREE.PerspectiveCamera(75, aspectCanvas.width / aspectCanvas.height, 0.1, 1000);
 camera.position.z = 15;
 scene.add(camera);
 
@@ -266,7 +266,7 @@ const mouse = {
   down: false,
   xPrev: undefined as number | undefined,
   yPrev: undefined as number | undefined,
-} as unknown as THREE.Vector2;
+};
 
 //* Raycaster
 const raycaster: THREE.Raycaster = new THREE.Raycaster();
@@ -294,7 +294,7 @@ const populationValueEl = document.querySelector("#populationValueEl") as HTMLPa
   // }
 
   // Update the picking ray with the camera and mouse position
-  raycaster.setFromCamera(mouse, camera);
+  raycaster.setFromCamera(mouse as unknown as THREE.Vector2, camera);
 
   // Calculate objects intersecting the picking ray
   const intersects: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>[] = raycaster.intersectObjects(
@@ -343,10 +343,119 @@ window.addEventListener("resize", (): void => {
   // New RendererSize
   renderer.setSize(aspectCanvas.width, aspectCanvas.height);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  camera = new THREE.PerspectiveCamera(75, canvasContainer.offsetWidth / canvasContainer.offsetHeight, 0.1, 1000);
+  camera.position.z = 15;
 });
 
 //^ Other EventListeners
+canvasContainer.addEventListener("mousedown", (event: MouseEvent): void => {
+  const { clientX, clientY }: { clientX: number; clientY: number } = event;
+  mouse.down = true;
+  mouse.xPrev = clientX;
+  mouse.yPrev = clientY;
+});
+
 addEventListener("mousemove", (event: MouseEvent): void => {
-  mouse.x = ((event.clientX - innerWidth / 2) / (innerWidth / 2)) * 2 - 1;
-  mouse.y = -(event.clientY / innerHeight) * 2 + 1;
+  if (innerWidth >= 1280) {
+    mouse.x = ((event.clientX - innerWidth / 2) / (innerWidth / 2)) * 2 - 1;
+    mouse.y = -(event.clientY / innerHeight) * 2 + 1;
+  } else {
+    const offset: number = canvasContainer.getBoundingClientRect().top;
+    mouse.x = (event.clientX / innerWidth) * 2 - 1;
+    mouse.y = -((event.clientY - offset) / innerHeight) * 2 + 1;
+    console.log("mouse.y:", mouse.y);
+  }
+
+  gsap.set(popUpEl, {
+    x: event.clientX,
+    y: event.clientY,
+  });
+
+  if (mouse.down) {
+    event.preventDefault();
+    console.log("Turn the earth");
+    const deltaX: number = event.clientX - mouse.xPrev!;
+    const deltaY: number = event.clientY - mouse.yPrev!;
+
+    // @ts-ignore
+    group.rotation.offset.x += deltaY * 0.005;
+    // @ts-ignore
+    group.rotation.offset.y += deltaX * 0.005;
+
+    gsap.to(group.rotation, {
+      // @ts-ignore
+      y: group.rotation.offset.y,
+      // @ts-ignore
+      x: group.rotation.offset.x,
+      duration: 2,
+    });
+    mouse.xPrev = event.clientX;
+    mouse.yPrev = event.clientY;
+  }
+  console.log(1, "mouse:", mouse);
+});
+
+addEventListener("mouseup", (_event): void => {
+  mouse.down = false;
+});
+
+addEventListener(
+  "touchmove",
+  (event: TouchEvent): void => {
+    // @ts-ignore
+    event.clientX = event.touches[0].clientX;
+    // @ts-ignore
+    event.clientY = event.touches[0].clientY;
+
+    const doesIntersect = raycaster.intersectObject(sphere);
+    console.log("doesIntersect:", doesIntersect);
+    if (doesIntersect.length > 0) mouse.down = true;
+
+    if (mouse.down) {
+      const offset: number = canvasContainer.getBoundingClientRect().top;
+      // @ts-ignore
+      mouse.x = (event.clientX / innerWidth) * 2 - 1;
+      // @ts-ignore
+      mouse.y = -((event.clientY - offset) / innerHeight) * 2 + 1;
+      console.log(mouse.y);
+
+      gsap.set(popUpEl, {
+        // @ts-ignore
+        x: event.clientX,
+        // @ts-ignore
+        y: event.clientY,
+      });
+
+      event.preventDefault();
+      // console.log('turn the earth')
+      // @ts-ignore
+      const deltaX = event.clientX - mouse.xPrev!;
+      // @ts-ignore
+      const deltaY = event.clientY - mouse.yPrev!;
+
+      // @ts-ignore
+      group.rotation.offset.x += deltaY * 0.005;
+      // @ts-ignore
+      group.rotation.offset.y += deltaX * 0.005;
+
+      gsap.to(group.rotation, {
+        // @ts-ignore
+        y: group.rotation.offset.y,
+        // @ts-ignore
+        x: group.rotation.offset.x,
+        duration: 2,
+      });
+      // @ts-ignore
+      mouse.xPrev = event.clientX;
+      // @ts-ignore
+      mouse.yPrev = event.clientY;
+    }
+    console.log(2, "mouse:", mouse);
+  },
+  { passive: false }
+);
+
+addEventListener("touchend", (_event): void => {
+  mouse.down = false;
 });

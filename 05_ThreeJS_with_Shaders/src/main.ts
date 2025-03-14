@@ -375,25 +375,23 @@ addEventListener("mousemove", (event: MouseEvent): void => {
   if (mouse.down) {
     event.preventDefault();
     console.log("Turn the earth");
-    const deltaX: number = event.clientX - mouse.xPrev!;
-    const deltaY: number = event.clientY - mouse.yPrev!;
+    const deltaX: number = event?.clientX - mouse?.xPrev!;
+    const deltaY: number = event?.clientY - mouse?.yPrev!;
+    // console.log({ deltaX, deltaY });
 
-    // @ts-ignore
-    group.rotation.offset.x += deltaY * 0.005;
-    // @ts-ignore
-    group.rotation.offset.y += deltaX * 0.005;
+    group.rotation.x += deltaY * 0.005;
+    group.rotation.y += deltaX * 0.005;
+    console.log("group.rotation:", group.rotation);
 
     gsap.to(group.rotation, {
-      // @ts-ignore
-      y: group.rotation.offset.y,
-      // @ts-ignore
-      x: group.rotation.offset.x,
+      y: group.rotation.y,
+      x: group.rotation.x,
       duration: 2,
     });
     mouse.xPrev = event.clientX;
     mouse.yPrev = event.clientY;
   }
-  console.log(1, "mouse:", mouse);
+  // console.log(1, "mouse:", mouse);
 });
 
 addEventListener("mouseup", (_event): void => {
@@ -434,16 +432,12 @@ addEventListener(
       // @ts-ignore
       const deltaY = event.clientY - mouse.yPrev!;
 
-      // @ts-ignore
-      group.rotation.offset.x += deltaY * 0.005;
-      // @ts-ignore
-      group.rotation.offset.y += deltaX * 0.005;
+      group.rotation.x += deltaY * 0.005;
+      group.rotation.y += deltaX * 0.005;
 
       gsap.to(group.rotation, {
-        // @ts-ignore
-        y: group.rotation.offset.y,
-        // @ts-ignore
-        x: group.rotation.offset.x,
+        y: group.rotation.y,
+        x: group.rotation.x,
         duration: 2,
       });
       // @ts-ignore
@@ -451,7 +445,7 @@ addEventListener(
       // @ts-ignore
       mouse.yPrev = event.clientY;
     }
-    console.log(2, "mouse:", mouse);
+    // console.log(2, "mouse:", mouse);
   },
   { passive: false }
 );

@@ -2,9 +2,9 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/Addons.js";
 import gsap from "gsap";
 // import "tailwindcss/tailwind.css";
+import "./tailwind.css";
 
 import "./style.scss";
-import "./tailwind.css";
 import vertexShader from "./shaders/vertex.glsl";
 import fragmentShader from "./shaders/fragment.glsl";
 import atmosphereVertexShader from "./shaders/atmosphereVertex.glsl";
@@ -15,6 +15,9 @@ import countries from "./data/countries.json";
 //* HTML
 const canvasContainer = document.querySelector("#canvasContainer") as HTMLDivElement;
 // console.log("canvasContainer:", canvasContainer);
+const popUpEl = document.querySelector("#popUpEl") as HTMLDivElement;
+const populationEl = document.querySelector("#populationEl") as HTMLSpanElement;
+const populationValueEl = document.querySelector("#populationValueEl") as HTMLParagraphElement;
 
 //* Scene
 const scene: THREE.Scene = new THREE.Scene();
@@ -277,9 +280,6 @@ const mouse = {
 //* Raycaster
 const raycaster: THREE.Raycaster = new THREE.Raycaster();
 // console.log("raycaster:", raycaster);
-const popUpEl = document.querySelector("#popUpEl") as HTMLDivElement;
-const populationEl = document.querySelector("#populationEl") as HTMLSpanElement;
-const populationValueEl = document.querySelector("#populationValueEl") as HTMLParagraphElement;
 
 //^ Animate
 (function animate(): void {
@@ -363,6 +363,7 @@ canvasContainer.addEventListener("mousedown", (event: MouseEvent): void => {
 });
 
 addEventListener("mousemove", (event: MouseEvent): void => {
+  // console.log("innerWidth:", innerWidth);
   if (innerWidth >= 1280) {
     mouse.x = ((event.clientX - innerWidth / 2) / (innerWidth / 2)) * 2 - 1;
     mouse.y = -(event.clientY / innerHeight) * 2 + 1;
@@ -405,6 +406,7 @@ addEventListener("mousemove", (event: MouseEvent): void => {
 });
 
 addEventListener("mouseup", (_event): void => {
+  // console.log("_event:", event);
   mouse.down = false;
 });
 
@@ -412,11 +414,11 @@ addEventListener(
   "touchmove",
   (event: TouchEvent): void => {
     // @ts-ignore
-    event.clientX = event.touches[0].clientX;
+    event.clientX = event.touches[0].clientX; //* On mobile touches list!
     // @ts-ignore
-    event.clientY = event.touches[0].clientY;
+    event.clientY = event.touches[0].clientY; //* On mobile touches list!
 
-    const doesIntersect = raycaster.intersectObject(sphere);
+    const doesIntersect: THREE.Intersection<THREE.Object3D<THREE.Object3DEventMap>>[] = raycaster.intersectObject(sphere);
     console.log("doesIntersect:", doesIntersect);
     if (doesIntersect.length > 0) mouse.down = true;
 
@@ -467,3 +469,22 @@ addEventListener(
 addEventListener("touchend", (_event): void => {
   mouse.down = false;
 });
+
+//^ Touch Event example only!
+//* Passive event listener for touchmove
+// document.addEventListener(
+//   "touchmove",
+//   function (event) {
+//     //* You cannot call preventDefault() here
+//   },
+//   { passive: true }
+// );
+
+//* Non-passive event listener for touchmove
+// document.addEventListener(
+//   "touchmove",
+//   function (event) {
+//     event.preventDefault(); // This will prevent default scrolling
+//   },
+//   { passive: false }
+// );

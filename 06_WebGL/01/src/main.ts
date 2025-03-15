@@ -11,7 +11,7 @@ import "./style.scss";
     return;
   }
 
-  gl.clearColor(0.5, 0.5, 0.5, 1.0);
+  gl.clearColor(0.9, 0.5, 0.3, 0.7);
 
   gl.clear(gl.COLOR_BUFFER_BIT);
 })();

@@ -1,4 +1,6 @@
 import "./style.scss";
+import vertexShaderSource from "./vertexShaderSource.glsl";
+import fragmentShaderSource from "./fragmentShaderSource.glsl";
 
 (function main(): void {
   const canvas = document.querySelector("#glcanvas") as HTMLCanvasElement;
@@ -11,20 +13,20 @@ import "./style.scss";
     return;
   }
 
-  // Define vertex shader source
-  const vertexShaderSource: string = `
-attribute vec2 position;
-void main(void) {
-  gl_Position = vec4(position, 0.0, 1.0);
-}
-`;
+  //   //* Define vertex shader source
+  // const vertexShaderSource: string = `
+  // attribute vec2 position;
+  // void main(void) {
+  //   gl_Position = vec4(position, 0.0, 1.0);
+  // }
+  // `;
 
-  // Define fragment shader source
-  const fragmentShaderSource: string = `
-void main(void) {
-  gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red color
-}
-`;
+  //   //* Define fragment shader source
+  // const fragmentShaderSource: string = `
+  // void main(void) {
+  //   gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0); // Red color
+  // }
+  // `;
 
   // Create and compile vertex shader
   const vertexShader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;

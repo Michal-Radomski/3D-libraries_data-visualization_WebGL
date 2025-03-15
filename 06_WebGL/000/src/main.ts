@@ -2,6 +2,7 @@ import "./style.scss";
 import triangleVertWGSL from "./triangle.vert.wgsl?raw";
 import triangleFragWGSL from "./triangle.frag.wgsl?raw";
 
+//* Only in Chrome not in Firefox!
 (async function main(): Promise<void> {
   // Check if WebGPU is supported
   if (!navigator.gpu) {
@@ -20,6 +21,7 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
 
     // Note: You might want to add logic to resize your render target textures here.
   });
+  // console.log("observer:", observer);
   observer.observe(canvas);
 
   // Request a GPU adapter

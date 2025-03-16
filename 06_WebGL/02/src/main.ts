@@ -24,13 +24,13 @@ import "./style.scss";
   // Unbind the buffer
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  const vertCode: string =
-    "attribute vec3 coordinates;" +
-    "void main(void)" +
-    "{" +
-    " gl_Position = vec4(coordinates, 1.0);" +
-    "gl_PointSize = 10.0;" +
-    "}";
+  const vertCode: string = /* glsl */ `
+    #version 100
+    attribute vec3 coordinates;
+    void main(void) {
+      gl_Position = vec4(coordinates, 1.0);
+      gl_PointSize = 10.0;
+    }`;
 
   // Create a vertex shader object
   const vertShader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
@@ -42,7 +42,11 @@ import "./style.scss";
   gl.compileShader(vertShader);
 
   // fragment shader source code
-  const fragCode: string = "void main(void)" + "{" + " gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);" + "}";
+  const fragCode: string = /* glsl */ `
+  #version 100
+  void main(void)  {
+       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1); 
+      }`;
 
   // Create fragment shader object
   const fragShader = gl.createShader(gl.FRAGMENT_SHADER) as WebGLShader;

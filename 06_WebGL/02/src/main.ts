@@ -1,6 +1,6 @@
 import "./style.scss";
-import vertCode from "./vertex.glsl?raw";
-import fragCode from "./fragment.glsl?raw";
+import vertCode from "./vertex.glsl?raw"; //* V2
+import fragCode from "./fragment.glsl?raw"; //* V2
 
 (function main(): void {
   const canvas = document.querySelector("canvas#glcanvas") as HTMLCanvasElement;
@@ -11,7 +11,9 @@ import fragCode from "./fragment.glsl?raw";
     return;
   }
 
-  const vertices: number[] = [0.0, 0.0, 0.0, 0.5, -0.5, 0.0, 1.0, 1.0, 0.0];
+  // const vertices: number[] = [0.0, 0.0, 0.0, 0.5, -0.5, 0.0, 1.0, 1.0, 0.0];
+  const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.0, 0.0, 0.5, -0.5, 0.0, 1.0, 1.0, 0.0]);
+  // console.log("vertices:", vertices);
 
   // Create an empty buffer object to store the vertex buffer
   const vertex_buffer: WebGLBuffer = gl.createBuffer();
@@ -25,14 +27,6 @@ import fragCode from "./fragment.glsl?raw";
   // Unbind the buffer
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  const vertCode0: string = /* glsl */ `
-    #version 100
-    attribute vec3 coordinates;
-    void main(void) {
-      gl_Position = vec4(coordinates, 1.0);
-      gl_PointSize = 10.0;
-    }`;
-
   // Create a vertex shader object
   const vertShader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
 
@@ -41,14 +35,6 @@ import fragCode from "./fragment.glsl?raw";
 
   // Compile the vertex shader
   gl.compileShader(vertShader);
-
-  // Fragment shader source code
-  const fragCode0: string = /* glsl */ `
-  #version 100
-  void main(void)  {
-       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);
-      }`;
-  console.log("vertCode0, fragCode0:", vertCode0, fragCode0);
 
   // Create fragment shader object
   const fragShader = gl.createShader(gl.FRAGMENT_SHADER) as WebGLShader;
@@ -100,3 +86,21 @@ import fragCode from "./fragment.glsl?raw";
   // Draw the triangle
   gl.drawArrays(gl.POINTS, 0, 3);
 })();
+
+//* V1
+// const vertCode0: string = /* glsl */ `
+//   #version 100
+//   attribute vec3 coordinates;
+//   void main(void) {
+//     gl_Position = vec4(coordinates, 1.0);
+//     gl_PointSize = 10.0;
+//   }`;
+
+//* V1
+// // Fragment shader source code
+// const fragCode0: string = /* glsl */ `
+// #version 100
+// void main(void)  {
+//      gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);
+//     }`;
+// console.log("vertCode0, fragCode0:", vertCode0, fragCode0);

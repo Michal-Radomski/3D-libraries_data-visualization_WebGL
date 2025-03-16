@@ -3,7 +3,7 @@ import vertexShaderSource from "./vertexShaderSource.glsl";
 import fragmentShaderSource from "./fragmentShaderSource.glsl";
 
 (function main(): void {
-  const canvas = document.querySelector("#glcanvas") as HTMLCanvasElement;
+  const canvas = document.querySelector("canvas#glcanvas") as HTMLCanvasElement;
 
   const gl = canvas.getContext("webgl") as WebGLRenderingContext;
   console.log("gl:", gl);

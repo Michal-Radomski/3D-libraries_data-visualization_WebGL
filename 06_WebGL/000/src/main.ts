@@ -10,8 +10,8 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
     return;
   }
 
-  // Create a canvas and get its context
-  const canvas = document.getElementById("canvas") as HTMLCanvasElement;
+  //* Create a canvas and get its context
+  const canvas = document.querySelector("canvas#canvas") as HTMLCanvasElement;
   // console.log("canvas:", canvas);
   const context = canvas.getContext("webgpu") as GPUCanvasContext;
   // console.log("context:", context);
@@ -25,7 +25,7 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
   // console.log("observer:", observer);
   observer.observe(canvas);
 
-  // Request a GPU adapter
+  //* Request a GPU adapter and device
   const adapter = (await navigator.gpu.requestAdapter()) as GPUAdapter;
   // console.log("adapter:", adapter);
 
@@ -37,7 +37,7 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
   const device: GPUDevice = await adapter.requestDevice({});
   // console.log("device:", device);
 
-  // Compile shaders
+  //* Compile shaders
   const vertexShader: GPUShaderModule = device.createShaderModule({
     code: triangleVertWGSL as string,
   });
@@ -47,7 +47,7 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
   });
   // console.log("vertexShader:", vertexShader, "fragmentShader:", fragmentShader);
 
-  // Create a swap chain
+  //* Create a swap chain
   const swapChainFormat: GPUTextureFormat = navigator.gpu.getPreferredCanvasFormat();
   // console.log("swapChainFormat:", swapChainFormat);
   context.configure({
@@ -56,7 +56,7 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
     alphaMode: "opaque",
   });
 
-  // Create a pipeline
+  //* Create a pipeline
   const pipeline: GPURenderPipeline = device.createRenderPipeline({
     vertex: {
       module: vertexShader,
@@ -92,13 +92,13 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
   });
   // console.log("pipeline:", pipeline);
 
-  // Set up vertex data
+  //* Set up vertex data
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([
     -0.5, -0.5, 0.0, 1.0, 0.5, -0.5, 0.0, 1.0, 0.0, 0.5, 0.0, 1.0,
   ]);
   // console.log("vertices:", vertices);
 
-  // Create a buffer for the vertex data
+  //* Create a buffer for the vertex data
   const vertexBuffer: GPUBuffer = device.createBuffer({
     size: vertices.byteLength,
     usage: GPUBufferUsage.VERTEX,

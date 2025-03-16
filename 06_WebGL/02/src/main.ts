@@ -44,9 +44,14 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   // const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0]);
   // const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([0, 1, 2]);
 
+  // const vertices: Float32Array<ArrayBuffer> = new Float32Array([
+  //   -0.5, -0.2, 0.0, -0.1, 0.7, 0.0, -0.3, -0.3, 0.0, 0.2, 0.6, 0.0, 0.7, -0.9, 0.0, 0.7, 0.9, 0.0,
+  // ]); // 6 points
+
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([
-    -0.5, -0.2, 0.0, -0.1, 0.7, 0.0, -0.3, -0.3, 0.0, 0.2, 0.6, 0.0, 0.7, -0.9, 0.0, 0.7, 0.9, 0.0,
-  ]); // 6 points
+    -0.5, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.5, 0.5, 0.0,
+  ]);
+  const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([3, 2, 1, 3, 1, 0]);
 
   //* Create an empty buffer object to store the vertex buffer
   const vertex_buffer: WebGLBuffer = gl.createBuffer();
@@ -67,8 +72,8 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   // Bind appropriate array buffer to it
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
 
-  // Pass the vertex data to the buffer
-  // gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexes, gl.STATIC_DRAW);
+  //* Pass the vertex data to the buffer
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexes, gl.STATIC_DRAW);
 
   //* Create a vertex shader object
   const vertShader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
@@ -132,13 +137,15 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   gl.viewport(0, 0, canvas.width, canvas.height);
 
   //* Draw the triangle
-  gl.drawArrays(gl.POINTS, 0, 6);
+  gl.drawArrays(gl.POINTS, 0, 4);
   // gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
 
   // gl.drawArrays(gl.LINES, 0, 6); //* 2 points per line, 3 lines
   // gl.drawArrays(gl.LINE_STRIP, 0, 6); //* 5 lines
   // gl.drawArrays(gl.LINE_LOOP, 0, 6); //* 5 lines + close line
-  gl.drawArrays(gl.TRIANGLE_FAN, 0, 6);
+  // gl.drawArrays(gl.TRIANGLE_FAN, 0, 6);
+
+  gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
 })();
 
 //* V1

@@ -104,3 +104,34 @@ import fragmentShaderSource from "./fragmentShaderSource.glsl";
 
 console.log("typeof WebGLRenderingContext:", typeof WebGLRenderingContext);
 console.log('typeof WebGLRenderingContext === "undefined":', typeof WebGLRenderingContext === "undefined");
+
+//^ Here's a simple benchmark to compare the performance of Float32Array and a standard array:
+const iterations = 1e7; //(10000000)
+
+//* Using Float32Array
+const float32Array: Float32Array<ArrayBuffer> = new Float32Array(iterations);
+console.time("Float32Array");
+for (let i = 0; i < iterations; i++) {
+  float32Array[i] = Math.random();
+}
+console.timeEnd("Float32Array");
+
+//* Using Standard Array
+const standardArray: number[] = new Array(iterations);
+console.time("Standard Array");
+for (let i = 0; i < iterations; i++) {
+  standardArray[i] = Math.random();
+}
+console.timeEnd("Standard Array");
+
+//* Using Float32Array
+const float16Array: typeof Float16Array = new Float16Array(iterations);
+console.time("Float16Array");
+for (let i = 0; i < iterations; i++) {
+  float16Array[i] = Math.random();
+}
+console.timeEnd("Float16Array");
+
+//^ Float32Array: 39ms - timer ended main.ts:117:8
+//^ Standard Array: 266ms - timer ended main.ts:125:8
+//^ Float16Array: 52ms - timer ended

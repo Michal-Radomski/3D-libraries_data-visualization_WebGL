@@ -50,7 +50,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
 
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([
     -0.5, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0, 0.5, 0.5, 0.0,
-  ]);
+  ]); // Point indexes: 0,1,2,3
   const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([3, 2, 1, 3, 1, 0]);
 
   //* Create an empty buffer object to store the vertex buffer

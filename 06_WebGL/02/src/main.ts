@@ -15,75 +15,77 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.0, 0.0, 0.5, -0.5, 0.0, 1.0, 1.0, 0.0]);
   // console.log("vertices:", vertices);
 
-  // Create an empty buffer object to store the vertex buffer
+  //* Create an empty buffer object to store the vertex buffer
   const vertex_buffer: WebGLBuffer = gl.createBuffer();
 
-  //Bind appropriate array buffer to it
+  //* Bind appropriate array buffer to it
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
-  // Pass the vertex data to the buffer
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+  //* Pass the vertex data to the buffer
+  // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
-  // Unbind the buffer
+  //* Unbind the buffer
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  // Create a vertex shader object
+  //* Create a vertex shader object
   const vertShader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
 
-  // Attach vertex shader source code
+  //* Attach vertex shader source code
   gl.shaderSource(vertShader, vertCode);
 
-  // Compile the vertex shader
+  //* Compile the vertex shader
   gl.compileShader(vertShader);
 
-  // Create fragment shader object
+  //* Create fragment shader object
   const fragShader = gl.createShader(gl.FRAGMENT_SHADER) as WebGLShader;
 
-  // Attach fragment shader source code
+  //* Attach fragment shader source code
   gl.shaderSource(fragShader, fragCode);
 
-  // Compile the fragment shader
+  //* Compile the fragment shader
   gl.compileShader(fragShader);
 
-  // Create a shader program object to store the combined shader program
+  //* Create a shader program object to store the combined shader program
   const shaderProgram: WebGLProgram = gl.createProgram();
 
-  // Attach a vertex shader
+  //* Attach a vertex shader
   gl.attachShader(shaderProgram, vertShader);
 
-  // Attach a fragment shader
+  //* Attach a fragment shader
   gl.attachShader(shaderProgram, fragShader);
 
-  // Link both programs
+  //* Link both programs
   gl.linkProgram(shaderProgram);
 
-  // Use the combined shader program object
+  //* Use the combined shader program object
   gl.useProgram(shaderProgram);
 
-  // Bind vertex buffer object
+  //* Bind vertex buffer object
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
-  // Get the attribute location
+  //* Get the attribute location
   const coord: number = gl.getAttribLocation(shaderProgram, "coordinates");
   // console.log({ coord });
 
-  // Point an attribute to the currently bound VBO
+  //* Point an attribute to the currently bound VBO
   gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
 
-  // Enable the attribute
+  //* Enable the attribute
   gl.enableVertexAttribArray(coord);
 
   gl.clearColor(1.0, 0.0, 0.0, 1.0);
 
-  // Enable the depth test
+  //* Enable the depth test
   gl.enable(gl.DEPTH_TEST);
+  // console.log("gl.DEPTH_TEST:", gl.DEPTH_TEST);
 
   gl.clear(gl.COLOR_BUFFER_BIT);
 
-  // Set the view port
+  //* Set the view port
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  // Draw the triangle
+  //* Draw the triangle
   gl.drawArrays(gl.POINTS, 0, 3);
 })();
 

@@ -1,6 +1,6 @@
 import "./style.scss";
-import vertCode from "./vertex.glsl";
-import fragCode from "./fragment.glsl";
+import vertCode from "./vertex.glsl?raw";
+import fragCode from "./fragment.glsl?raw";
 
 (function main(): void {
   const canvas = document.querySelector("canvas#glcanvas") as HTMLCanvasElement;
@@ -8,7 +8,6 @@ import fragCode from "./fragment.glsl";
 
   if (!gl) {
     alert("Unable to setup WebGL. Your browser or computer may not support it.");
-
     return;
   }
 
@@ -43,7 +42,7 @@ import fragCode from "./fragment.glsl";
   // Compile the vertex shader
   gl.compileShader(vertShader);
 
-  // fragment shader source code
+  // Fragment shader source code
   const fragCode0: string = /* glsl */ `
   #version 100
   void main(void)  {
@@ -80,7 +79,7 @@ import fragCode from "./fragment.glsl";
 
   // Get the attribute location
   const coord: number = gl.getAttribLocation(shaderProgram, "coordinates");
-  console.log({ coord });
+  // console.log({ coord });
 
   // Point an attribute to the currently bound VBO
   gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);

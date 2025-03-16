@@ -2,6 +2,20 @@ import "./style.scss";
 import vertCode from "./vertex.glsl?raw"; //* V2
 import fragCode from "./fragment.glsl?raw"; //* V2
 
+const NormalizedToDevice = (coord: number, axisSize: number): number => {
+  const halfAxisSize: number = axisSize / 2;
+  const deviceCoord: number = (coord + 1) * halfAxisSize;
+  // console.log({ deviceCoord });
+  return deviceCoord;
+};
+
+const DeviceToNormalized = (coord: number, axisSize: number): number => {
+  const halfAxisSize: number = axisSize / 2;
+  const normalizedCoord: number = coord / halfAxisSize - 1;
+  // console.log({ normalizedCoord });
+  return normalizedCoord;
+};
+
 (function main(): void {
   const canvas = document.querySelector("canvas#glcanvas") as HTMLCanvasElement;
   const gl = canvas.getContext("webgl") as WebGLRenderingContext;
@@ -12,7 +26,19 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   }
 
   // const vertices: number[] = [0.0, 0.0, 0.0, 0.5, -0.5, 0.0, 1.0, 1.0, 0.0];
-  const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.0, 0.0, 0.5, -0.5, 0.0, 1.0, 1.0, 0.0]);
+  const vertices: Float32Array<ArrayBuffer> = new Float32Array([
+    // 0.0, 0.0, 0.0,
+    NormalizedToDevice(DeviceToNormalized(0, canvas.width), canvas.width),
+    NormalizedToDevice(DeviceToNormalized(0, canvas.height), canvas.height),
+    0.0,
+    0.5,
+    -0.5,
+    0.0,
+    // 1.0, 1.0, 0.0,
+    NormalizedToDevice(DeviceToNormalized(1, canvas.width), canvas.width),
+    NormalizedToDevice(DeviceToNormalized(1, canvas.height), canvas.height),
+    0.0,
+  ]); //* xyz
   // console.log("vertices:", vertices);
 
   //* Create an empty buffer object to store the vertex buffer
@@ -48,6 +74,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
 
   //* Create a shader program object to store the combined shader program
   const shaderProgram: WebGLProgram = gl.createProgram();
+  // console.log("shaderProgram:", shaderProgram);
 
   //* Attach a vertex shader
   gl.attachShader(shaderProgram, vertShader);
@@ -74,7 +101,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   //* Enable the attribute
   gl.enableVertexAttribArray(coord);
 
-  gl.clearColor(1.0, 0.0, 0.0, 1.0);
+  gl.clearColor(1.0, 0.0, 0.0, 1.0); // red
 
   //* Enable the depth test
   gl.enable(gl.DEPTH_TEST);

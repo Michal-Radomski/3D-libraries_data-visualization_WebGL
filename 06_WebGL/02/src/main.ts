@@ -132,12 +132,13 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   gl.viewport(0, 0, canvas.width, canvas.height);
 
   //* Draw the triangle
-  gl.drawArrays(gl.POINTS, 0, 3);
+  gl.drawArrays(gl.POINTS, 0, 6);
   // gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
 
   // gl.drawArrays(gl.LINES, 0, 6); //* 2 points per line, 3 lines
   // gl.drawArrays(gl.LINE_STRIP, 0, 6); //* 5 lines
-  gl.drawArrays(gl.LINE_LOOP, 0, 6); //* 5 lines + close line
+  // gl.drawArrays(gl.LINE_LOOP, 0, 6); //* 5 lines + close line
+  gl.drawArrays(gl.TRIANGLE_FAN, 0, 6);
 })();
 
 //* V1

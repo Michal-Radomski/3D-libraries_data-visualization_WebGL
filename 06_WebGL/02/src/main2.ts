@@ -124,8 +124,8 @@ import fragCode from "./fragment2.glsl?raw";
 
   //* Rotation
   const rotateX = (m: number[], angle: number): void => {
-    const c = Math.cos(angle);
-    const s = Math.sin(angle);
+    const c: number = Math.cos(angle);
+    const s: number = Math.sin(angle);
     const mv1 = m[1],
       mv5 = m[5],
       mv9 = m[9];
@@ -140,8 +140,8 @@ import fragCode from "./fragment2.glsl?raw";
   };
 
   const rotateY = (m: number[], angle: number): void => {
-    const c = Math.cos(angle);
-    const s = Math.sin(angle);
+    const c: number = Math.cos(angle);
+    const s: number = Math.sin(angle);
     const mv0 = m[0],
       mv4 = m[4],
       mv8 = m[8];
@@ -156,8 +156,8 @@ import fragCode from "./fragment2.glsl?raw";
   };
 
   const rotateZ = (m: number[], angle: number): void => {
-    const c = Math.cos(angle);
-    const s = Math.sin(angle);
+    const c: number = Math.cos(angle);
+    const s: number = Math.sin(angle);
     const mv0 = m[0],
       mv4 = m[4],
       mv8 = m[8];
@@ -173,7 +173,7 @@ import fragCode from "./fragment2.glsl?raw";
 
   let previous_time: number = 0;
 
-  const animate = function (time: number): void {
+  const animate = (time: number): void => {
     const dt: number = time - previous_time;
     rotateZ(mov_matrix, dt * 0.001); //time
     rotateY(mov_matrix, dt * 0.0004);

@@ -1,4 +1,6 @@
 import "./style.scss";
+import vertCode from "./vertex.glsl";
+import fragCode from "./fragment.glsl";
 
 (function main(): void {
   const canvas = document.querySelector("canvas#glcanvas") as HTMLCanvasElement;
@@ -24,7 +26,7 @@ import "./style.scss";
   // Unbind the buffer
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
-  const vertCode: string = /* glsl */ `
+  const vertCode0: string = /* glsl */ `
     #version 100
     attribute vec3 coordinates;
     void main(void) {
@@ -42,11 +44,12 @@ import "./style.scss";
   gl.compileShader(vertShader);
 
   // fragment shader source code
-  const fragCode: string = /* glsl */ `
+  const fragCode0: string = /* glsl */ `
   #version 100
   void main(void)  {
-       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1); 
+       gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);
       }`;
+  console.log("vertCode0, fragCode0:", vertCode0, fragCode0);
 
   // Create fragment shader object
   const fragShader = gl.createShader(gl.FRAGMENT_SHADER) as WebGLShader;

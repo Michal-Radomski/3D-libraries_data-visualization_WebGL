@@ -2,19 +2,19 @@ import "./style.scss";
 import vertCode from "./vertex.glsl?raw"; //* V2
 import fragCode from "./fragment.glsl?raw"; //* V2
 
-const NormalizedToDevice = (coord: number, axisSize: number): number => {
-  const halfAxisSize: number = axisSize / 2;
-  const deviceCoord: number = (coord + 1) * halfAxisSize;
-  // console.log({ deviceCoord });
-  return deviceCoord;
-};
+// const NormalizedToDevice = (coord: number, axisSize: number): number => {
+//   const halfAxisSize: number = axisSize / 2;
+//   const deviceCoord: number = (coord + 1) * halfAxisSize;
+//   // console.log({ deviceCoord });
+//   return deviceCoord;
+// };
 
-const DeviceToNormalized = (coord: number, axisSize: number): number => {
-  const halfAxisSize: number = axisSize / 2;
-  const normalizedCoord: number = coord / halfAxisSize - 1;
-  // console.log({ normalizedCoord });
-  return normalizedCoord;
-};
+// const DeviceToNormalized = (coord: number, axisSize: number): number => {
+//   const halfAxisSize: number = axisSize / 2;
+//   const normalizedCoord: number = coord / halfAxisSize - 1;
+//   // console.log({ normalizedCoord });
+//   return normalizedCoord;
+// };
 
 (function main(): void {
   const canvas = document.querySelector("canvas#glcanvas") as HTMLCanvasElement;
@@ -26,20 +26,23 @@ const DeviceToNormalized = (coord: number, axisSize: number): number => {
   }
 
   // const vertices: number[] = [0.0, 0.0, 0.0, 0.5, -0.5, 0.0, 1.0, 1.0, 0.0];
-  const vertices: Float32Array<ArrayBuffer> = new Float32Array([
-    // 0.0, 0.0, 0.0,
-    NormalizedToDevice(DeviceToNormalized(0, canvas.width), canvas.width),
-    NormalizedToDevice(DeviceToNormalized(0, canvas.height), canvas.height),
-    0.0,
-    0.5,
-    -0.5,
-    0.0,
-    // 1.0, 1.0, 0.0,
-    NormalizedToDevice(DeviceToNormalized(1, canvas.width), canvas.width),
-    NormalizedToDevice(DeviceToNormalized(1, canvas.height), canvas.height),
-    0.0,
-  ]); //* xyz
+  // const vertices: Float32Array<ArrayBuffer> = new Float32Array([
+  //   // 0.0, 0.0, 0.0,
+  //   NormalizedToDevice(DeviceToNormalized(0, canvas.width), canvas.width),
+  //   NormalizedToDevice(DeviceToNormalized(0, canvas.height), canvas.height),
+  //   0.0,
+  //   0.5,
+  //   -0.5,
+  //   0.0,
+  //   // 1.0, 1.0, 0.0,
+  //   NormalizedToDevice(DeviceToNormalized(1, canvas.width), canvas.width),
+  //   NormalizedToDevice(DeviceToNormalized(1, canvas.height), canvas.height),
+  //   0.0,
+  // ]); //* xyz
   // console.log("vertices:", vertices);
+
+  const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0]);
+  const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([0, 1, 2]);
 
   //* Create an empty buffer object to store the vertex buffer
   const vertex_buffer: WebGLBuffer = gl.createBuffer();
@@ -53,6 +56,15 @@ const DeviceToNormalized = (coord: number, axisSize: number): number => {
 
   //* Unbind the buffer
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
+
+  // Create an empty buffer object to store Index buffer
+  const Index_Buffer = gl.createBuffer();
+
+  // Bind appropriate array buffer to it
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
+
+  // Pass the vertex data to the buffer
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexes, gl.STATIC_DRAW);
 
   //* Create a vertex shader object
   const vertShader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
@@ -91,6 +103,9 @@ const DeviceToNormalized = (coord: number, axisSize: number): number => {
   //* Bind vertex buffer object
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
+  //* Bind index buffer object
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
+
   //* Get the attribute location
   const coord: number = gl.getAttribLocation(shaderProgram, "coordinates");
   // console.log({ coord });
@@ -114,6 +129,7 @@ const DeviceToNormalized = (coord: number, axisSize: number): number => {
 
   //* Draw the triangle
   gl.drawArrays(gl.POINTS, 0, 3);
+  gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
 })();
 
 //* V1

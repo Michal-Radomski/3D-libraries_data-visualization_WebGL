@@ -14,6 +14,7 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
   const canvas = document.getElementById("canvas") as HTMLCanvasElement;
   // console.log("canvas:", canvas);
   const context = canvas.getContext("webgpu") as GPUCanvasContext;
+  // console.log("context:", context);
 
   const observer: ResizeObserver = new ResizeObserver(() => {
     canvas.width = canvas.clientWidth;
@@ -46,6 +47,15 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
   });
   // console.log("vertexShader:", vertexShader, "fragmentShader:", fragmentShader);
 
+  // Create a swap chain
+  const swapChainFormat: GPUTextureFormat = navigator.gpu.getPreferredCanvasFormat();
+  // console.log("swapChainFormat:", swapChainFormat);
+  context.configure({
+    device: device,
+    format: swapChainFormat,
+    alphaMode: "opaque",
+  });
+
   // Create a pipeline
   const pipeline: GPURenderPipeline = device.createRenderPipeline({
     vertex: {
@@ -70,7 +80,8 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
       entryPoint: "fs_main",
       targets: [
         {
-          format: navigator.gpu.getPreferredCanvasFormat(),
+          // format: navigator.gpu.getPreferredCanvasFormat(),
+          format: swapChainFormat,
         },
       ],
     },
@@ -85,6 +96,7 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([
     -0.5, -0.5, 0.0, 1.0, 0.5, -0.5, 0.0, 1.0, 0.0, 0.5, 0.0, 1.0,
   ]);
+  // console.log("vertices:", vertices);
 
   // Create a buffer for the vertex data
   const vertexBuffer: GPUBuffer = device.createBuffer({
@@ -92,20 +104,16 @@ import triangleFragWGSL from "./triangle.frag.wgsl?raw";
     usage: GPUBufferUsage.VERTEX,
     mappedAtCreation: true,
   });
+  // console.log("vertexBuffer:", vertexBuffer);
+
   new Float32Array(vertexBuffer.getMappedRange()).set(vertices);
   vertexBuffer.unmap();
 
   //* Draw
   function draw(): void {
     const commandEncoder: GPUCommandEncoder = device.createCommandEncoder();
+    // console.log("commandEncoder:", commandEncoder);
 
-    // Create a swap chain
-    const swapChainFormat: GPUTextureFormat = navigator.gpu.getPreferredCanvasFormat();
-    context.configure({
-      device: device,
-      format: swapChainFormat,
-      alphaMode: "opaque",
-    });
     const textureView: GPUTextureView = context.getCurrentTexture().createView();
     const renderPass: GPURenderPassEncoder = commandEncoder.beginRenderPass({
       colorAttachments: [

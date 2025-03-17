@@ -44,8 +44,8 @@ const aspect = {
   height: window.innerHeight,
 };
 
-function onProgress(xhr: object): void {
-  console.log("xhr:", xhr);
+function onProgress(event: ProgressEvent): void {
+  console.log("event:", event);
 }
 function onError(error: unknown): void {
   console.log("error:", error);

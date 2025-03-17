@@ -12,7 +12,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   }
 
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0]);
-  const colors: Float32Array<ArrayBuffer> = new Float32Array([0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0]);
+  const colors: Float32Array<ArrayBuffer> = new Float32Array([0.4, 1.0, 0.4, 0.4, 1.0, 0.4, 0.4, 1.0, 0.4]);
   const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([0, 1, 2]);
 
   const vertex_buffer: WebGLBuffer = gl.createBuffer();

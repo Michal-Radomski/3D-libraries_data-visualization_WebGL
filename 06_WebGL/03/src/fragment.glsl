@@ -1,5 +1,6 @@
-precision lowp float;
+// precision lowp float;
 // precision mediump float;
+precision highp float;
 varying vec3 vColor;
 
 void main(void) {

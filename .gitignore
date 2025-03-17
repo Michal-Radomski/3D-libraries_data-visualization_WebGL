@@ -44,3 +44,5 @@ Bike.jsx
 *.hdr
 Temp/
 countries.json
+*.mtl
+*.obj

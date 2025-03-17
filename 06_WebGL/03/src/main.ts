@@ -11,34 +11,35 @@ import fragCode from "./fragment.glsl?raw"; //* V2
     return;
   }
 
-  // const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0]);
+  const vertices: Float32Array<ArrayBuffer> = new Float32Array([0.0, 0.5, 0.0, -0.5, -0.5, 0.0, 0.5, -0.5, 0.0]);
   // const colors: Float32Array<ArrayBuffer> = new Float32Array([0.4, 1.0, 0.4, 0.4, 1.0, 0.4, 0.4, 1.0, 0.4]);
-  // const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([0, 1, 2]);
+  const colors: Float32Array<ArrayBuffer> = new Float32Array([1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]);
+  const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([0, 1, 2]);
 
-  const vertices: Float32Array<ArrayBuffer> = new Float32Array([
-    0.5,
-    0.5,
-    0.0, // 4th - 3 - green
-    -0.5,
-    -0.5,
-    0.0, // 2nd - 1 - green
-    -0.5,
-    0.5,
-    0.0, // 1st - 0 - green
-    0.5,
-    0.5,
-    0.0, // 4th - 3 - blue
-    0.5,
-    -0.5,
-    0.0, // 3rd - 2 - blue
-    -0.5,
-    -0.5,
-    0.0, // 2nd - 1 - blue
-  ]);
+  // const vertices: Float32Array<ArrayBuffer> = new Float32Array([
+  //   0.5,
+  //   0.5,
+  //   0.0, // 4th - 3 - green
+  //   -0.5,
+  //   -0.5,
+  //   0.0, // 2nd - 1 - green
+  //   -0.5,
+  //   0.5,
+  //   0.0, // 1st - 0 - green
+  //   0.5,
+  //   0.5,
+  //   0.0, // 4th - 3 - blue
+  //   0.5,
+  //   -0.5,
+  //   0.0, // 3rd - 2 - blue
+  //   -0.5,
+  //   -0.5,
+  //   0.0, // 2nd - 1 - blue
+  // ]);
 
-  const colors: Float32Array<ArrayBuffer> = new Float32Array([
-    0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
-  ]);
+  // const colors: Float32Array<ArrayBuffer> = new Float32Array([
+  //   0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+  // ]);
 
   const vertex_buffer: WebGLBuffer = gl.createBuffer();
 
@@ -49,13 +50,13 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   gl.bindBuffer(gl.ARRAY_BUFFER, null);
 
   // //* Create an empty buffer object to store Index buffer
-  // const index_Buffer: WebGLBuffer = gl.createBuffer();
+  const index_Buffer: WebGLBuffer = gl.createBuffer();
 
   // //* Bind appropriate array buffer to it
-  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_Buffer);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_Buffer);
 
   // //* Pass the vertex data to the buffer
-  // gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexes, gl.STATIC_DRAW);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexes, gl.STATIC_DRAW);
 
   //* Unbind the buffer
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
@@ -92,7 +93,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
   //* Bind index buffer object
-  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_Buffer);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_Buffer);
 
   const coord: number = gl.getAttribLocation(shaderProgram, "coordinates");
 
@@ -112,7 +113,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   //* Enable the color attribute
   gl.enableVertexAttribArray(color);
 
-  gl.clearColor(1.0, 0.0, 0.0, 1.0);
+  gl.clearColor(0.5, 0.0, 0.0, 0.4);
 
   gl.enable(gl.DEPTH_TEST);
 
@@ -120,6 +121,6 @@ import fragCode from "./fragment.glsl?raw"; //* V2
 
   gl.viewport(0, 0, canvas.width, canvas.height);
 
-  // gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
-  gl.drawArrays(gl.TRIANGLES, 0, 6);
+  gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
+  // gl.drawArrays(gl.TRIANGLES, 0, 6);
 })();

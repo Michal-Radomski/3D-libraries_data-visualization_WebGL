@@ -106,7 +106,7 @@ console.log("typeof WebGLRenderingContext:", typeof WebGLRenderingContext);
 console.log('typeof WebGLRenderingContext === "undefined":', typeof WebGLRenderingContext === "undefined");
 
 //^ Here's a simple benchmark to compare the performance of Float32Array and a standard array:
-const iterations = 1e7; //(10000000)
+const iterations: number = 1e7; //(10000000)
 
 //* Using Float32Array
 const float32Array: Float32Array<ArrayBuffer> = new Float32Array(iterations);

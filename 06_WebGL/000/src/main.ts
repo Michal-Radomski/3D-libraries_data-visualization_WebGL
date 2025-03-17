@@ -2,7 +2,7 @@ import "./style.scss";
 import triangleVertWGSL from "./triangle.vert.wgsl?raw";
 import triangleFragWGSL from "./triangle.frag.wgsl?raw";
 
-//* Only in Chrome not in Firefox!
+//* Only in Chrome not in Firefox! :chrome://flags/
 (async function main(): Promise<void> {
   // Check if WebGPU is supported
   if (!navigator.gpu) {

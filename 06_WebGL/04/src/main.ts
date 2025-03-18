@@ -108,7 +108,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   gl.enableVertexAttribArray(texture);
 
   //* V2
-  // Load the image
+  //* Load the image
   const image: HTMLImageElement = new Image();
   // WebGL1 has different requirements for power of 2 images vs. non power of 2 images so check if the image is a power of 2 in both dimensions.
   image.onload = (): void => {
@@ -125,10 +125,11 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   };
   // console.log("image:", image);
 
-  // Start loading the image by setting its source
-  image.src = "./src/crate_0.png";
+  //* Start loading the image by setting its source
+  // image.src = "./src/crate_0.png";
+  image.src = "./src/crate.jpg";
 
-  // Helper function to check if a number is a power of 2
+  //* Helper function to check if a number is a power of 2
   function isPowerOf2(value: number): boolean {
     const valueToReturn = (value & (value - 1)) === 0;
     // console.log({ valueToReturn });

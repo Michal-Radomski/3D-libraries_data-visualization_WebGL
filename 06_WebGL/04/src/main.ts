@@ -11,7 +11,7 @@ import fragCode from "./fragment.glsl?raw"; //* V2
     return;
   }
 
-  const vertices = [
+  const vertices: Float32Array<ArrayBuffer> = new Float32Array([
     // X, Y, Z         U, V
     // Top
     -1.0, 1.0, -1.0, 0, 0, -1.0, 1.0, 1.0, 0, 1, 1.0, 1.0, 1.0, 1, 1, 1.0, 1.0, -1.0, 1, 0,
@@ -25,9 +25,9 @@ import fragCode from "./fragment.glsl?raw"; //* V2
     1.0, 1.0, -1.0, 0, 0, 1.0, -1.0, -1.0, 0, 1, -1.0, -1.0, -1.0, 1, 1, -1.0, 1.0, -1.0, 1, 0,
     // Bottom
     -1.0, -1.0, -1.0, 1, 1, -1.0, -1.0, 1.0, 1, 0, 1.0, -1.0, 1.0, 0, 0, 1.0, -1.0, -1.0, 0, 1,
-  ];
+  ]);
 
-  const indexes = [
+  const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([
     // Top
     0, 1, 2, 0, 2, 3,
     // Left
@@ -40,50 +40,24 @@ import fragCode from "./fragment.glsl?raw"; //* V2
     16, 17, 18, 16, 18, 19,
     // Bottom
     21, 20, 22, 22, 20, 23,
-  ];
+  ]);
 
   const vertex_buffer: WebGLBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
   const index_buffer: WebGLBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
-  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexes), gl.STATIC_DRAW);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexes, gl.STATIC_DRAW);
 
   //* Unbind the buffer
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-
-  const vertCode = [
-    "precision mediump float;",
-    "attribute vec3 position;",
-    "uniform mat4 Pmatrix;",
-    "uniform mat4 Vmatrix;",
-    "uniform mat4 Mmatrix;",
-    "attribute vec2 textureCoord;",
-    "varying vec2 vTextureCoord;",
-    "uniform vec3 translation;",
-    "void main()",
-    "{",
-    "vTextureCoord = textureCoord;",
-    "gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position + translation, 1.0);",
-    "}",
-  ].join("\n");
 
   const vertShader = gl.createShader(gl.VERTEX_SHADER) as WebGLShader;
 
   gl.shaderSource(vertShader, vertCode);
 
   gl.compileShader(vertShader);
-
-  const fragCode = [
-    "precision mediump float;",
-    "varying vec2 vTextureCoord;",
-    "uniform sampler2D sampler;",
-    "void main()",
-    "{",
-    "gl_FragColor = texture2D(sampler, vTextureCoord);",
-    "}",
-  ].join("\n");
 
   const fragShader = gl.createShader(gl.FRAGMENT_SHADER) as WebGLShader;
 

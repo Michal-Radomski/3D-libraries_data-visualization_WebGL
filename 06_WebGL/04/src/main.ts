@@ -186,7 +186,6 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   view_matrix[14] = view_matrix[14] - 6;
 
   //* Rotation
-
   const rotateX = (m: number[], angle: number): void => {
     const c = Math.cos(angle);
     const s = Math.sin(angle);
@@ -259,14 +258,40 @@ import fragCode from "./fragment.glsl?raw"; //* V2
     gl.bindTexture(gl.TEXTURE_2D, boxTexture);
     gl.activeTexture(gl.TEXTURE0);
 
-    const tX = 2.0,
-      tY = 0.0,
-      tZ = -10.0;
-    const translation = gl.getUniformLocation(shaderProgram, "translation");
-    gl.uniform3f(translation, tX, tY, tZ);
+    //* Translations
+    // const tX = 2.0,
+    //   tY = 0.0,
+    //   tZ = -10.0;
+    // const translation = gl.getUniformLocation(shaderProgram, "translation");
+    // gl.uniform3f(translation, tX, tY, tZ);
 
+    //* Scaling
+    const sX = 1.0,
+      sY = 1.5,
+      sZ = 1.0;
+    const formMatrix: Float32Array<ArrayBuffer> = new Float32Array([
+      sX,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      sY,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      sZ,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      1.0,
+    ]);
+    const scaleMatrix = gl.getUniformLocation(shaderProgram, "scaleMatrix");
+    gl.uniformMatrix4fv(scaleMatrix, false, formMatrix);
+
+    //* Draw
     gl.drawElements(gl.TRIANGLES, indexes.length, gl.UNSIGNED_SHORT, 0);
-
     window.requestAnimationFrame(animate);
   };
 

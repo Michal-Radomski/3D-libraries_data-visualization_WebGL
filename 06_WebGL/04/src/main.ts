@@ -107,7 +107,36 @@ import fragCode from "./fragment.glsl?raw"; //* V2
 
   gl.enableVertexAttribArray(texture);
 
-  const source = document.querySelector("img#CrateImage") as HTMLImageElement;
+  //* V2
+  // Load the image
+  const image: HTMLImageElement = new Image();
+  // WebGL1 has different requirements for power of 2 images vs. non power of 2 images so check if the image is a power of 2 in both dimensions.
+  image.onload = (): void => {
+    // Check if the image dimensions are power of 2
+    if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
+      // Generate mipmaps for better scaling
+      gl.generateMipmap(gl.TEXTURE_2D);
+    } else {
+      // Disable mipmaps and set filtering for non-power-of-2 textures
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    }
+  };
+  // console.log("image:", image);
+
+  // Start loading the image by setting its source
+  image.src = "./src/crate_0.png";
+
+  // Helper function to check if a number is a power of 2
+  function isPowerOf2(value: number): boolean {
+    const valueToReturn = (value & (value - 1)) === 0;
+    // console.log({ valueToReturn });
+    return valueToReturn;
+  }
+
+  //* V1
+  // const source = document.querySelector("img#CrateImage") as HTMLImageElement;
   // console.log("source:", source);
 
   //* Create texture
@@ -117,7 +146,8 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
+  // gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source); //* V1
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image); //* V2
   gl.bindTexture(gl.TEXTURE_2D, null);
 
   gl.useProgram(shaderProgram);

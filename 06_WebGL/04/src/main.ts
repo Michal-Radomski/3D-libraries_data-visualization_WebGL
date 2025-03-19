@@ -54,8 +54,9 @@ console.log("Model Matrix:", modelMatrix);
     return;
   }
 
+  //^ Events
   //* Mouse Detection
-  let rotationSpeed = 1.0;
+  let rotationSpeed: number = 1.0;
 
   canvas.addEventListener("mousemove", MouseMove, false);
   canvas.addEventListener("mousedown", MouseDown, false);
@@ -83,6 +84,37 @@ console.log("Model Matrix:", modelMatrix);
     console.log(3, "event:", event);
     rotationSpeed += 0.001 * event.deltaY;
     console.log("rotationSpeed:", rotationSpeed);
+  }
+
+  //* Keyboard Events
+  let translationX: number = 3.0;
+  let translationY: number = 0.0;
+  let translationZ: number = -10.0;
+
+  const bodyElement = document.querySelector("body") as HTMLBodyElement;
+  bodyElement.addEventListener("keydown", KeyDown, false);
+  bodyElement.addEventListener("keyup", keyUp, false);
+
+  function KeyDown(event: KeyboardEvent): void {
+    console.log("event:", event);
+    if ("ArrowUp" === event.key) {
+      translationY += 0.1;
+    } else if ("ArrowDown" === event.key) {
+      translationY -= 0.1;
+    } else if ("ArrowRight" === event.key) {
+      translationX += 0.1;
+    } else if ("ArrowLeft" === event.key) {
+      translationX -= 0.1;
+    } else if ("End" === event.key) {
+      translationZ += 0.1;
+    } else if ("Home" === event.key) {
+      translationZ -= 0.1;
+    }
+  }
+
+  function keyUp(event: KeyboardEvent): void {
+    console.log("event:", event);
+    console.log("translationX, translationY, translationZ:", translationX, translationY, translationZ);
   }
 
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([
@@ -329,9 +361,9 @@ console.log("Model Matrix:", modelMatrix);
 
   const animate = (time: number): void => {
     const dt: number = time - previous_time;
-    rotateZ(mov_matrix, dt * 0.001); // Time
-    rotateY(mov_matrix, dt * 0.0004);
-    rotateX(mov_matrix, dt * 0.0006);
+    rotateZ(mov_matrix, dt * 0.001 * rotationSpeed); // Time
+    rotateY(mov_matrix, dt * 0.0004 * rotationSpeed);
+    rotateX(mov_matrix, dt * 0.0006 * rotationSpeed);
     previous_time = time;
 
     gl.enable(gl.DEPTH_TEST);
@@ -350,11 +382,13 @@ console.log("Model Matrix:", modelMatrix);
     gl.activeTexture(gl.TEXTURE0);
 
     //* Translations
-    const tX = 3.0,
-      tY = 0.0,
-      tZ = -10.0;
+    // const tX = 3.0,
+    //   tY = 0.0,
+    //   tZ = -10.0;
+    // const translation = gl.getUniformLocation(shaderProgram, "translation") as WebGLUniformLocation;
+    // gl.uniform3f(translation, tX, tY, tZ);
     const translation = gl.getUniformLocation(shaderProgram, "translation") as WebGLUniformLocation;
-    gl.uniform3f(translation, tX, tY, tZ);
+    gl.uniform3f(translation, translationX, translationY, translationZ);
 
     //* Scaling
     const sX = 3.0,

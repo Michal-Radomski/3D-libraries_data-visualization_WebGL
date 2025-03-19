@@ -1,7 +1,50 @@
-import "./style.scss";
-import vertCode from "./vertex.glsl?raw"; //* V2
-import fragCode from "./fragment.glsl?raw"; //* V2
+import { mat4, vec3 } from "gl-matrix";
 
+import "./style.scss";
+import vertCode from "./vertex.glsl?raw";
+import fragCode from "./fragment.glsl?raw";
+
+//* GL-Matrix library examples
+const v: vec3 = vec3.fromValues(1, 0, 0);
+console.log({ v });
+
+//* 1. Create an identity matrix
+const matrix: mat4 = mat4.create();
+// Apply transformations
+mat4.translate(matrix, matrix, [1, 2, 3]); // Translate by (1, 2, 3)
+mat4.rotate(matrix, matrix, Math.PI / 4, [0, 1, 0]); // Rotate 45° around the Y-axis
+mat4.scale(matrix, matrix, [2, 2, 2]); // Scale by a factor of 2
+console.log("Transformed Matrix:", matrix);
+
+//* 2. Define camera parameters
+const eye: vec3 = vec3.fromValues(0, 0, 5); // Camera position
+const center: vec3 = vec3.fromValues(0, 0, 0); // Point to look at
+const up: vec3 = vec3.fromValues(0, 1, 0); // Up direction
+// Create a view matrix
+const viewMatrix: mat4 = mat4.create();
+mat4.lookAt(viewMatrix, eye, center, up);
+console.log("View Matrix:", viewMatrix);
+
+//* 3. Create two vectors
+const v1: vec3 = vec3.fromValues(1, 2, 3);
+const v2: vec3 = vec3.fromValues(4, 5, 6);
+// Normalize v1
+vec3.normalize(v1, v1);
+console.log("Normalized Vector:", v1);
+// Add v1 and v2
+const result: vec3 = vec3.create();
+vec3.add(result, v1, v2);
+console.log("Vector Addition Result:", result);
+
+//* 4. Create an identity model matrix
+const modelMatrix: mat4 = mat4.create();
+// Apply multiple transformations in sequence
+mat4.translate(modelMatrix, modelMatrix, [0.5, -0.5, -2]); // Translate
+mat4.rotateX(modelMatrix, modelMatrix, Math.PI / 6); // Rotate around X-axis
+mat4.rotateY(modelMatrix, modelMatrix, Math.PI / 6); // Rotate around Y-axis
+console.log("Model Matrix:", modelMatrix);
+
+//* Main Task
 (function main(): void {
   const canvas = document.querySelector("canvas#glcanvas") as HTMLCanvasElement;
   const gl = canvas.getContext("webgl") as WebGLRenderingContext;

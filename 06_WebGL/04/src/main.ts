@@ -116,6 +116,7 @@ console.log("Model Matrix:", modelMatrix);
     console.log("event:", event);
     console.log("translationX, translationY, translationZ:", translationX, translationY, translationZ);
   }
+  //^ End of Events
 
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([
     // X, Y, Z         U, V
@@ -222,6 +223,11 @@ console.log("Model Matrix:", modelMatrix);
 
   gl.enableVertexAttribArray(texture);
 
+  gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
+  var normalAttribLocation = gl.getAttribLocation(shaderProgram, "vertexNormal");
+  gl.vertexAttribPointer(normalAttribLocation, 3, gl.FLOAT, true, 3 * Float32Array.BYTES_PER_ELEMENT, 0);
+  gl.enableVertexAttribArray(normalAttribLocation);
+
   //* V2
   //* Load the image
   const image: HTMLImageElement = new Image();
@@ -275,6 +281,15 @@ console.log("Model Matrix:", modelMatrix);
   //* Color Buffer Binding
   gl.enableVertexAttribArray(color);
   gl.useProgram(shaderProgram);
+
+  //* Ambient Light
+  const ambientUniformLocation = gl.getUniformLocation(shaderProgram, "ambientLightIntensity") as WebGLUniformLocation;
+  gl.uniform3f(ambientUniformLocation, 1.0, 0.1, 0.1);
+
+  const sunlightDirectionUniformLocation = gl.getUniformLocation(shaderProgram, "sun.direction") as WebGLUniformLocation;
+  const sunlightColorUniformLocation = gl.getUniformLocation(shaderProgram, "sun.color") as WebGLUniformLocation;
+  gl.uniform3f(sunlightDirectionUniformLocation, -1.0, 0.0, 0.0);
+  gl.uniform3f(sunlightColorUniformLocation, 1.0, 1.0, 1.0);
 
   //* MATRIX
   const get_projection = (angle: number, a: number, zMin: number, zMax: number): number[] => {

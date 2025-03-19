@@ -27,6 +27,11 @@ import fragCode from "./fragment.glsl?raw"; //* V2
     -1.0, -1.0, -1.0, 1, 1, -1.0, -1.0, 1.0, 1, 0, 1.0, -1.0, 1.0, 0, 0, 1.0, -1.0, -1.0, 0, 1,
   ]);
 
+  const colors: Float32Array<ArrayBuffer> = new Float32Array([
+    5, 3, 7, 5, 3, 7, 5, 3, 7, 5, 3, 7, 1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1,
+    0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0,
+  ]);
+
   const indexes: Uint16Array<ArrayBuffer> = new Uint16Array([
     // Top
     0, 1, 2, 0, 2, 3,
@@ -49,6 +54,10 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   const index_buffer: WebGLBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, index_buffer);
   gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indexes, gl.STATIC_DRAW);
+
+  const color_buffer: WebGLBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
 
   //* Unbind the buffer
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
@@ -151,6 +160,14 @@ import fragCode from "./fragment.glsl?raw"; //* V2
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image); //* V2
   gl.bindTexture(gl.TEXTURE_2D, null);
 
+  gl.useProgram(shaderProgram);
+
+  gl.bindBuffer(gl.ARRAY_BUFFER, color_buffer);
+  const color: number = gl.getAttribLocation(shaderProgram, "color");
+  gl.vertexAttribPointer(color, 3, gl.FLOAT, false, 0, 0);
+
+  //* Color Buffer Binding
+  gl.enableVertexAttribArray(color);
   gl.useProgram(shaderProgram);
 
   //* MATRIX

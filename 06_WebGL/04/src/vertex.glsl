@@ -9,8 +9,12 @@ varying vec2 vTextureCoord;
 uniform vec3 translation;
 uniform mat4 scaleMatrix;
 
+attribute vec3 color;
+varying vec3 vColor;
+
 void main() {
   vTextureCoord = textureCoord;
   // gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position + translation, 1.0);
   gl_Position = Pmatrix * Vmatrix * Mmatrix * vec4(position + translation, 1.0) * scaleMatrix;
+  vColor = color;
 }

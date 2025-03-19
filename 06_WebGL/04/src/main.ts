@@ -276,17 +276,17 @@ import fragCode from "./fragment.glsl?raw"; //* V2
     gl.activeTexture(gl.TEXTURE0);
 
     //* Translations
-    // const tX = 2.0,
-    //   tY = 0.0,
-    //   tZ = -10.0;
-    // const translation = gl.getUniformLocation(shaderProgram, "translation");
-    // gl.uniform3f(translation, tX, tY, tZ);
+    const tX = 3.0,
+      tY = 0.0,
+      tZ = -10.0;
+    const translation = gl.getUniformLocation(shaderProgram, "translation") as WebGLUniformLocation;
+    gl.uniform3f(translation, tX, tY, tZ);
 
     //* Scaling
-    const sX = 1.0,
-      sY = 1.5,
-      sZ = 1.0;
-    const formMatrix: Float32Array<ArrayBuffer> = new Float32Array([
+    const sX = 3.0,
+      sY = 3.0,
+      sZ = 3.0;
+    const formMatrix = new Float32Array([
       sX,
       0.0,
       0.0,
@@ -303,8 +303,9 @@ import fragCode from "./fragment.glsl?raw"; //* V2
       0.0,
       0.0,
       1.0,
-    ]);
-    const scaleMatrix = gl.getUniformLocation(shaderProgram, "scaleMatrix");
+    ]) as Float32Array<ArrayBuffer>;
+
+    const scaleMatrix = gl.getUniformLocation(shaderProgram, "scaleMatrix") as WebGLUniformLocation;
     gl.uniformMatrix4fv(scaleMatrix, false, formMatrix);
 
     //* Draw

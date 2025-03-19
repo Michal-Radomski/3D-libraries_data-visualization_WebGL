@@ -54,6 +54,37 @@ console.log("Model Matrix:", modelMatrix);
     return;
   }
 
+  //* Mouse Detection
+  let rotationSpeed = 1.0;
+
+  canvas.addEventListener("mousemove", MouseMove, false);
+  canvas.addEventListener("mousedown", MouseDown, false);
+  canvas.addEventListener("wheel", MouseWheel, false);
+
+  function MouseMove(event: MouseEvent): void {
+    console.log(1, "event:", event);
+    console.log("event.clientX, event.clientY:", event.clientX, event.clientY);
+  }
+
+  function MouseDown(event: MouseEvent): void {
+    console.log(2, "event:", event);
+    if (0 === event.button) {
+      console.log("Left mouse button pressed");
+    }
+    if (1 === event.button) {
+      console.log("Middle mouse button pressed");
+    }
+    if (2 === event.button) {
+      console.log("Right mouse button pressed");
+    }
+  }
+
+  function MouseWheel(event: WheelEvent): void {
+    console.log(3, "event:", event);
+    rotationSpeed += 0.001 * event.deltaY;
+    console.log("rotationSpeed:", rotationSpeed);
+  }
+
   const vertices: Float32Array<ArrayBuffer> = new Float32Array([
     // X, Y, Z         U, V
     // Top

@@ -1,4 +1,5 @@
 //* Examples: https://pudding.cool/2017/05/song-repetition
+
 import * as d3 from "d3";
 // console.log("d3:", d3);
 
@@ -42,3 +43,18 @@ svg.append("g").attr("transform", `translate(${marginLeft},0)`).call(d3.axisLeft
 // Append the SVG element.
 const container = document.querySelector("div#container") as HTMLDivElement;
 container.append(svg.node() as SVGSVGElement);
+
+const elem: d3.Selection<HTMLParagraphElement, unknown, HTMLElement, any> = d3
+  .select("body")
+  .append("p") //* Transformation method!
+  .attr("class", "foo")
+  // .attr('class', 'bar')
+  // .classed("foo", true)
+  .classed("bar", true)
+  .text("Hello World")
+  .style("color", "blue");
+
+console.log("elem:", elem);
+
+const p: d3.Selection<d3.BaseType, unknown, HTMLElement, any> = d3.selectAll("p");
+console.log("p:", p);

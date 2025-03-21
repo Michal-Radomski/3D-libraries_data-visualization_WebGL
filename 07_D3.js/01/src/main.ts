@@ -52,9 +52,18 @@ const elem: d3.Selection<HTMLParagraphElement, unknown, HTMLElement, any> = d3
   // .classed("foo", true)
   .classed("bar", true)
   .text("Hello World")
-  .style("color", "blue");
+  // .style("color", "blue")
+  .style("text-decoration", "overline #ff3028");
 
 console.log("elem:", elem);
 
 const p: d3.Selection<d3.BaseType, unknown, HTMLElement, any> = d3.selectAll("p");
 console.log("p:", p);
+
+//* Data in D3.js
+(async function getData(): Promise<void> {
+  const data_1 = await d3.json("./src/data/data.json");
+  const data_2 = await d3.csv("./src/data/data.csv");
+
+  console.log("data_1, data_2:", data_1, data_2);
+})();

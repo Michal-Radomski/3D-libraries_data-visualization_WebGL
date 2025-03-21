@@ -3,13 +3,19 @@ import * as d3 from "d3";
 
 import "./style.scss";
 
+interface DataSet {
+  currently: { humidity: number; apparentTemperature: number };
+}
+
+//* Scatter Plot
 (async function draw(): Promise<void> {
   // Data
-  const dataset = await d3.json("./src/weatherData.json");
+  const dataset = (await d3.json("./src/weatherData.json")) as DataSet[];
   // console.log("dataset:", dataset);
 
-  const xAccessor = (d: { currently: { humidity: number } }) => d.currently.humidity;
-  const yAccessor = (d: { currently: { apparentTemperature: number } }) => d.currently.apparentTemperature;
+  const xAccessor: (d: DataSet) => number = (d: DataSet) => d.currently.humidity; //* X axe (cause)
+  const yAccessor: (d: DataSet) => number = (d: DataSet) => d.currently.apparentTemperature; //* Y axe (effect)
+  // console.log({ xAccessor, yAccessor });
 
   // Dimensions
   const dimensions = {
@@ -34,20 +40,22 @@ import "./style.scss";
     .append("svg")
     .attr("width", dimensions.width)
     .attr("height", dimensions.height);
+  // console.log("svg:", svg);
 
   const ctr: d3.Selection<SVGGElement, unknown, HTMLElement, any> = svg
     .append("g")
     .attr("transform", `translate(${dimensions.margin.left}, ${dimensions.margin.top})`);
+  // console.log("ctr:", ctr);
 
   // Scales
   const xScale: d3.ScaleLinear<number, number, never> = d3
     .scaleLinear()
-    .domain(d3.extent(dataset as any[], xAccessor) as any)
+    .domain(d3.extent(dataset as DataSet[], xAccessor) as Iterable<d3.NumberValue>) //* min max values
     .rangeRound([0, dimensions.ctrWidth])
     .clamp(true);
   const yScale: d3.ScaleLinear<number, number, never> = d3
     .scaleLinear()
-    .domain(d3.extent(dataset as any[], yAccessor) as any[])
+    .domain(d3.extent(dataset as DataSet[], yAccessor) as Iterable<d3.NumberValue>) //* min max values
     .rangeRound([dimensions.ctrHeight, 0])
     .nice()
     .clamp(true);
@@ -55,20 +63,23 @@ import "./style.scss";
   // Draw Circles
   ctr
     .selectAll("circle")
-    .data(dataset as any[])
+    .data(dataset as DataSet[])
     .join("circle")
-    .attr("cx", (d) => xScale(xAccessor(d)))
-    .attr("cy", (d) => yScale(yAccessor(d)))
+    .attr("cx", (d: DataSet) => xScale(xAccessor(d)))
+    .attr("cy", (d: DataSet) => yScale(yAccessor(d)))
     .attr("r", 5)
     .attr("fill", "red")
+    .attr("stroke", "blue")
+    .attr("stroke-width", "2")
     .attr("data-temp", yAccessor);
 
   // Axes
   const xAxis: d3.Axis<d3.NumberValue> = d3
     .axisBottom(xScale)
+    // .axisTop(xScale)
     .ticks(5)
-    .tickFormat((d: any) => d * 100 + "%")
-    .tickValues([0.4, 0.5, 0.8]);
+    .tickFormat((d: d3.NumberValue) => (d as number) * 100 + "%");
+  // .tickValues([0, 0.4, 0.5, 0.6, 0.7, 0.8, 1.0]);
 
   const xAxisGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any> = ctr
     .append("g")
@@ -81,7 +92,7 @@ import "./style.scss";
     .attr("x", dimensions.ctrWidth / 2)
     .attr("y", dimensions.margin.bottom - 10)
     .attr("fill", "black")
-    .text("Humidity");
+    .text("Humidity [ % ]");
 
   const yAxis: d3.Axis<d3.NumberValue> = d3.axisLeft(yScale);
 
@@ -92,7 +103,7 @@ import "./style.scss";
     .attr("x", -dimensions.ctrHeight / 2)
     .attr("y", -dimensions.margin.left + 15)
     .attr("fill", "black")
-    .html("Temperature &deg; F")
+    .html("Temperature [ &deg; F ]") //* txt() method -> html entities don't work!
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
 })();

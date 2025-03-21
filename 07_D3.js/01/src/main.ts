@@ -66,13 +66,13 @@ console.log("p:", p);
     .select("ul")
     .selectAll("li")
     .data(data)
-    .join(
-      (enter: d3.Selection<d3.EnterElement, number, d3.BaseType, unknown>) => {
-        return enter.append("li").style("color", "purple");
-      },
-      (update: d3.Selection<d3.BaseType, number, d3.BaseType, unknown>) => update.style("color", "green"),
-      (exit: d3.Selection<d3.BaseType, number, d3.BaseType, unknown>) => exit.remove()
-    )
+    // .join(
+    //   (enter: d3.Selection<d3.EnterElement, number, d3.BaseType, unknown>) => {
+    //     return enter.append("li").style("color", "purple");
+    //   },
+    //   (update: d3.Selection<d3.BaseType, number, d3.BaseType, unknown>) => update.style("color", "green"),
+    //   (exit: d3.Selection<d3.BaseType, number, d3.BaseType, unknown>) => exit.remove()
+    // )
     .text((d: number) => d);
 
   el.enter()
@@ -86,6 +86,8 @@ console.log("p:", p);
 (async function getData(): Promise<void> {
   const data_1 = await d3.json("./src/data/data.json");
   const data_2 = await d3.csv("./src/data/data.csv");
-
   console.log("data_1, data_2:", data_1, data_2);
+
+  const text = await d3.text("./src/data/data.txt"); // Hello, world!
+  console.log("text:", text);
 })();

@@ -47,3 +47,4 @@ countries.json
 *.mtl
 *.obj
 weatherData.json
+chartData.json

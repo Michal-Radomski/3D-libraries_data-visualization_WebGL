@@ -43,29 +43,18 @@ body {
   overflow-y: hidden;
 }
 
-#chart {
-  border: 1px solid $danger-color;
-  width: 800px;
-  height: 800px;
-  background-color: $app-background-whiteSmoke;
-  margin: 25px auto;
-  position: relative;
-}
-
-#tooltip {
+h1 {
   text-align: center;
-  border: 1px solid $app-background-color;
-  position: absolute;
-  padding: 10px;
-  background-color: $app-background-whiteSmoke;
-  display: none;
 }
 
-#tooltip .metric-date {
-  text-decoration: underline;
+h1:not(:first-child) {
+  margin-top: 50px;
 }
 
-.axis {
-  font-size: 18px;
-  shape-rendering: geometricPrecision;
+.chart {
+  border: 1px solid $danger-color;
+  width: 600px;
+  height: 150px;
+  background-color: #f7f7f7;
+  margin: 25px auto;
 }

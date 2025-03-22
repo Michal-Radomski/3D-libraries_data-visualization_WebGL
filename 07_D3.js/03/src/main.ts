@@ -29,7 +29,7 @@ async function draw(el: string, scale: string): Promise<void> {
   if (scale === "linear") {
     colorScale = d3
       .scaleLinear()
-      .domain(d3.extent(dataset) as number[])
+      .domain(d3.extent(dataset) as number[]) //* Min/max values
       .range(["white", "red"] as any) as Function;
 
     // console.log(1, "colorScale:", colorScale);
@@ -52,7 +52,7 @@ async function draw(el: string, scale: string): Promise<void> {
   } else if (scale === "threshold") {
     colorScale = d3
       .scaleThreshold()
-      .domain([45200, 135600])
+      .domain([45200, 135600]) //* Threshold
       .range(d3.schemeReds[3] as unknown as number[]);
 
     // console.log(4, "colorScale:", colorScale);

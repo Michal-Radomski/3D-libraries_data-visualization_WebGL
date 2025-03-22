@@ -38,7 +38,7 @@ interface ChartData2 {
 
   const circlesGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any> = svg
     .append("g")
-    .style("font-size", "16px")
+    .style("font-size", "1rem") //* 1px
     .style("dominant-baseline", "middle");
 
   circlesGroup
@@ -47,7 +47,10 @@ interface ChartData2 {
     .join("circle")
     .attr("cx", dimensions.margin)
     .attr("cy", (d: ChartData2) => universeScale(sizeAccessor(d)))
-    .attr("r", 6);
+    .attr("r", 6)
+    .attr("fill", "orange")
+    .attr("stroke", "maroon")
+    .attr("stroke-width", 2);
 
   circlesGroup
     .selectAll("text")

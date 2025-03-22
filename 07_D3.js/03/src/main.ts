@@ -1,7 +1,66 @@
+//* Other possibilities: https://d3js.org/d3-scale-chromatic
+
 import * as d3 from "d3";
 // console.log("d3:", d3);
 
 import "./style.scss";
+
+interface ChartData2 {
+  name: string;
+  size: number;
+}
+
+(async function draw2(): Promise<void> {
+  // Data
+  const dataset = (await d3.json("./src/chartData2.json")) as ChartData2[];
+
+  const sizeAccessor = (d: ChartData2) => d.size;
+  const nameAccessor = (d: ChartData2) => d.name;
+
+  // Dimensions
+  const dimensions = {
+    width: 200,
+    height: 500,
+    margin: 50,
+  };
+
+  // Draw Image
+  const svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> = d3
+    .select("#chart")
+    .append("svg")
+    .attr("width", dimensions.width)
+    .attr("height", dimensions.height);
+
+  const universeScale: d3.ScaleLogarithmic<number, number, never> = d3
+    .scaleLog()
+    .domain(d3.extent(dataset, sizeAccessor) as number[])
+    .range([dimensions.height - dimensions.margin, dimensions.margin]);
+
+  const circlesGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any> = svg
+    .append("g")
+    .style("font-size", "16px")
+    .style("dominant-baseline", "middle");
+
+  circlesGroup
+    .selectAll("circle")
+    .data(dataset)
+    .join("circle")
+    .attr("cx", dimensions.margin)
+    .attr("cy", (d: ChartData2) => universeScale(sizeAccessor(d)))
+    .attr("r", 6);
+
+  circlesGroup
+    .selectAll("text")
+    .data(dataset)
+    .join("text")
+    .attr("x", dimensions.margin + 15)
+    .attr("y", (d: ChartData2) => universeScale(sizeAccessor(d)))
+    .text(nameAccessor);
+
+  const axis: d3.Axis<d3.NumberValue> = d3.axisLeft(universeScale);
+
+  svg.append("g").attr("transform", `translate(${dimensions.margin}, 0)`).call(axis);
+})();
 
 async function draw(el: string, scale: string): Promise<void> {
   // Data

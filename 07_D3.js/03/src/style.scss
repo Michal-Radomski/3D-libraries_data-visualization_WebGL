@@ -40,7 +40,7 @@ body {
   max-width: 1920px;
   margin-left: auto;
   margin-right: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 h1 {
@@ -55,6 +55,14 @@ h1:not(:first-child) {
   border: 1px solid $danger-color;
   width: 600px;
   height: 150px;
-  background-color: #f7f7f7;
+  background-color: $app-background-whiteSmoke;
+  margin: 25px auto;
+}
+
+#chart {
+  border: 1px solid $success-color;
+  width: 200px;
+  height: 500px;
+  background-color: $app-background-whiteSmoke;
   margin: 25px auto;
 }

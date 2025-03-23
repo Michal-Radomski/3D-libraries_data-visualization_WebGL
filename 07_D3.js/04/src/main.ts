@@ -71,9 +71,10 @@ interface DataSet {
       .scaleLinear()
       .domain(d3.extent(dataset, xAccessor) as Iterable<d3.NumberValue>)
       .range([0, dimensions.ctrWidth as number])
-      .nice();
+      .nice(); //* Rounds values
     // console.log("xScale:", xScale);
 
+    //* Formatting data
     const bin: d3.HistogramGeneratorNumber<number, number> = d3
       .bin()
       .domain(xScale.domain() as unknown as (values: Iterable<number>) => [number, number])
@@ -81,6 +82,7 @@ interface DataSet {
       .thresholds(10);
     // console.log("bin:", bin);
 
+    //* Formatted data
     const newDataset: d3.Bin<number, number>[] = bin(dataset as unknown as ArrayLike<number>);
     // console.log("newDataset:", newDataset);
     const padding = 1;
@@ -121,7 +123,8 @@ interface DataSet {
       .attr("height", (d) => (dimensions.ctrHeight as number) - yScale(yAccessor(d as unknown as DataSet[])))
       .attr("x", (d) => xScale(d.x0 as number))
       .attr("y", (d) => yScale(yAccessor(d as unknown as DataSet[])))
-      .attr("fill", "#01c5c4");
+      .attr("fill", "#01c5c4")
+      .attr("stroke", "orangered");
 
     labelsGroup
       .selectAll("text")
@@ -146,6 +149,7 @@ interface DataSet {
       .text(yAccessor as unknown as string);
 
     const mean = d3.mean(dataset, xAccessor) as number;
+    // console.log("mean:", mean);
 
     meanLine
       .raise()

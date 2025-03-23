@@ -3,6 +3,116 @@ import * as d3 from "d3";
 
 import "./style.scss";
 
+interface DataSet3 {
+  name: string;
+  " <10": number | string;
+  "10-19": number | string;
+  "20-29": number | string;
+  "30-39": number | string;
+  "40-49": number | string;
+  "50-59": number | string;
+  "60-69": number | string;
+  "70-79": number | string;
+  "≥80": number | string;
+  total: number;
+}
+
+(async function draw3(): Promise<void> {
+  // Data
+  const dataset = (await d3.csv("./src/data3.csv", (d, _index: number, columns: string[]) => {
+    d3.autoType(d);
+    (d as unknown as DataSet3).total = d3.sum(columns, (c) => d[c] as unknown as number);
+    return d as unknown as DataSet3;
+  })) as unknown as DataSet3[];
+
+  dataset.sort((a, b) => b.total - a.total);
+
+  // Dimensions
+  const dimensions = {
+    width: 1000,
+    height: 600,
+    margins: 20,
+    ctrWidth: undefined as number | undefined,
+    ctrHeight: undefined as number | undefined,
+  };
+
+  dimensions.ctrWidth = dimensions.width - dimensions.margins * 2;
+  dimensions.ctrHeight = dimensions.height - dimensions.margins * 2;
+
+  // Draw Image
+  const svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> = d3
+    .select("#chart3")
+    .append("svg")
+    .attr("width", dimensions.width)
+    .attr("height", dimensions.height);
+
+  const ctr: d3.Selection<SVGGElement, unknown, HTMLElement, any> = svg
+    .append("g")
+    .attr("transform", `translate(${dimensions.margins}, ${dimensions.margins})`);
+
+  // Scales
+  const stackGenerator = d3.stack().keys((dataset as any).columns.slice(1));
+  const stackData = stackGenerator(dataset as any).map((ageGroup) => {
+    ageGroup.forEach((state: any) => {
+      state.key = ageGroup.key;
+    });
+
+    return ageGroup;
+  });
+
+  const yScale: d3.ScaleLinear<number, number, never> = d3
+    .scaleLinear()
+    .domain([
+      0,
+      d3.max(stackData, (ag) => {
+        return d3.max(ag, (state) => state[1]);
+      }),
+    ] as [number, number])
+    .rangeRound([dimensions.ctrHeight, dimensions.margins]);
+
+  const xScale: d3.ScaleBand<string> = d3
+    .scaleBand()
+    .domain(dataset.map((state) => state.name))
+    .range([dimensions.margins, dimensions.ctrWidth])
+    // .paddingInner(0.1)
+    // .paddingOuter(0.1)
+    .padding(0.1);
+
+  const colorScale: d3.ScaleOrdinal<string, unknown, string> = d3
+    .scaleOrdinal()
+    .domain(stackData.map((d) => d.key))
+    .range(d3.schemeSpectral[stackData.length])
+    .unknown("#ccc");
+
+  // Draw Bars
+  const ageGroups = ctr
+    .append("g")
+    .classed("age-groups", true)
+    .selectAll("g")
+    .data(stackData)
+    .join("g")
+    .attr("fill", (d) => colorScale(d.key) as string);
+
+  ageGroups
+    .selectAll("rect")
+    .data((d) => d)
+    .join("rect")
+    .attr("x", (d) => xScale(d.data.name as unknown as string) as number)
+    .attr("y", (d) => yScale(d[1]))
+    .attr("width", xScale.bandwidth())
+    .attr("height", (d) => yScale(d[0]) - yScale(d[1]));
+
+  // Draw Axes
+  const xAxis: d3.Axis<string> = d3.axisBottom(xScale).tickSizeOuter(0);
+  const yAxis: d3.Axis<d3.NumberValue> = d3.axisLeft(yScale).ticks(null, "s");
+
+  ctr.append("g").attr("transform", `translate(0, ${dimensions.ctrHeight})`).call(xAxis);
+
+  ctr.append("g").attr("transform", `translate(${dimensions.margins}, 0)`).call(yAxis);
+})();
+
+//* ---------
+
 interface DataSet2 {
   name: string;
   value: string;

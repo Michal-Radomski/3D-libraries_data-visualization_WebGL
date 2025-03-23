@@ -79,3 +79,10 @@ body {
     font-style: italic;
   }
 }
+
+#chart3 {
+  border: 1px solid $success-color;
+  margin: 25px auto;
+  width: 1000px;
+  position: relative;
+}

@@ -11,6 +11,7 @@ interface DataSet {
   };
 }
 
+// Todo: fix tooltips
 //* Scatter Plot
 (async function draw(): Promise<void> {
   // Data
@@ -78,6 +79,9 @@ interface DataSet {
     .attr("stroke", "blue")
     .attr("stroke-width", "2")
     .attr("data-temp", yAccessor);
+  // .on("mouseenter", function (event: MouseEvent, datum: DataSet): void {
+  //   console.log("event, datum:", event, datum);
+  // });
 
   // Axes
   const xAxis: d3.Axis<d3.NumberValue> = d3
@@ -122,14 +126,14 @@ interface DataSet {
   const voronoi: d3.Voronoi<DataSet> = delaunay.voronoi();
   voronoi.xmax = dimensions.ctrWidth;
   voronoi.ymax = dimensions.ctrHeight;
-  console.log("delaunay:", delaunay);
+  // console.log("delaunay:", delaunay);
 
   ctr
     .append("g")
     .selectAll("path")
     .data(dataset)
     .join("path")
-    // .attr('stroke', 'black')
+    .attr("stroke", "darkgray")
     .attr("fill", "transparent")
     .attr("d", (_d: DataSet, i: number) => voronoi.renderCell(i))
     .on("mouseenter", function (_event: MouseEvent, datum: DataSet): void {
@@ -147,8 +151,8 @@ interface DataSet {
         .style("top", yScale(yAccessor(datum)) - 25 + "px")
         .style("left", xScale(xAccessor(datum)) + "px");
 
-      const formatter = d3.format(".2f");
-      const dateFormatter = d3.timeFormat("%B %-d, %Y");
+      const formatter = d3.format(".2f"); //* two decimals
+      const dateFormatter = d3.timeFormat("%B %-d, %Y"); //* May 27, 2020
 
       tooltip.select(".metric-humidity span").text(formatter(xAccessor(datum)));
 

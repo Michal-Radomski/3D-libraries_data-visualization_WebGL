@@ -42,3 +42,23 @@ body {
   margin-right: auto;
   overflow-y: auto;
 }
+
+#chart {
+  border: 1px solid $danger-color;
+  margin: 25px auto;
+  width: 1000px;
+  position: relative;
+}
+
+#tooltip {
+  border: 1px solid #ccc;
+  position: absolute;
+  padding: 10px;
+  background-color: #fff;
+  display: none;
+  pointer-events: none;
+}
+
+.price {
+  font-weight: bold;
+}

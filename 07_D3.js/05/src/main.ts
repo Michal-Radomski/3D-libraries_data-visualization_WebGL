@@ -24,7 +24,7 @@ interface DataSet2 {
 
   dimensions.ctrWidth = dimensions.width - dimensions.margins * 2;
   dimensions.ctrHeight = dimensions.height - dimensions.margins * 2;
-  const radius = dimensions.ctrWidth / 2;
+  const radius: number = dimensions.ctrWidth / 2;
 
   // Draw Image
   const svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> = d3
@@ -38,20 +38,22 @@ interface DataSet2 {
     .attr("transform", `translate(${dimensions.margins}, ${dimensions.margins})`);
 
   // Scales
-  const populationPie = d3
+  const populationPie: d3.Pie<any, number | { valueOf(): number }> = d3
     .pie()
     .value((d) => (d as unknown as DataSet2).value as unknown as number)
-    .sort(null);
-  const slices = populationPie(dataset as unknown as number[]);
+    .sort(null); //* Not to sort data!
+  const slices: d3.PieArcDatum<number | { valueOf(): number }>[] = populationPie(dataset as unknown as number[]);
 
   const arc: d3.Arc<any, d3.DefaultArcObject> = d3.arc().outerRadius(radius).innerRadius(0);
   const arcLabels: d3.Arc<any, d3.DefaultArcObject> = d3.arc().outerRadius(radius).innerRadius(200);
 
   const colors: string[] = d3.quantize(d3.interpolateSpectral, dataset.length);
+  // console.log("colors:", colors);
   const colorScale: d3.ScaleOrdinal<string, unknown, never> = d3
     .scaleOrdinal()
-    .domain(dataset.map((element) => element.name))
+    .domain(dataset.map((element: DataSet2) => element.name))
     .range(colors);
+  // console.log("colorScale:", colorScale);
 
   // Draw Shape
   const arcGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any> = ctr
@@ -75,23 +77,26 @@ interface DataSet2 {
     .data(slices)
     .join("text")
     .attr("transform", (d) => `translate(${arcLabels.centroid(d as unknown as d3.DefaultArcObject)})`)
-    .call((text) =>
+    .call((text) => {
+      // console.log("text:", text);
       text
         .append("tspan")
         .style("font-weight", "bold")
         .attr("y", -4)
-        .text((d) => (d.data as unknown as DataSet2).name)
-    )
-    .call((text) =>
+        .text((d) => (d.data as unknown as DataSet2).name);
+    })
+    .call((text) => {
+      // console.log("text:", text);
       text
-        .filter((d) => d.endAngle - d.startAngle > 0.25)
+        .filter((d) => d.endAngle - d.startAngle > 0.25) //* Value not shown for angle: d.endAngle - d.startAngle <=0.25 [radians]
         .append("tspan")
         .attr("y", 9)
         .attr("x", 0)
-        .text((d) => (d.data as unknown as DataSet2).value)
-    );
+        .text((d) => (d.data as unknown as DataSet2).value);
+    });
 })();
 
+//* ---------
 interface DataSet {
   close: string;
   date: string;

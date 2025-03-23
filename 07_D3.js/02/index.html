@@ -15,7 +15,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   </head>
   <body>
-    <div id="chart"></div>
+    <div id="chart">
+      <div id="tooltip">
+        <div class="metric-date"></div>
+        <div class="metric-humidity">Humidity: <span></span></div>
+        <div class="metric-temp">Temperature: <span></span></div>
+      </div>
+    </div>
 
     <script type="module" src="/src/main.ts"></script>
   </body>

@@ -4,7 +4,11 @@ import * as d3 from "d3";
 import "./style.scss";
 
 interface DataSet {
-  currently: { humidity: number; apparentTemperature: number };
+  currently: {
+    time: number;
+    humidity: number;
+    apparentTemperature: number;
+  };
 }
 
 //* Scatter Plot
@@ -46,6 +50,8 @@ interface DataSet {
     .append("g")
     .attr("transform", `translate(${dimensions.margin.left}, ${dimensions.margin.top})`);
   // console.log("ctr:", ctr);
+
+  const tooltip: d3.Selection<d3.BaseType, unknown, HTMLElement, any> = d3.select("#tooltip");
 
   // Scales
   const xScale: d3.ScaleLinear<number, number, never> = d3
@@ -106,4 +112,53 @@ interface DataSet {
     .html("Temperature [ &deg; F ]") //* txt() method -> html entities don't work!
     .style("transform", "rotate(270deg)")
     .style("text-anchor", "middle");
+
+  const delaunay: d3.Delaunay<DataSet> = d3.Delaunay.from(
+    dataset,
+    (d: DataSet) => xScale(xAccessor(d)),
+    (d: DataSet) => yScale(yAccessor(d))
+  );
+
+  const voronoi: d3.Voronoi<DataSet> = delaunay.voronoi();
+  voronoi.xmax = dimensions.ctrWidth;
+  voronoi.ymax = dimensions.ctrHeight;
+  console.log("delaunay:", delaunay);
+
+  ctr
+    .append("g")
+    .selectAll("path")
+    .data(dataset)
+    .join("path")
+    // .attr('stroke', 'black')
+    .attr("fill", "transparent")
+    .attr("d", (_d: DataSet, i: number) => voronoi.renderCell(i))
+    .on("mouseenter", function (_event: MouseEvent, datum: DataSet): void {
+      ctr
+        .append("circle")
+        .classed("dot-hovered", true)
+        .attr("fill", "#120078")
+        .attr("r", 8)
+        .attr("cx", (_d) => xScale(xAccessor(datum)))
+        .attr("cy", (_d) => yScale(yAccessor(datum)))
+        .style("pointer-events", "none");
+
+      tooltip
+        .style("display", "block")
+        .style("top", yScale(yAccessor(datum)) - 25 + "px")
+        .style("left", xScale(xAccessor(datum)) + "px");
+
+      const formatter = d3.format(".2f");
+      const dateFormatter = d3.timeFormat("%B %-d, %Y");
+
+      tooltip.select(".metric-humidity span").text(formatter(xAccessor(datum)));
+
+      tooltip.select(".metric-temp span").text(formatter(yAccessor(datum)));
+
+      tooltip.select(".metric-date").text(dateFormatter((datum.currently.time * 1000) as unknown as Date));
+    })
+    .on("mouseleave", function (_event: MouseEvent): void {
+      ctr.select(".dot-hovered").remove();
+
+      tooltip.style("display", "none");
+    });
 })();

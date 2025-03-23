@@ -4,7 +4,16 @@ import * as d3 from "d3";
 import "./style.scss";
 
 interface DataSet {
-  currently: { humidity: number; apparentTemperature: number };
+  currently: {
+    humidity: number;
+    apparentTemperature: number;
+    temperature: number;
+    dewPoint: number;
+    windSpeed: number;
+    cloudCover: number;
+    ozone: number;
+    [key: string]: number;
+  };
 }
 
 (async function draw(): Promise<void> {

@@ -3,6 +3,95 @@ import * as d3 from "d3";
 
 import "./style.scss";
 
+interface DataSet2 {
+  name: string;
+  value: string;
+}
+
+(async function draw2(): Promise<void> {
+  // Data
+  const dataset = (await d3.csv("./src/data2.csv")) as DataSet2[];
+  // console.log("dataset:", dataset);
+
+  // Dimensions
+  const dimensions = {
+    width: 600,
+    height: 600,
+    margins: 10,
+    ctrWidth: undefined as number | undefined,
+    ctrHeight: undefined as number | undefined,
+  };
+
+  dimensions.ctrWidth = dimensions.width - dimensions.margins * 2;
+  dimensions.ctrHeight = dimensions.height - dimensions.margins * 2;
+  const radius = dimensions.ctrWidth / 2;
+
+  // Draw Image
+  const svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> = d3
+    .select("#chart2")
+    .append("svg")
+    .attr("width", dimensions.width)
+    .attr("height", dimensions.height);
+
+  const ctr: d3.Selection<SVGGElement, unknown, HTMLElement, any> = svg
+    .append("g") // <g>
+    .attr("transform", `translate(${dimensions.margins}, ${dimensions.margins})`);
+
+  // Scales
+  const populationPie = d3
+    .pie()
+    .value((d) => (d as unknown as DataSet2).value as unknown as number)
+    .sort(null);
+  const slices = populationPie(dataset as unknown as number[]);
+
+  const arc: d3.Arc<any, d3.DefaultArcObject> = d3.arc().outerRadius(radius).innerRadius(0);
+  const arcLabels: d3.Arc<any, d3.DefaultArcObject> = d3.arc().outerRadius(radius).innerRadius(200);
+
+  const colors: string[] = d3.quantize(d3.interpolateSpectral, dataset.length);
+  const colorScale: d3.ScaleOrdinal<string, unknown, never> = d3
+    .scaleOrdinal()
+    .domain(dataset.map((element) => element.name))
+    .range(colors);
+
+  // Draw Shape
+  const arcGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any> = ctr
+    .append("g")
+    .attr("transform", `translate(${dimensions.ctrHeight / 2}, ${dimensions.ctrWidth / 2})`);
+
+  arcGroup
+    .selectAll("path")
+    .data(slices)
+    .join("path")
+    .attr("d", arc as unknown as string)
+    .attr("fill", (d) => colorScale((d.data as unknown as DataSet2).name) as string);
+
+  const labelsGroup: d3.Selection<SVGGElement, unknown, HTMLElement, any> = ctr
+    .append("g")
+    .attr("transform", `translate(${dimensions.ctrHeight / 2}, ${dimensions.ctrWidth / 2})`)
+    .classed("labels2", true);
+
+  labelsGroup
+    .selectAll("text")
+    .data(slices)
+    .join("text")
+    .attr("transform", (d) => `translate(${arcLabels.centroid(d as unknown as d3.DefaultArcObject)})`)
+    .call((text) =>
+      text
+        .append("tspan")
+        .style("font-weight", "bold")
+        .attr("y", -4)
+        .text((d) => (d.data as unknown as DataSet2).name)
+    )
+    .call((text) =>
+      text
+        .filter((d) => d.endAngle - d.startAngle > 0.25)
+        .append("tspan")
+        .attr("y", 9)
+        .attr("x", 0)
+        .text((d) => (d.data as unknown as DataSet2).value)
+    );
+})();
+
 interface DataSet {
   close: string;
   date: string;

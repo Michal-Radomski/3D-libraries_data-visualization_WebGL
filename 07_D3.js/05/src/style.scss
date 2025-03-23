@@ -62,3 +62,20 @@ body {
 .price {
   font-weight: bold;
 }
+
+#chart2 {
+  border: 1px solid $primary-color;
+  margin: 25px auto;
+  width: 600px;
+  position: relative;
+}
+
+.labels2 {
+  font-family: sans-serif;
+  font-size: 12px;
+  text-anchor: middle;
+  text-decoration: underline;
+  &:hover {
+    font-style: italic;
+  }
+}

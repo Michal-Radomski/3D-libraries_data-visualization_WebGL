@@ -45,7 +45,7 @@ interface DataSet {
     .append("circle")
     .attr("r", 5)
     .attr("fill", "#fc8781")
-    .attr("stroke", "black")
+    .attr("stroke", "#444")
     .attr("stroke-width", 2)
     .style("opacity", 0)
     .style("pointer-events", "none");
@@ -58,19 +58,19 @@ interface DataSet {
     .nice();
 
   const xScale: d3.ScaleTime<number, number, never> = d3
-    .scaleUtc()
+    .scaleUtc() //* UTC dates
     .domain(d3.extent(dataset, xAccessor) as Iterable<d3.NumberValue>)
     .range([0, dimensions.ctrWidth]);
-  console.log("xScale(xAccessor(dataset[0])), dataset[0]:", xScale(xAccessor(dataset[0])), dataset[0]);
+  // console.log("xScale(xAccessor(dataset[0])), dataset[0]:", xScale(xAccessor(dataset[0])), dataset[0]);
 
   const lineGenerator: d3.Line<[number, number]> = d3
     .line()
     .x((d) => xScale(xAccessor(d as unknown as DataSet)))
     .y((d) => yScale(yAccessor(d as unknown as DataSet)));
-  console.log(
-    "lineGenerator(dataset as unknown as [number, number][]):",
-    lineGenerator(dataset as unknown as [number, number][])
-  );
+  // console.log(
+  //   "lineGenerator(dataset as unknown as [number, number][]):",
+  //   lineGenerator(dataset as unknown as [number, number][])
+  // );
 
   ctr
     .append("path")
@@ -97,11 +97,15 @@ interface DataSet {
     .style("opacity", 0)
     .on("touchmouse mousemove", function (event: MouseEvent): void {
       const mousePos: [number, number] = d3.pointer(event, this);
+      // console.log("mousePos:", mousePos);
+      // console.log("this:", this);
       const date: Date = xScale.invert(mousePos[0]);
 
       // Custom Bisector - left, center, right
-      const bisector = d3.bisector(xAccessor).left;
+      const bisector = d3.bisector(xAccessor).left; //* It tells you where a new element should be inserted to still have a sorted array
+      // console.log("bisector:", bisector);
       const index: number = bisector(dataset, date);
+      // console.log({ index });
       const stock: DataSet = dataset[index - 1];
 
       // Update Image
@@ -118,7 +122,7 @@ interface DataSet {
 
       tooltip.select(".price").text(`$${yAccessor(stock)}`);
 
-      const dateFormatter = d3.timeFormat("%B %-d, %Y");
+      const dateFormatter: (date: Date) => string = d3.timeFormat("%B %-d, %Y");
 
       tooltip.select(".date").text(`${dateFormatter(xAccessor(stock))}`);
     })

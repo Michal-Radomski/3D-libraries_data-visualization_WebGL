@@ -33,9 +33,13 @@ interface DataSet {
   dimensions.ctrHeight = dimensions.height - dimensions.margins * 2;
 
   // Draw Image
-  const svg = d3.select("#chart").append("svg").attr("width", dimensions.width).attr("height", dimensions.height);
+  const svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any> = d3
+    .select("#chart")
+    .append("svg")
+    .attr("width", dimensions.width)
+    .attr("height", dimensions.height);
 
-  const ctr = svg
+  const ctr: d3.Selection<SVGGElement, unknown, HTMLElement, any> = svg
     .append("g") // <g>
     .attr("transform", `translate(${dimensions.margins}, ${dimensions.margins})`) as d3.Selection<
     SVGGElement,
@@ -54,7 +58,7 @@ interface DataSet {
   const meanLine: d3.Selection<SVGLineElement, unknown, HTMLElement, any> = ctr.append("line").classed("mean-line", true);
 
   function histogram(metric: string): void {
-    console.log("metric:", metric);
+    // console.log("metric:", metric);
     const xAccessor = (d: DataSet) => d.currently[metric as keyof typeof d.currently];
 
     const yAccessor = (d: DataSet[]) => {

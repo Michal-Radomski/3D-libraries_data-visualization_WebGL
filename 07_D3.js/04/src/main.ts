@@ -5,14 +5,13 @@ import "./style.scss";
 
 interface DataSet {
   currently: {
+    // [key: string]: number;
     humidity: number;
-    apparentTemperature: number;
     temperature: number;
     dewPoint: number;
     windSpeed: number;
     cloudCover: number;
     ozone: number;
-    [key: string]: number;
   };
 }
 
@@ -95,6 +94,7 @@ interface DataSet {
 
     const exitTransition: d3.Transition<d3.BaseType, unknown, null, undefined> = d3.transition().duration(500);
     const updateTransition: d3.Transition<d3.BaseType, unknown, null, undefined> = exitTransition.transition().duration(500);
+    // console.log("exitTransition, updateTransition:", exitTransition, updateTransition);
 
     // Draw Bars
     ctr
@@ -161,16 +161,15 @@ interface DataSet {
 
     // Draw Axis
     const xAxis: d3.Axis<d3.NumberValue> = d3.axisBottom(xScale);
-
     xAxisGroup.transition().call(xAxis);
   }
+  histogram("humidity");
 
   d3.select("#metric").on("change", function (event: Event): void {
     // console.log("event:", event);
     event.preventDefault();
-    // histogram(this!.value);
-    histogram((event?.target as HTMLSelectElement)?.value);
+    // histogram((event?.target as HTMLSelectElement)?.value);
+    // console.log("this:", this as HTMLSelectElement);
+    histogram((this as HTMLSelectElement).value);
   });
-
-  histogram("humidity");
 })();

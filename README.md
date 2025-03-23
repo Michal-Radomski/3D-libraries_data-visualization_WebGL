@@ -20,3 +20,8 @@
 
 7. Files created during this course:
    [D3.js for Data Visualization](https://www.udemy.com/course/learn-d3js-for-data-visualization).
+
+8. Files created during this course: [GSAP](https://www.udemy.com/course/master-javascript-animations-with-greensock).
+
+9. Files created during this course:
+   [Space Invaders Game with JavaScript and HTML Canvas](https://www.udemy.com/course/space-invaders-with-javascript-and-html-canvas).

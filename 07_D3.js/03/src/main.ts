@@ -10,6 +10,7 @@ interface ChartData2 {
   size: number;
 }
 
+//* https://en.wikipedia.org/wiki/Metric_prefix
 (async function draw2(): Promise<void> {
   // Data
   const dataset = (await d3.json("./src/chartData2.json")) as ChartData2[];

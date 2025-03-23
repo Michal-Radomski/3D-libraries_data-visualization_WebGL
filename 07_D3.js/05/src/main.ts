@@ -21,11 +21,12 @@ interface DataSet3 {
   // Data
   const dataset = (await d3.csv("./src/data3.csv", (d, _index: number, columns: string[]) => {
     d3.autoType(d);
-    (d as unknown as DataSet3).total = d3.sum(columns, (c) => d[c] as unknown as number);
-    return d as unknown as DataSet3;
+    d.total = d3.sum(columns, (c) => d[c] as unknown as number) as unknown as string;
+    // console.log("d.total:", d.total);
+    return d;
   })) as unknown as DataSet3[];
 
-  dataset.sort((a, b) => b.total - a.total);
+  dataset.sort((a: DataSet3, b: DataSet3) => b.total - a.total);
 
   // Dimensions
   const dimensions = {
@@ -83,6 +84,7 @@ interface DataSet3 {
     .domain(stackData.map((d) => d.key))
     .range(d3.schemeSpectral[stackData.length])
     .unknown("#ccc");
+  // console.log("colorScale:", colorScale);
 
   // Draw Bars
   const ageGroups = ctr
@@ -104,7 +106,7 @@ interface DataSet3 {
 
   // Draw Axes
   const xAxis: d3.Axis<string> = d3.axisBottom(xScale).tickSizeOuter(0);
-  const yAxis: d3.Axis<d3.NumberValue> = d3.axisLeft(yScale).ticks(null, "s");
+  const yAxis: d3.Axis<d3.NumberValue> = d3.axisLeft(yScale).ticks(null, "s"); //* SI prefix
 
   ctr.append("g").attr("transform", `translate(0, ${dimensions.ctrHeight})`).call(xAxis);
 

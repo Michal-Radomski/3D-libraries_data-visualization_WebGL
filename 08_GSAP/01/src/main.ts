@@ -53,12 +53,23 @@ const img1 = document.querySelector(".img1") as HTMLImageElement;
 //   ],
 // });
 
-gsap.to(img1, {
-  x: 100,
-  duration: 1,
-  repeat: 1,
-  onComplete: (): void => console.log("Complete"),
-  onStart: (): void => console.log("Start"),
-  onUpdate: (): void => console.log("Update"),
-  onRepeat: (): void => console.log("Repeat"),
+// gsap.to(img1, {
+//   x: 100,
+//   duration: 1,
+//   repeat: 1,
+//   onComplete: (): void => console.log("Complete"),
+//   onStart: (): void => console.log("Start"),
+//   onUpdate: (): void => console.log("Update"),
+//   onRepeat: (): void => console.log("Repeat"),
+// });
+
+gsap.registerEffect({
+  name: "imgAnimation",
+  effect: (targets: gsap.TweenTarget, config: { duration: number }): gsap.core.Tween => {
+    return gsap.to(targets, { duration: config.duration, y: 200, scale: 1.4, rotation: 350 });
+  },
+  defaults: { duration: 5 },
 });
+
+gsap.effects.imgAnimation(img1, { duration: 5 });
+gsap.effects.imgAnimation(".img2", { duration: 2.5 });

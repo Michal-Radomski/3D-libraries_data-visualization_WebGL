@@ -88,9 +88,18 @@ const img1 = document.querySelector(".img1") as HTMLImageElement;
 // }, 2000);
 
 //* Timeline
-const TL: gsap.core.Timeline = gsap.timeline();
+const TL: gsap.core.Timeline = gsap.timeline({
+  defaults: {
+    duration: 1,
+    ease: "power4.inOut",
+    paused: false,
+    onStart: (): void => console.log("Start"),
+    onUpdate: (): void => console.log("Update"),
+    onComplete: (): void => console.log("Complete"),
+  },
+});
 // console.log("TL:", TL);
 
 TL.from(img1, { autoAlpha: 0, duration: 1, y: -50 })
-  .from(".img2", { autoAlpha: 0, duration: 1, y: -50 })
-  .from(".img3", { autoAlpha: 0, duration: 1, y: -50 });
+  .from(".img2", { autoAlpha: 0, duration: 1, y: -50 }, "+=0.25")
+  .from(".img3", { autoAlpha: 0, duration: 1, y: -50 }, "+=0.25");

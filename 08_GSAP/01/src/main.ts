@@ -44,11 +44,21 @@ const img1 = document.querySelector(".img1") as HTMLImageElement;
 //   x: "random(-100,100)",
 // });
 
+// gsap.to(img1, {
+//   keyframes: [
+//     { duration: 0.3, x: 100 },
+//     { duration: 0.3, y: 100 },
+//     { duration: 0.3, x: 200 },
+//     { duration: 0.3, y: 200 },
+//   ],
+// });
+
 gsap.to(img1, {
-  keyframes: [
-    { duration: 0.3, x: 100 },
-    { duration: 0.3, y: 100 },
-    { duration: 0.3, x: 200 },
-    { duration: 0.3, y: 200 },
-  ],
+  x: 100,
+  duration: 1,
+  repeat: 1,
+  onComplete: (): void => console.log("Complete"),
+  onStart: (): void => console.log("Start"),
+  onUpdate: (): void => console.log("Update"),
+  onRepeat: (): void => console.log("Repeat"),
 });

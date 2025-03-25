@@ -6,6 +6,7 @@ import "./style.scss";
 const img1 = document.querySelector(".img1") as HTMLImageElement;
 // const h1 = document.querySelector("h1") as HTMLHeadElement;
 
+//* Basics
 // gsap.to(img1, { x: 100, y: 100, duration: 2, backgroundColor: "red", rotation: 45 });
 // gsap.to(h1, { x: 100, y: 100, duration: 2, backgroundColor: "red", rotation: 45 });
 
@@ -76,12 +77,20 @@ const img1 = document.querySelector(".img1") as HTMLImageElement;
 
 // gsap.set(img1, { opacity: 0.2 });
 
-const tween: gsap.core.Tween = gsap.to(img1, { y: 200, paused: true });
+// const tween: gsap.core.Tween = gsap.to(img1, { y: 200, paused: true });
 
 // tween.kill();
 // tween.delay(1);
 // tween.duration(5);
 
-setTimeout(() => {
-  tween.resume();
-}, 2000);
+// setTimeout(() => {
+//   tween.resume();
+// }, 2000);
+
+//* Timeline
+const TL: gsap.core.Timeline = gsap.timeline();
+// console.log("TL:", TL);
+
+TL.from(img1, { autoAlpha: 0, duration: 1, y: -50 })
+  .from(".img2", { autoAlpha: 0, duration: 1, y: -50 })
+  .from(".img3", { autoAlpha: 0, duration: 1, y: -50 });

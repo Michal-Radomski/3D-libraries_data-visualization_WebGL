@@ -63,13 +63,25 @@ const img1 = document.querySelector(".img1") as HTMLImageElement;
 //   onRepeat: (): void => console.log("Repeat"),
 // });
 
-gsap.registerEffect({
-  name: "imgAnimation",
-  effect: (targets: gsap.TweenTarget, config: { duration: number }): gsap.core.Tween => {
-    return gsap.to(targets, { duration: config.duration, y: 200, scale: 1.4, rotation: 350 });
-  },
-  defaults: { duration: 5 },
-});
+// gsap.registerEffect({
+//   name: "imgAnimation",
+//   effect: (targets: gsap.TweenTarget, config: { duration: number }): gsap.core.Tween => {
+//     return gsap.to(targets, { duration: config.duration, y: 200, scale: 1.4, rotation: 350 });
+//   },
+//   defaults: { duration: 5 },
+// });
 
-gsap.effects.imgAnimation(img1, { duration: 5 });
-gsap.effects.imgAnimation(".img2", { duration: 2.5 });
+// gsap.effects.imgAnimation(img1, { duration: 5 });
+// gsap.effects.imgAnimation(".img2", { duration: 2.5 });
+
+// gsap.set(img1, { opacity: 0.2 });
+
+const tween: gsap.core.Tween = gsap.to(img1, { y: 200, paused: true });
+
+// tween.kill();
+// tween.delay(1);
+// tween.duration(5);
+
+setTimeout(() => {
+  tween.resume();
+}, 2000);

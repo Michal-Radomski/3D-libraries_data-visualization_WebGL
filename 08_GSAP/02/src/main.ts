@@ -19,5 +19,18 @@ gsap.from(header, {
   scrollTrigger: {
     trigger: header,
     markers: true,
+    // Trigger Scroller
+    // start: "top bottom-=200",
+    start: "top 50%",
+    end: "bottom+=10% top",
+    // scrub: true,
+    scrub: 1,
   },
+});
+
+ScrollTrigger.create({
+  trigger: ".b2",
+  pin: true,
+  markers: true,
+  end: "bottom 50%",
 });

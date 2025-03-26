@@ -1,3 +1,13 @@
+import { Player } from "./classes/Player";
 import "./style.scss";
 
-console.log("test");
+// const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
+export const canvas = document.querySelector("canvas") as HTMLCanvasElement;
+export const c = canvas.getContext("2d") as CanvasRenderingContext2D;
+console.log("c:", c);
+
+canvas.width = 1024;
+canvas.height = 576;
+
+let player = new Player();
+console.log("player:", player);

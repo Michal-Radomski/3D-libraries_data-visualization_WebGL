@@ -56,7 +56,7 @@ export class Player {
     if (this.image) {
       c.drawImage(this.image!, this.position!.x, this.position!.y, this.width as number, this.height as number);
     } else {
-      console.log("Image not loaded");
+      console.log("Spaceship image not loaded");
     }
     c.restore();
   }

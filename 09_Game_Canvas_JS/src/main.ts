@@ -1,4 +1,6 @@
+import { Invader } from "./classes/Invader";
 import { Player } from "./classes/Player";
+import { Projectile } from "./classes/Projectile";
 import "./style.scss";
 
 // const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
@@ -21,7 +23,10 @@ const keys: Keys = {
 
 export const player: Player = new Player();
 // console.log("player:", player);
-player.draw();
+// player.draw();
+
+const projectiles: Projectile[] = [] as Projectile[];
+const invader: Invader = new Invader({ position: { x: 100, y: 100 } });
 
 (function animate(): void {
   requestAnimationFrame(animate);
@@ -29,6 +34,18 @@ player.draw();
   c.fillRect(0, 0, canvas.width, canvas.height);
   // player.draw();
   player.update();
+
+  invader.update({ velocity: { x: 0, y: 0 } });
+
+  projectiles.forEach((projectile: Projectile, index: number) => {
+    if (projectile.position.y + projectile.radius <= 0) {
+      setTimeout(() => {
+        projectiles.splice(index, 1);
+      }, 0);
+    } else {
+      projectile.update();
+    }
+  });
 
   //* Keys
   if (keys.a.pressed && player.position!.x >= 0) {
@@ -59,6 +76,13 @@ window.addEventListener("keydown", ({ key }: { key: string }): void => {
       break;
     case " ":
       keys.space.pressed = true;
+      projectiles.push(
+        new Projectile({
+          position: { x: player.position.x + player.width! / 2, y: player.position.y },
+          velocity: { x: 0, y: -8 },
+        })
+      );
+      // console.log("projectiles:", projectiles);
       break;
   }
 });

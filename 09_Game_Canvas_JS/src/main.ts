@@ -1,3 +1,4 @@
+import { Grid } from "./classes/Grid";
 import { Invader } from "./classes/Invader";
 import { Player } from "./classes/Player";
 import { Projectile } from "./classes/Projectile";
@@ -25,8 +26,9 @@ export const player: Player = new Player();
 // console.log("player:", player);
 // player.draw();
 
-const projectiles: Projectile[] = [] as Projectile[];
-const invader: Invader = new Invader({ position: { x: 100, y: 100 } });
+const projectiles: Projectile[] = [];
+// const invader: Invader = new Invader({ position: { x: 100, y: 100 } });
+const grids: Grid[] = [new Grid()];
 
 (function animate(): void {
   requestAnimationFrame(animate);
@@ -35,7 +37,11 @@ const invader: Invader = new Invader({ position: { x: 100, y: 100 } });
   // player.draw();
   player.update();
 
-  invader.update({ velocity: { x: 0, y: 0 } });
+  // invader.update({ velocity: { x: 0, y: 0 } });
+  grids.forEach((grid: Grid) => {
+    grid.update();
+    grid.invaders.forEach((invader: Invader) => invader.update({ velocity: grid.velocity }));
+  });
 
   projectiles.forEach((projectile: Projectile, index: number) => {
     if (projectile.position.y + projectile.radius <= 0) {
@@ -80,6 +86,7 @@ window.addEventListener("keydown", ({ key }: { key: string }): void => {
         new Projectile({
           position: { x: player.position.x + player.width! / 2, y: player.position.y },
           velocity: { x: 0, y: -8 },
+          color: "orangered",
         })
       );
       // console.log("projectiles:", projectiles);

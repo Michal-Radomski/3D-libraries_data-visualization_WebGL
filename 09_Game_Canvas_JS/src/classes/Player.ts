@@ -1,4 +1,4 @@
-import { c, canvas } from "../main";
+import { c, canvas, player } from "../main";
 import spaceship from "../img/spaceship.png";
 // console.log("spaceship:", spaceship);
 
@@ -9,7 +9,7 @@ export class Player {
   image: HTMLImageElement | undefined;
   width: number | undefined;
   height: number | undefined;
-  position: { x: number; y: number } | undefined;
+  position!: { x: number; y: number };
   particles: any[]; //Temp
   frames: number;
   constructor() {
@@ -41,15 +41,32 @@ export class Player {
     this.frames = 0;
   }
 
-  draw() {
+  draw(): void {
     // c.fillStyle = "red";
     // c.fillRect(this.position?.x as number, this.position?.y as number, this.width as number, this.height as number);
+    c.save();
+    c.globalAlpha = this.opacity;
+    c.translate(player.position?.x + (player.width as number) / 2, player.position?.y + (player.height as number) / 2);
+    c.rotate(this.rotation);
+
+    c.translate(-player.position?.x - (player.width as number) / 2, -player.position?.y - (player.height as number) / 2);
+
     if (this.image) {
       c.drawImage(this.image!, this.position!.x, this.position!.y, this.width as number, this.height as number);
     } else {
       console.log("Image not loaded");
     }
+    c.restore();
   }
 
-  update() {}
+  update(): void {
+    if (!this.image) return;
+
+    this.draw();
+    this.position!.x += this.velocity.x;
+
+    if (this.opacity !== 1) return;
+
+    this.frames++;
+  }
 }

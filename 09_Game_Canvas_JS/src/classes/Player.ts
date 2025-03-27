@@ -1,16 +1,18 @@
 import { c, canvas, player } from "../main";
 import spaceship from "../img/spaceship.png";
+import { Position } from "../Interfaces";
+import { Particle } from "./Particle";
 // console.log("spaceship:", spaceship);
 
 export class Player {
-  velocity: { x: number; y: number };
+  velocity: Position;
   rotation: number;
   opacity: number;
   image: HTMLImageElement | undefined;
   width: number | undefined;
   height: number | undefined;
-  position!: { x: number; y: number };
-  particles: any[]; //Temp
+  position!: Position;
+  particles: Particle[];
   frames: number;
   constructor() {
     // this.position = { x: 200, y: 200 };

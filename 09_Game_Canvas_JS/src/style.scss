@@ -39,3 +39,7 @@ body {
   margin-right: auto;
   overflow-y: auto;
 }
+
+canvas {
+  border: 1px solid $dark-color;
+}

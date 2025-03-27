@@ -1,4 +1,6 @@
 import { c, canvas } from "../main";
+import spaceship from "../img/spaceship.png";
+// console.log("spaceship:", spaceship);
 
 export class Player {
   velocity: { x: number; y: number };
@@ -8,9 +10,11 @@ export class Player {
   width: number | undefined;
   height: number | undefined;
   position: { x: number; y: number } | undefined;
-  particles: never[];
+  particles: any[]; //Temp
   frames: number;
   constructor() {
+    // this.position = { x: 200, y: 200 };
+
     this.velocity = {
       x: 0,
       y: 0,
@@ -20,8 +24,9 @@ export class Player {
     this.opacity = 1;
 
     const image: HTMLImageElement = new Image();
-    image.src = "./img/spaceship.png";
-    image.onload = () => {
+    image.src = spaceship;
+
+    image.onload = (): void => {
       const scale = 0.15;
       this.image = image;
       this.width = image.width * scale;
@@ -37,8 +42,13 @@ export class Player {
   }
 
   draw() {
-    c.fillStyle = "red";
-    c.fillRect(this.position?.x as number, this.position?.y as number, this.width as number, this.height as number);
+    // c.fillStyle = "red";
+    // c.fillRect(this.position?.x as number, this.position?.y as number, this.width as number, this.height as number);
+    if (this.image) {
+      c.drawImage(this.image!, this.position!.x, this.position!.y, this.width as number, this.height as number);
+    } else {
+      console.log("Image not loaded");
+    }
   }
 
   update() {}

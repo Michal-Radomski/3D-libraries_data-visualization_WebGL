@@ -7,7 +7,7 @@ import { Projectile } from "./classes/Projectile";
 import { createParticles, rectangularCollision } from "./utils";
 import { Particle } from "./classes/Particle";
 
-// const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
+const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
 export const canvas = document.querySelector("canvas") as HTMLCanvasElement;
 export const c = canvas.getContext("2d") as CanvasRenderingContext2D;
 // console.log("c:", c);
@@ -32,6 +32,7 @@ const game = {
   over: false,
   active: true,
 };
+let score: number = 0;
 
 export const player: Player = new Player();
 // console.log("player:", player);
@@ -154,6 +155,9 @@ for (let i = 0; i < 100; i++) {
 
             //* Remove invader and projectile
             if (invaderFound && projectileFound) {
+              score += 100;
+              // console.log("score:", score);
+              scoreEl.innerText = String(score);
               createParticles({ object: invader, fades: true });
 
               grid.invaders.splice(index, 1);

@@ -4,7 +4,7 @@ import { Invader } from "./classes/Invader";
 import { InvaderProjectile } from "./classes/InvaderProjectile";
 import { Player } from "./classes/Player";
 import { Projectile } from "./classes/Projectile";
-import { createParticles, rectangularCollision } from "./utils";
+import { createParticles, createScoreLabel, rectangularCollision } from "./utils";
 import { Particle } from "./classes/Particle";
 
 const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
@@ -158,6 +158,9 @@ for (let i = 0; i < 100; i++) {
               score += 100;
               // console.log("score:", score);
               scoreEl.innerText = String(score);
+
+              //* Dynamic score labels
+              createScoreLabel({ object: invader });
               createParticles({ object: invader, fades: true });
 
               grid.invaders.splice(index, 1);

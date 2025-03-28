@@ -1,8 +1,30 @@
+import gsap from "gsap";
+
 import { Invader } from "./classes/Invader";
 import { Particle } from "./classes/Particle";
 import { Player } from "./classes/Player";
 import { Rectangle } from "./Interfaces";
 import { particles } from "./main";
+
+export const createScoreLabel = ({ object, score = 100 }: { object: Invader; score?: number }): void => {
+  const scoreLabel: HTMLLabelElement = document.createElement("label");
+  scoreLabel.innerText = String(score);
+  scoreLabel.style.position = "absolute";
+  scoreLabel.style.color = "white";
+  scoreLabel.style.top = object.position.y + "px";
+  scoreLabel.style.left = object.position.x + "px";
+  scoreLabel.style.userSelect = "none";
+  (document.querySelector("#parentDiv") as HTMLDivElement).appendChild(scoreLabel);
+
+  gsap.to(scoreLabel, {
+    opacity: 0,
+    y: -30,
+    duration: 0.75,
+    onComplete: (): void => {
+      (document.querySelector("#parentDiv") as HTMLDivElement).removeChild(scoreLabel);
+    },
+  });
+};
 
 export const rectangularCollision = ({
   rectangle1,

@@ -22,13 +22,18 @@ const keys: Keys = {
   space: { pressed: false },
 };
 
+let frames: number = 0;
+let randomInterval: number = Math.floor(Math.random() * 500 + 500);
+// console.log("randomInterval:", randomInterval);
+
 export const player: Player = new Player();
 // console.log("player:", player);
 // player.draw();
 
 const projectiles: Projectile[] = [];
 // const invader: Invader = new Invader({ position: { x: 100, y: 100 } });
-const grids: Grid[] = [new Grid()];
+// const grids: Grid[] = [new Grid()];
+const grids: Grid[] = [];
 
 (function animate(): void {
   requestAnimationFrame(animate);
@@ -36,12 +41,6 @@ const grids: Grid[] = [new Grid()];
   c.fillRect(0, 0, canvas.width, canvas.height);
   // player.draw();
   player.update();
-
-  // invader.update({ velocity: { x: 0, y: 0 } });
-  grids.forEach((grid: Grid) => {
-    grid.update();
-    grid.invaders.forEach((invader: Invader) => invader.update({ velocity: grid.velocity }));
-  });
 
   projectiles.forEach((projectile: Projectile, index: number) => {
     if (projectile.position.y + projectile.radius <= 0) {
@@ -51,6 +50,44 @@ const grids: Grid[] = [new Grid()];
     } else {
       projectile.update();
     }
+  });
+
+  // invader.update({ velocity: { x: 0, y: 0 } });
+  grids.forEach((grid: Grid, gridIndex: number) => {
+    grid.update();
+    grid.invaders.forEach((invader: Invader, index: number) => {
+      invader.update({ velocity: grid.velocity });
+
+      projectiles.forEach((projectile: Projectile, jIndex) => {
+        if (
+          projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
+          projectile.position.x + projectile.radius >= invader.position.x &&
+          projectile.position.x - projectile.radius <= invader.position.x + invader.width &&
+          projectile.position.y + projectile.radius >= invader.position.y
+        ) {
+          setTimeout(() => {
+            const invaderFound = grid.invaders.find((invader2: Invader) => invader2 === invader) as Invader;
+            const projectileFound = projectiles.find((projectile2: Projectile) => projectile2 === projectile) as Projectile;
+
+            //* Remove invader and projectile
+            if (invaderFound && projectileFound) {
+              grid.invaders.splice(index, 1);
+              projectiles.splice(jIndex, 1);
+
+              if (grid.invaders.length > 0) {
+                const firstInvader: Invader = grid.invaders[0];
+                const lastInvader: Invader = grid.invaders[grid.invaders.length - 1];
+
+                grid.width = lastInvader.position.x - firstInvader.position.x + lastInvader.width;
+                grid.position.x = firstInvader.position.x;
+              } else {
+                grids.splice(gridIndex, 1);
+              }
+            }
+          }, 0);
+        }
+      });
+    });
   });
 
   //* Keys
@@ -64,6 +101,16 @@ const grids: Grid[] = [new Grid()];
     player.velocity.x = 0;
     player.rotation = 0;
   }
+
+  //* Spawning enemies
+  if (frames % randomInterval === 0) {
+    grids.push(new Grid());
+    randomInterval = Math.floor(Math.random() * 500 + 500);
+    frames = 0;
+  }
+
+  frames++;
+  // console.log("frames:", frames);
 })();
 // animate();
 
@@ -85,7 +132,7 @@ window.addEventListener("keydown", ({ key }: { key: string }): void => {
       projectiles.push(
         new Projectile({
           position: { x: player.position.x + player.width! / 2, y: player.position.y },
-          velocity: { x: 0, y: -8 },
+          velocity: { x: 0, y: -15 },
           color: "orangered",
         })
       );

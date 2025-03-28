@@ -4,7 +4,8 @@ import { Invader } from "./classes/Invader";
 import { InvaderProjectile } from "./classes/InvaderProjectile";
 import { Player } from "./classes/Player";
 import { Projectile } from "./classes/Projectile";
-import { rectangularCollision } from "./utils";
+import { createParticles, rectangularCollision } from "./utils";
+import { Particle } from "./classes/Particle";
 
 // const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
 export const canvas = document.querySelector("canvas") as HTMLCanvasElement;
@@ -37,7 +38,7 @@ const projectiles: Projectile[] = [];
 // const grids: Grid[] = [new Grid()];
 const grids: Grid[] = [];
 const invaderProjectiles: InvaderProjectile[] = [];
-// const particles = [];
+export const particles = [] as Particle[];
 // const bombs = [];
 // const powerUps = [];
 
@@ -47,6 +48,17 @@ const invaderProjectiles: InvaderProjectile[] = [];
   c.fillRect(0, 0, canvas.width, canvas.height);
   // player.draw();
   player.update();
+
+  particles.forEach((particle: Particle, index: number) => {
+    if (particle.opacity <= 0) {
+      setTimeout(() => {
+        particles.splice(index, 1);
+      }, 0);
+    } else {
+      particle.update();
+    }
+  });
+  // console.log("particles:", particles);
 
   invaderProjectiles.forEach((invaderProjectile: InvaderProjectile, index: number) => {
     if (invaderProjectile.position.y + invaderProjectile.height >= canvas.height) {
@@ -62,12 +74,16 @@ const invaderProjectiles: InvaderProjectile[] = [];
         rectangle2: player,
       })
     ) {
-      invaderProjectiles.splice(index, 1);
+      setTimeout(() => {
+        invaderProjectiles.splice(index, 1);
+      }, 0);
       console.log("You Lose!");
+      createParticles({ object: player, fades: 5, color: "whitesmoke" });
       // endGame()
     }
   });
 
+  //* Projectiles his enemy
   projectiles.forEach((projectile: Projectile, index: number) => {
     if (projectile.position.y + projectile.radius <= 0) {
       setTimeout(() => {
@@ -90,7 +106,7 @@ const invaderProjectiles: InvaderProjectile[] = [];
     grid.invaders.forEach((invader: Invader, index: number) => {
       invader.update({ velocity: grid.velocity });
 
-      projectiles.forEach((projectile: Projectile, jIndex) => {
+      projectiles.forEach((projectile: Projectile, jIndex: number) => {
         if (
           projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
           projectile.position.x + projectile.radius >= invader.position.x &&
@@ -103,6 +119,8 @@ const invaderProjectiles: InvaderProjectile[] = [];
 
             //* Remove invader and projectile
             if (invaderFound && projectileFound) {
+              createParticles({ object: invader, fades: 5 });
+
               grid.invaders.splice(index, 1);
               projectiles.splice(jIndex, 1);
 

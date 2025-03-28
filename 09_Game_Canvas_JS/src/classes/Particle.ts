@@ -46,6 +46,8 @@ export class Particle {
     this.position.x += this.velocity.x as number;
     this.position.y += this.velocity.y as number;
 
-    if (this.fades) this.opacity -= 0.01;
+    if (this.fades) {
+      this.opacity -= 0.01;
+    }
   }
 }

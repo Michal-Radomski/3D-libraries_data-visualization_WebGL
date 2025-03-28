@@ -28,6 +28,10 @@ const keys: Keys = {
 let frames: number = 0;
 let randomInterval: number = Math.floor(Math.random() * 500 + 500);
 // console.log("randomInterval:", randomInterval);
+const game = {
+  over: false,
+  active: true,
+};
 
 export const player: Player = new Player();
 // console.log("player:", player);
@@ -61,6 +65,8 @@ for (let i = 0; i < 100; i++) {
 }
 
 (function animate(): void {
+  if (!game.active) return;
+
   requestAnimationFrame(animate);
   c.fillStyle = "#212529";
   c.fillRect(0, 0, canvas.width, canvas.height);
@@ -96,10 +102,17 @@ for (let i = 0; i < 100; i++) {
         rectangle2: player,
       })
     ) {
+      // console.log("You Lose!");
       setTimeout(() => {
         invaderProjectiles.splice(index, 1);
+        player.opacity = 0;
+        game.over = true;
       }, 0);
-      console.log("You Lose!");
+
+      setTimeout(() => {
+        game.active = false;
+      }, 2000);
+
       createParticles({ object: player, fades: true, color: "whitesmoke" });
       // endGame()
     }
@@ -192,6 +205,8 @@ for (let i = 0; i < 100; i++) {
 
 window.addEventListener("keydown", ({ key }: { key: string }): void => {
   // console.log("key:", key);
+  if (game.over) return;
+
   switch (key) {
     case "a":
       keys.a.pressed = true;
@@ -215,6 +230,9 @@ window.addEventListener("keydown", ({ key }: { key: string }): void => {
 
 window.addEventListener("keyup", ({ key }: { key: string }): void => {
   // console.log("key:", key);
+
+  if (game.over) return;
+
   switch (key) {
     case "a":
       keys.a.pressed = false;

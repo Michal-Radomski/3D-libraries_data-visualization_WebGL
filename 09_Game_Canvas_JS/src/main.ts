@@ -42,6 +42,24 @@ export const particles = [] as Particle[];
 // const bombs = [];
 // const powerUps = [];
 
+for (let i = 0; i < 100; i++) {
+  particles.push(
+    new Particle({
+      position: {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+      },
+      velocity: {
+        x: 0,
+        y: 0.3,
+      },
+      radius: Math.random() * 2,
+      color: "white",
+      fades: false,
+    })
+  );
+}
+
 (function animate(): void {
   requestAnimationFrame(animate);
   c.fillStyle = "#212529";
@@ -50,6 +68,10 @@ export const particles = [] as Particle[];
   player.update();
 
   particles.forEach((particle: Particle, index: number) => {
+    if (particle.position.y - particle.radius >= canvas.height) {
+      particle.position.y = -particle.radius;
+    }
+
     if (particle.opacity <= 0) {
       setTimeout(() => {
         particles.splice(index, 1);
@@ -78,7 +100,7 @@ export const particles = [] as Particle[];
         invaderProjectiles.splice(index, 1);
       }, 0);
       console.log("You Lose!");
-      createParticles({ object: player, fades: 5, color: "whitesmoke" });
+      createParticles({ object: player, fades: true, color: "whitesmoke" });
       // endGame()
     }
   });
@@ -119,7 +141,7 @@ export const particles = [] as Particle[];
 
             //* Remove invader and projectile
             if (invaderFound && projectileFound) {
-              createParticles({ object: invader, fades: 5 });
+              createParticles({ object: invader, fades: true });
 
               grid.invaders.splice(index, 1);
               projectiles.splice(jIndex, 1);

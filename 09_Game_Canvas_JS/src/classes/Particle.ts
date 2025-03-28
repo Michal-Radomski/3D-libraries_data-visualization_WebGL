@@ -5,7 +5,7 @@ export class Particle {
   radius: number;
   color: string;
   opacity: number;
-  fades: number;
+  fades: boolean;
   position: Position;
   velocity: Position;
   constructor({
@@ -19,7 +19,7 @@ export class Particle {
     velocity: Position;
     radius: number;
     color: string;
-    fades: number;
+    fades: boolean;
   }) {
     this.position = position;
     this.velocity = velocity;

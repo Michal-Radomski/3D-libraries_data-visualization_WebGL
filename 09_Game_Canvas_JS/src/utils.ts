@@ -24,7 +24,7 @@ export const createParticles = ({
   color = "#BAA0DE",
 }: {
   object: Invader | Player;
-  fades: number;
+  fades: boolean;
   color?: string;
 }): void => {
   for (let i = 0; i < 15; i++) {

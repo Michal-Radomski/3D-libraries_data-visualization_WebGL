@@ -9,8 +9,8 @@ export class Player {
   rotation: number;
   opacity: number;
   image: HTMLImageElement | undefined;
-  width: number | undefined;
-  height: number | undefined;
+  width!: number;
+  height!: number;
   position!: Position;
   particles: Particle[];
   frames: number;

@@ -1,6 +1,7 @@
 import { Position } from "../Interfaces";
 import { c } from "../main";
 import invader from "../img/invader.png";
+import { InvaderProjectile } from "./InvaderProjectile";
 
 export class Invader {
   velocity: Position;
@@ -47,19 +48,19 @@ export class Invader {
     }
   }
 
-  // shoot(invaderProjectiles) {
-  //   audio.enemyShoot.play()
-  //   invaderProjectiles.push(
-  //     new InvaderProjectile({
-  //       position: {
-  //         x: this.position.x + this.width / 2,
-  //         y: this.position.y + this.height
-  //       },
-  //       velocity: {
-  //         x: 0,
-  //         y: 5
-  //       }
-  //     })
-  //   )
-  // }
+  shoot(invaderProjectiles: InvaderProjectile[]): void {
+    // audio.enemyShoot.play()
+    invaderProjectiles.push(
+      new InvaderProjectile({
+        position: {
+          x: this.position.x + this.width / 2,
+          y: this.position.y + this.height,
+        },
+        velocity: {
+          x: 0,
+          y: 5,
+        },
+      })
+    );
+  }
 }

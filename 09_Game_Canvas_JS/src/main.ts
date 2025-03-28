@@ -1,8 +1,10 @@
+import "./style.scss";
 import { Grid } from "./classes/Grid";
 import { Invader } from "./classes/Invader";
+import { InvaderProjectile } from "./classes/InvaderProjectile";
 import { Player } from "./classes/Player";
 import { Projectile } from "./classes/Projectile";
-import "./style.scss";
+import { rectangularCollision } from "./utils";
 
 // const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
 export const canvas = document.querySelector("canvas") as HTMLCanvasElement;
@@ -34,6 +36,10 @@ const projectiles: Projectile[] = [];
 // const invader: Invader = new Invader({ position: { x: 100, y: 100 } });
 // const grids: Grid[] = [new Grid()];
 const grids: Grid[] = [];
+const invaderProjectiles: InvaderProjectile[] = [];
+// const particles = [];
+// const bombs = [];
+// const powerUps = [];
 
 (function animate(): void {
   requestAnimationFrame(animate);
@@ -41,6 +47,26 @@ const grids: Grid[] = [];
   c.fillRect(0, 0, canvas.width, canvas.height);
   // player.draw();
   player.update();
+
+  invaderProjectiles.forEach((invaderProjectile: InvaderProjectile, index: number) => {
+    if (invaderProjectile.position.y + invaderProjectile.height >= canvas.height) {
+      setTimeout(() => {
+        invaderProjectiles.splice(index, 1);
+      }, 0);
+    } else invaderProjectile.update();
+
+    //* Projectile hits player
+    if (
+      rectangularCollision({
+        rectangle1: invaderProjectile,
+        rectangle2: player,
+      })
+    ) {
+      invaderProjectiles.splice(index, 1);
+      console.log("You Lose!");
+      // endGame()
+    }
+  });
 
   projectiles.forEach((projectile: Projectile, index: number) => {
     if (projectile.position.y + projectile.radius <= 0) {
@@ -55,6 +81,12 @@ const grids: Grid[] = [];
   // invader.update({ velocity: { x: 0, y: 0 } });
   grids.forEach((grid: Grid, gridIndex: number) => {
     grid.update();
+
+    //* Spawn projectiles
+    if (frames % 100 === 0 && grid.invaders.length > 0) {
+      grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(invaderProjectiles);
+    }
+
     grid.invaders.forEach((invader: Invader, index: number) => {
       invader.update({ velocity: grid.velocity });
 

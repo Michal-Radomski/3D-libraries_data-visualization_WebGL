@@ -14,6 +14,7 @@ export class Player {
   position!: Position;
   particles: Particle[];
   frames: number;
+  powerUp!: string | null;
   constructor() {
     // this.position = { x: 200, y: 200 };
 

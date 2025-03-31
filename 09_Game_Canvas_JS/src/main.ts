@@ -57,7 +57,7 @@ export const particles = [] as Particle[];
 //   }),
 // ] as Bomb[];
 const bombs = [] as Bomb[];
-const powerUps = [new PowerUp({ position: { x: 100, y: 100 }, velocity: { x: 0, y: 0 } })] as PowerUp[];
+const powerUps = [] as PowerUp[];
 
 for (let i = 0; i < 100; i++) {
   particles.push(
@@ -92,6 +92,22 @@ for (let i = 0; i < 100; i++) {
     if (powerUp.position.x - powerUp.radius >= canvas.width) {
       powerUps.splice(i, 1);
     } else powerUp.update();
+  }
+
+  //* Spawn PowerUps
+  if (frames % 500 === 0) {
+    powerUps.push(
+      new PowerUp({
+        position: {
+          x: 0,
+          y: Math.random() * 300 + 15,
+        },
+        velocity: {
+          x: 5,
+          y: 0,
+        },
+      })
+    );
   }
 
   //* Spawn bombs
@@ -207,13 +223,13 @@ for (let i = 0; i < 100; i++) {
       ) {
         projectiles.splice(i, 1);
         powerUps.splice(j, 1);
-        // player.powerUp = "MachineGun";
+        player.powerUp = "MachineGun";
         console.log("PowerUp started");
         // audio.bonus.play();
 
         setTimeout(() => {
-          // player.powerUp = null;
-          console.log("PPowerUp ended");
+          player.powerUp = null;
+          console.log("PowerUp ended");
         }, 5000);
       }
     }
@@ -268,7 +284,7 @@ for (let i = 0; i < 100; i++) {
       //* Projectiles hit enemy
       projectiles.forEach((projectile: Projectile, jIndex: number) => {
         if (
-          projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
+          projectile?.position?.y - projectile?.radius <= invader?.position?.y + invader?.height &&
           projectile.position.x + projectile.radius >= invader.position.x &&
           projectile.position.x - projectile.radius <= invader.position.x + invader.width &&
           projectile.position.y + projectile.radius >= invader.position.y
@@ -325,6 +341,16 @@ for (let i = 0; i < 100; i++) {
     frames = 0;
   }
 
+  if (keys.space.pressed && player.powerUp === "MachineGun" && frames % 2 === 0 && !game.over) {
+    projectiles.push(
+      new Projectile({
+        position: { x: player?.position?.x + player?.width! / 2, y: player?.position?.y },
+        velocity: { x: 0, y: -10 },
+        color: "orange",
+      })
+    );
+  }
+
   frames++;
   // console.log("frames:", frames);
 })();
@@ -347,10 +373,15 @@ window.addEventListener("keydown", ({ key }: { key: string }): void => {
       break;
     case " ":
       keys.space.pressed = true;
+
+      if (player.powerUp === "MachineGun") return;
+
+      // audio.shoot.play()
+
       projectiles.push(
         new Projectile({
           position: { x: player.position.x + player.width! / 2, y: player.position.y },
-          velocity: { x: 0, y: -15 },
+          velocity: { x: 0, y: -10 },
           color: "orangered",
         })
       );

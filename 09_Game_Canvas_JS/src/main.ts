@@ -38,10 +38,11 @@ let game = {
 let score: number = 0;
 
 let spawnBuffer: number = 500;
-const fps: number = 60;
+
+const fps: number = 60; //* 30 -> slower game!
 const fpsInterval: number = 1000 / fps;
-const msPrev: number = window.performance.now();
-console.log({ fpsInterval, msPrev });
+let msPrev: number = window.performance.now();
+// console.log({ fpsInterval, msPrev });
 
 export let player: Player = new Player();
 // console.log("player:", player);
@@ -144,6 +145,14 @@ function animate(): void {
   if (!game.active) return;
 
   requestAnimationFrame(animate);
+
+  const msNow: number = window.performance.now();
+  const elapsed: number = msNow - msPrev;
+
+  if (elapsed < fpsInterval) return;
+  msPrev = msNow - (elapsed % fpsInterval); // 3.34
+  // console.log({ msPrev });
+
   c.fillStyle = "#212529";
   c.fillRect(0, 0, canvas.width, canvas.height);
   // player.draw();
@@ -494,3 +503,10 @@ window.addEventListener("keyup", ({ key }: { key: string }): void => {
       break;
   }
 });
+
+//* Performance: now() method
+// const start: number = performance.now();
+// // Code to measure
+// for (let i = 0; i < 1000000; i++) {}
+// const end: number = performance.now();
+// console.log(`Execution time: ${end - start} ms`);

@@ -1,6 +1,7 @@
 import { Howl, Howler } from "howler";
 
 Howler.volume(0.5);
+// console.log("Howl, Holer:", Howl, Howler);
 
 export const audio = {
   backgroundMusic: new Howl({

@@ -14,18 +14,85 @@
     <!-- Bootstrap5.3 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   </head>
+  <!-- Todo: Move styled to .scss file! -->
   <body>
     <div style="position: relative" id="parentDiv">
       <p
         id="scoreContainer"
-        style="position: absolute; z-index: 10; color: whitesmoke; left: 0.5rem; top: 0.5rem; margin: 0; display: block"
+        style="position: absolute; z-index: 10; color: whitesmoke; left: 0.5rem; top: 0.5rem; margin: 0; display: none"
       >
         <span>Score:</span> <span id="scoreEl">0</span>
       </p>
 
       <!-- //* Canvas Element -->
       <canvas></canvas>
+
+      <!-- //* Background container -->
+      <div
+        id="startScreen"
+        style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: url('./img/startScreenBackground.png');
+          z-index: 20;
+          background-size: contain;
+          background-repeat: no-repeat;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div style="text-align: center">
+          <h1 style="color: white">Space Invaders</h1>
+
+          <!-- //* Button -->
+          <div id="startButton" style="cursor: pointer; position: relative; display: inline-block">
+            <img src="./img/button.png" alt="Start Button" />
+            <span style="position: absolute; color: white; top: 50%; transform: translate(-50%, -50%); left: 50%"
+              >Start</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- //* Restart Screen -->
+      <!-- //* Background container -->
+      <div
+        id="restartScreen"
+        style="
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          background: url('./img/startScreenBackground.png');
+          z-index: 20;
+          background-size: contain;
+          background-repeat: no-repeat;
+          display: none;
+          align-items: center;
+          justify-content: center;
+        "
+      >
+        <div style="text-align: center">
+          <h1 style="color: white; font-size: 24px">Game Over</h1>
+          <h1 id="finalScore" style="color: white; margin: 0; font-size: 48px">300</h1>
+          <p style="color: white; margin-top: 0">Points</p>
+
+          <!-- //* Button -->
+          <div id="restartButton" style="cursor: pointer; position: relative; display: inline-block">
+            <img src="./img/button.png" alt="Restart Button" />
+            <span style="position: absolute; color: white; top: 50%; transform: translate(-50%, -50%); left: 50%"
+              >Restart</span
+            >
+          </div>
+        </div>
+      </div>
     </div>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

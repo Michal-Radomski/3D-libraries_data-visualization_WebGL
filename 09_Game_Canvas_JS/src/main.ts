@@ -107,7 +107,7 @@ const endGame = (): void => {
   });
 };
 
-(function animate(): void {
+function animate(): void {
   if (!game.active) return;
 
   requestAnimationFrame(animate);
@@ -374,7 +374,7 @@ const endGame = (): void => {
     projectiles.push(
       new Projectile({
         position: { x: player?.position?.x + player?.width! / 2, y: player?.position?.y },
-        velocity: { x: 0, y: -10 },
+        velocity: { x: 0, y: -15 },
         color: "orange",
       })
     );
@@ -382,8 +382,25 @@ const endGame = (): void => {
 
   frames++;
   // console.log("frames:", frames);
-})();
+}
 // animate();
+
+(document.querySelector("#startButton") as HTMLDivElement).addEventListener("click", (): void => {
+  // audio.backgroundMusic.play();
+  // audio.start.play();
+
+  (document.querySelector("#startScreen") as HTMLDivElement).style.display = "none";
+  (document.querySelector("#scoreContainer") as HTMLParagraphElement).style.display = "block";
+  // init();
+  animate();
+});
+
+(document.querySelector("#restartButton") as HTMLDivElement).addEventListener("click", (): void => {
+  // audio.select.play();
+  (document.querySelector("#restartScreen") as HTMLDivElement).style.display = "none";
+  // init();
+  animate();
+});
 
 // window.addEventListener("keydown", (event: KeyboardEvent): void => {
 //   console.log("event.key:", event.key);

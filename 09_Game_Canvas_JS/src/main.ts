@@ -21,7 +21,7 @@ interface Keys {
   [key: string]: { pressed: boolean };
 }
 
-const keys: Keys = {
+let keys: Keys = {
   a: { pressed: false },
   d: { pressed: false },
   space: { pressed: false },
@@ -30,7 +30,7 @@ const keys: Keys = {
 let frames: number = 0;
 let randomInterval: number = Math.floor(Math.random() * 500 + 500);
 // console.log("randomInterval:", randomInterval);
-const game = {
+let game = {
   over: false,
   active: true,
 };
@@ -42,16 +42,16 @@ const fpsInterval: number = 1000 / fps;
 const msPrev: number = window.performance.now();
 console.log({ fpsInterval, msPrev });
 
-export const player: Player = new Player();
+export let player: Player = new Player();
 // console.log("player:", player);
 // player.draw();
 
-const projectiles: Projectile[] = [];
+let projectiles: Projectile[] = [];
 // const invader: Invader = new Invader({ position: { x: 100, y: 100 } });
 // const grids: Grid[] = [new Grid()];
-const grids: Grid[] = [];
-const invaderProjectiles: InvaderProjectile[] = [];
-export const particles = [] as Particle[];
+let grids: Grid[] = [];
+let invaderProjectiles: InvaderProjectile[] = [];
+export let particles = [] as Particle[];
 // const bombs = [
 //   new Bomb({
 //     position: { x: Math.random() * canvas.width, y: Math.random() * canvas.height },
@@ -62,26 +62,58 @@ export const particles = [] as Particle[];
 //     velocity: { x: (Math.random() - 0.5) * 6, y: (Math.random() - 0.5) * 6 },
 //   }),
 // ] as Bomb[];
-const bombs = [] as Bomb[];
-const powerUps = [] as PowerUp[];
+let bombs = [] as Bomb[];
+let powerUps = [] as PowerUp[];
 
-for (let i = 0; i < 100; i++) {
-  particles.push(
-    new Particle({
-      position: {
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-      },
-      velocity: {
-        x: 0,
-        y: 0.3,
-      },
-      radius: Math.random() * 2,
-      color: "white",
-      fades: false,
-    })
-  );
-}
+const init = (): void => {
+  player = new Player();
+  projectiles = [];
+  grids = [];
+  invaderProjectiles = [];
+  particles = [];
+  bombs = [];
+  powerUps = [];
+
+  keys = {
+    a: {
+      pressed: false,
+    },
+    d: {
+      pressed: false,
+    },
+    space: {
+      pressed: false,
+    },
+  };
+
+  frames = 0;
+  randomInterval = Math.floor(Math.random() * 500 + 500);
+  game = {
+    over: false,
+    active: true,
+  };
+  score = 0;
+  (document.querySelector("#finalScore") as HTMLHeadingElement).innerText = String(score);
+  (document.querySelector("#scoreEl") as HTMLSpanElement).innerText = String(score);
+
+  for (let i = 0; i < 100; i++) {
+    particles.push(
+      new Particle({
+        position: {
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+        },
+        velocity: {
+          x: 0,
+          y: 0.3,
+        },
+        radius: Math.random() * 2,
+        color: "white",
+        fades: false,
+      })
+    );
+  }
+};
 
 const endGame = (): void => {
   // console.log("You Lose!");
@@ -96,8 +128,8 @@ const endGame = (): void => {
   //* Stops game altogether
   setTimeout(() => {
     game.active = false;
-    // (document.querySelector("#restartScreen") as HTMLDivElement).style.display = "flex";
-    // (document.querySelector("#finalScore") as HTMLHeadingElement).innerText = String(score);
+    (document.querySelector("#restartScreen") as HTMLDivElement).style.display = "flex";
+    (document.querySelector("#finalScore") as HTMLHeadingElement).innerText = String(score);
   }, 2000);
 
   createParticles({
@@ -391,14 +423,14 @@ function animate(): void {
 
   (document.querySelector("#startScreen") as HTMLDivElement).style.display = "none";
   (document.querySelector("#scoreContainer") as HTMLParagraphElement).style.display = "block";
-  // init();
+  init();
   animate();
 });
 
 (document.querySelector("#restartButton") as HTMLDivElement).addEventListener("click", (): void => {
   // audio.select.play();
   (document.querySelector("#restartScreen") as HTMLDivElement).style.display = "none";
-  // init();
+  init();
   animate();
 });
 

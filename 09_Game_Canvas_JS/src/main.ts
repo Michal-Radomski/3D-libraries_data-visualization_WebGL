@@ -36,6 +36,12 @@ const game = {
 };
 let score: number = 0;
 
+let spawnBuffer: number = 500;
+const fps: number = 60;
+const fpsInterval: number = 1000 / fps;
+const msPrev: number = window.performance.now();
+console.log({ fpsInterval, msPrev });
+
 export const player: Player = new Player();
 // console.log("player:", player);
 // player.draw();
@@ -76,6 +82,30 @@ for (let i = 0; i < 100; i++) {
     })
   );
 }
+
+const endGame = (): void => {
+  // console.log("You Lose!");
+  // audio.gameOver.play();
+
+  //* Makes player disappear
+  setTimeout(() => {
+    player.opacity = 0;
+    game.over = true;
+  }, 0);
+
+  //* Stops game altogether
+  setTimeout(() => {
+    game.active = false;
+    // (document.querySelector("#restartScreen") as HTMLDivElement).style.display = "flex";
+    // (document.querySelector("#finalScore") as HTMLHeadingElement).innerText = String(score);
+  }, 2000);
+
+  createParticles({
+    object: player,
+    fades: true,
+    color: "whitesmoke",
+  });
+};
 
 (function animate(): void {
   if (!game.active) return;
@@ -158,25 +188,9 @@ for (let i = 0; i < 100; i++) {
     } else invaderProjectile.update();
 
     //* Projectile hits player
-    if (
-      rectangularCollision({
-        rectangle1: invaderProjectile,
-        rectangle2: player,
-      })
-    ) {
-      // console.log("You Lose!");
-      setTimeout(() => {
-        invaderProjectiles.splice(index, 1);
-        player.opacity = 0;
-        game.over = true;
-      }, 0);
-
-      setTimeout(() => {
-        game.active = false;
-      }, 2000);
-
-      createParticles({ object: player, fades: true, color: "whitesmoke" });
-      // endGame()
+    if (rectangularCollision({ rectangle1: invaderProjectile, rectangle2: player })) {
+      invaderProjectiles.splice(index, 1);
+      endGame();
     }
   });
 
@@ -241,7 +255,6 @@ for (let i = 0; i < 100; i++) {
     }
   }
 
-  // invader.update({ velocity: { x: 0, y: 0 } });
   grids.forEach((grid: Grid, gridIndex: number) => {
     grid.update();
 
@@ -319,8 +332,13 @@ for (let i = 0; i < 100; i++) {
           }, 0);
         }
       });
+
+      //* Remove player if invaders touch it
+      if (rectangularCollision({ rectangle1: invader, rectangle2: player }) && !game.over) {
+        endGame();
+      }
     }
-  });
+  }); //* End looping over grid.invaders
 
   //* Keys
   if (keys.a.pressed && player.position!.x >= 0) {
@@ -336,9 +354,11 @@ for (let i = 0; i < 100; i++) {
 
   //* Spawning enemies
   if (frames % randomInterval === 0) {
+    spawnBuffer = spawnBuffer < 0 ? 100 : spawnBuffer;
     grids.push(new Grid());
-    randomInterval = Math.floor(Math.random() * 500 + 500);
+    randomInterval = Math.floor(Math.random() * 500 + spawnBuffer);
     frames = 0;
+    spawnBuffer -= 100;
   }
 
   if (keys.space.pressed && player.powerUp === "MachineGun" && frames % 2 === 0 && !game.over) {

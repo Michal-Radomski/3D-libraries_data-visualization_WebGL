@@ -155,16 +155,38 @@ for (let i = 0; i < 100; i++) {
     }
   });
 
-  //* Projectiles his enemy
-  projectiles.forEach((projectile: Projectile, index: number) => {
+  //* Projectiles hits enemy
+  // projectiles.forEach((projectile: Projectile, index: number) => {
+  //   if (projectile.position.y + projectile.radius <= 0) {
+  //     setTimeout(() => {
+  //       projectiles.splice(index, 1);
+  //     }, 0);
+  //   } else {
+  //     projectile.update();
+  //   }
+  // });
+  for (let i = projectiles.length - 1; i >= 0; i--) {
+    const projectile: Projectile = projectiles[i];
+    for (let j = bombs.length - 1; j >= 0; j--) {
+      const bomb: Bomb = bombs[j];
+
+      //* If projectile touches bomb, remove projectile
+      if (
+        Math.hypot(projectile.position.x - bomb.position.x, projectile.position.y - bomb.position.y) <
+          projectile.radius + Bomb.radius &&
+        !bomb.active
+      ) {
+        projectiles.splice(i, 1);
+        bomb.explode();
+      }
+    }
+
     if (projectile.position.y + projectile.radius <= 0) {
-      setTimeout(() => {
-        projectiles.splice(index, 1);
-      }, 0);
+      projectiles.splice(i, 1);
     } else {
       projectile.update();
     }
-  });
+  }
 
   // invader.update({ velocity: { x: 0, y: 0 } });
   grids.forEach((grid: Grid, gridIndex: number) => {

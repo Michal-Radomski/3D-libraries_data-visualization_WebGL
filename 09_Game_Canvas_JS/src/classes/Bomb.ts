@@ -52,22 +52,23 @@ export class Bomb {
       this.velocity.y = -this.velocity.y;
   }
 
-  // explode(): void {
-  //   // audio.bomb.play();
-  //   this.active = true;
-  //   this.velocity.x = 0;
-  //   this.velocity.y = 0;
-  //   gsap.to(this, {
-  //     radius: 200,
-  //     color: "white",
-  //   });
+  explode(): void {
+    console.log("Explode!!!");
+    // audio.bomb.play();
+    this.active = true;
+    this.velocity.x = 0;
+    this.velocity.y = 0;
+    gsap.to(Bomb, {
+      radius: 200,
+      color: "white",
+    });
 
-  //   gsap.to(this, {
-  //     delay: 0.1,
-  //     opacity: 0,
-  //     duration: 0.15,
-  //   });
-  // }
+    gsap.to(this, {
+      delay: 0.1,
+      opacity: 0,
+      duration: 0.15,
+    });
+  }
 }
 
 export class PowerUp {

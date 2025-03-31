@@ -197,9 +197,38 @@ for (let i = 0; i < 100; i++) {
       grid.invaders[Math.floor(Math.random() * grid.invaders.length)].shoot(invaderProjectiles);
     }
 
-    grid.invaders.forEach((invader: Invader, index: number) => {
+    for (let index = grid.invaders.length - 1; index >= 0; index--) {
+      const invader: Invader = grid.invaders[index];
+      // if (!invader.position) console.log("invader.position:", invader.position);
       invader.update({ velocity: grid.velocity });
 
+      for (let j = bombs.length - 1; j >= 0; j--) {
+        const bomb: Bomb = bombs[j];
+        const invaderRadius: number = 15;
+
+        //* If bomb touches invader, remove invader
+        if (
+          Math.hypot(invader?.position?.x - bomb?.position?.x, invader?.position?.y - bomb.position.y) <
+            invaderRadius + Bomb.radius &&
+          bomb.active
+        ) {
+          score += 50;
+          scoreEl.innerHTML = String(score);
+
+          grid.invaders.splice(index, 1);
+          createScoreLabel({
+            object: invader,
+            score: 50,
+          });
+
+          createParticles({
+            object: invader,
+            fades: true,
+          });
+        }
+      }
+
+      //* Projectiles hit enemy
       projectiles.forEach((projectile: Projectile, jIndex: number) => {
         if (
           projectile.position.y - projectile.radius <= invader.position.y + invader.height &&
@@ -237,7 +266,7 @@ for (let i = 0; i < 100; i++) {
           }, 0);
         }
       });
-    });
+    }
   });
 
   //* Keys

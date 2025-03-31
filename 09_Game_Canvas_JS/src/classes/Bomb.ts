@@ -53,19 +53,21 @@ export class Bomb {
   }
 
   explode(): void {
-    console.log("Explode!!!");
+    // console.log("Explode!!!");
     // audio.bomb.play();
     this.active = true;
     this.velocity.x = 0;
     this.velocity.y = 0;
+
     gsap.to(Bomb, {
-      radius: 200,
-      color: "white",
+      radius: 80, // Todo: fix this!
+      // color: "white",
     });
 
     gsap.to(this, {
       delay: 0.1,
       opacity: 0,
+      color: "white",
       duration: 0.15,
     });
   }

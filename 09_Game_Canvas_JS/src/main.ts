@@ -176,6 +176,7 @@ for (let i = 0; i < 100; i++) {
   // });
   for (let i = projectiles.length - 1; i >= 0; i--) {
     const projectile: Projectile = projectiles[i];
+
     for (let j = bombs.length - 1; j >= 0; j--) {
       const bomb: Bomb = bombs[j];
 
@@ -187,6 +188,33 @@ for (let i = 0; i < 100; i++) {
       ) {
         projectiles.splice(i, 1);
         bomb.explode();
+      }
+    }
+
+    if (projectile.position.y + projectile.radius <= 0) {
+      projectiles.splice(i, 1);
+    } else {
+      projectile.update();
+    }
+
+    for (let j = powerUps.length - 1; j >= 0; j--) {
+      const powerUp: PowerUp = powerUps[j];
+
+      //* If projectile touches bomb, remove projectile
+      if (
+        Math.hypot(projectile.position.x - powerUp.position.x, projectile.position.y - powerUp.position.y) <
+        projectile.radius + powerUp.radius
+      ) {
+        projectiles.splice(i, 1);
+        powerUps.splice(j, 1);
+        // player.powerUp = "MachineGun";
+        console.log("PowerUp started");
+        // audio.bonus.play();
+
+        setTimeout(() => {
+          // player.powerUp = null;
+          console.log("PPowerUp ended");
+        }, 5000);
       }
     }
 

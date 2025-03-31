@@ -8,6 +8,7 @@ import { createParticles, createScoreLabel, randomBetween, rectangularCollision 
 import { Particle } from "./classes/Particle";
 import { Bomb } from "./classes/Bomb";
 import { PowerUp } from "./classes/PowerUp";
+import { audio } from "./audio";
 
 const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
 export const canvas = document.querySelector("canvas") as HTMLCanvasElement;
@@ -117,7 +118,7 @@ const init = (): void => {
 
 const endGame = (): void => {
   // console.log("You Lose!");
-  // audio.gameOver.play();
+  audio.gameOver.play();
 
   //* Makes player disappear
   setTimeout(() => {
@@ -280,7 +281,7 @@ function animate(): void {
         powerUps.splice(j, 1);
         player.powerUp = "MachineGun";
         console.log("PowerUp started");
-        // audio.bonus.play();
+        audio.bonus.play();
 
         setTimeout(() => {
           player.powerUp = null;
@@ -357,6 +358,9 @@ function animate(): void {
               createScoreLabel({ object: invader });
               createParticles({ object: invader, fades: true });
 
+              //* Singular projectile hits an enemy
+              audio.explode.play();
+
               grid.invaders.splice(index, 1);
               projectiles.splice(jIndex, 1);
 
@@ -403,6 +407,10 @@ function animate(): void {
   }
 
   if (keys.space.pressed && player.powerUp === "MachineGun" && frames % 2 === 0 && !game.over) {
+    if (frames % 6 === 0) {
+      audio.shoot.play();
+    }
+
     projectiles.push(
       new Projectile({
         position: { x: player?.position?.x + player?.width! / 2, y: player?.position?.y },
@@ -418,8 +426,8 @@ function animate(): void {
 // animate();
 
 (document.querySelector("#startButton") as HTMLDivElement).addEventListener("click", (): void => {
-  // audio.backgroundMusic.play();
-  // audio.start.play();
+  audio.backgroundMusic.play();
+  audio.start.play();
 
   (document.querySelector("#startScreen") as HTMLDivElement).style.display = "none";
   (document.querySelector("#scoreContainer") as HTMLParagraphElement).style.display = "block";
@@ -428,7 +436,8 @@ function animate(): void {
 });
 
 (document.querySelector("#restartButton") as HTMLDivElement).addEventListener("click", (): void => {
-  // audio.select.play();
+  audio.select.play();
+
   (document.querySelector("#restartScreen") as HTMLDivElement).style.display = "none";
   init();
   animate();
@@ -454,7 +463,7 @@ window.addEventListener("keydown", ({ key }: { key: string }): void => {
 
       if (player.powerUp === "MachineGun") return;
 
-      // audio.shoot.play()
+      audio.shoot.play();
 
       projectiles.push(
         new Projectile({

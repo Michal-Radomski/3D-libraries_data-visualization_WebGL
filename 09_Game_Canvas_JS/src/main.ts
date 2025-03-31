@@ -116,6 +116,15 @@ const endGame = (): void => {
   // player.draw();
   player.update();
 
+  for (let i = player.particles.length - 1; i >= 0; i--) {
+    const particle: Particle = player.particles[i];
+    particle.update();
+
+    if (particle.opacity === 0) {
+      (player.particles as Particle[]).splice(i, 1);
+    }
+  }
+
   for (let i = powerUps.length - 1; i >= 0; i--) {
     const powerUp: PowerUp = powerUps[i];
 

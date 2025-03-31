@@ -15,6 +15,7 @@ export class Player {
   particles: Particle[];
   frames: number;
   powerUp!: string | null;
+
   constructor() {
     // this.position = { x: 200, y: 200 };
 
@@ -40,7 +41,7 @@ export class Player {
       };
     };
 
-    this.particles = [];
+    this.particles = [] as Particle[];
     this.frames = 0;
   }
 
@@ -71,5 +72,23 @@ export class Player {
     if (this.opacity !== 1) return;
 
     this.frames++;
+
+    if (this.frames % 2 === 0) {
+      this.particles.push(
+        new Particle({
+          position: {
+            x: this.position.x + this.width / 2,
+            y: this.position.y + this.height,
+          },
+          velocity: {
+            x: (Math.random() - 0.5) * 1.5,
+            y: 1.4,
+          },
+          radius: Math.random() * 2,
+          color: "white",
+          fades: true,
+        })
+      );
+    }
   }
 }

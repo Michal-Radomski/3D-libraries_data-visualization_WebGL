@@ -6,6 +6,10 @@ import { Player } from "./classes/Player";
 import { Rectangle } from "./Interfaces";
 import { particles } from "./main";
 
+export const randomBetween = (min: number, max: number): number => {
+  return Math.random() * (max - min) + min;
+};
+
 export const createScoreLabel = ({ object, score = 100 }: { object: Invader; score?: number }): void => {
   const scoreLabel: HTMLLabelElement = document.createElement("label");
   scoreLabel.innerText = String(score);

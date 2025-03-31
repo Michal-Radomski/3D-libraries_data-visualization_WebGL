@@ -1,8 +1,10 @@
+import gsap from "gsap";
+
 import { Position } from "../Interfaces";
 import { c, canvas } from "../main";
 
 export class Bomb {
-  static radius = 30;
+  static radius: number = 30;
   position: Position;
   velocity: Position;
   color: string;
@@ -16,8 +18,9 @@ export class Bomb {
     this.opacity = 1;
     this.active = false;
 
-    gsap.to(this, {
+    gsap.to(Bomb, {
       radius: 30,
+      duration: 1.5,
     });
   }
 
@@ -49,22 +52,22 @@ export class Bomb {
       this.velocity.y = -this.velocity.y;
   }
 
-  explode(): void {
-    // audio.bomb.play();
-    this.active = true;
-    this.velocity.x = 0;
-    this.velocity.y = 0;
-    gsap.to(this, {
-      radius: 200,
-      color: "white",
-    });
+  // explode(): void {
+  //   // audio.bomb.play();
+  //   this.active = true;
+  //   this.velocity.x = 0;
+  //   this.velocity.y = 0;
+  //   gsap.to(this, {
+  //     radius: 200,
+  //     color: "white",
+  //   });
 
-    gsap.to(this, {
-      delay: 0.1,
-      opacity: 0,
-      duration: 0.15,
-    });
-  }
+  //   gsap.to(this, {
+  //     delay: 0.1,
+  //     opacity: 0,
+  //     duration: 0.15,
+  //   });
+  // }
 }
 
 export class PowerUp {

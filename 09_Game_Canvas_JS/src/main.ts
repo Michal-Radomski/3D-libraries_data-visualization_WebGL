@@ -4,8 +4,9 @@ import { Invader } from "./classes/Invader";
 import { InvaderProjectile } from "./classes/InvaderProjectile";
 import { Player } from "./classes/Player";
 import { Projectile } from "./classes/Projectile";
-import { createParticles, createScoreLabel, rectangularCollision } from "./utils";
+import { createParticles, createScoreLabel, randomBetween, rectangularCollision } from "./utils";
 import { Particle } from "./classes/Particle";
+import { Bomb } from "./classes/Bomb";
 
 const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
 export const canvas = document.querySelector("canvas") as HTMLCanvasElement;
@@ -44,7 +45,17 @@ const projectiles: Projectile[] = [];
 const grids: Grid[] = [];
 const invaderProjectiles: InvaderProjectile[] = [];
 export const particles = [] as Particle[];
-// const bombs = [];
+// const bombs = [
+//   new Bomb({
+//     position: { x: Math.random() * canvas.width, y: Math.random() * canvas.height },
+//     velocity: { x: (Math.random() - 0.5) * 6, y: (Math.random() - 0.5) * 6 },
+//   }),
+//   new Bomb({
+//     position: { x: Math.random() * canvas.width, y: Math.random() * canvas.height },
+//     velocity: { x: (Math.random() - 0.5) * 6, y: (Math.random() - 0.5) * 6 },
+//   }),
+// ] as Bomb[];
+const bombs = [] as Bomb[];
 // const powerUps = [];
 
 for (let i = 0; i < 100; i++) {
@@ -73,6 +84,31 @@ for (let i = 0; i < 100; i++) {
   c.fillRect(0, 0, canvas.width, canvas.height);
   // player.draw();
   player.update();
+
+  //* Spawn bombs
+  if (frames % 200 === 0 && bombs.length < 3) {
+    bombs.push(
+      new Bomb({
+        position: {
+          x: randomBetween(Bomb.radius, canvas.width - Bomb.radius),
+          y: randomBetween(Bomb.radius, canvas.height - Bomb.radius),
+        },
+        velocity: {
+          x: (Math.random() - 0.5) * 6,
+          y: (Math.random() - 0.5) * 6,
+        },
+      })
+    );
+  }
+
+  for (let i = bombs.length - 1; i >= 0; i--) {
+    const bomb: Bomb = bombs[i];
+    // console.log("bomb:", bomb);
+
+    if (bomb.opacity <= 0) {
+      bombs.splice(i, 1);
+    } else bomb.update();
+  }
 
   particles.forEach((particle: Particle, index: number) => {
     if (particle.position.y - particle.radius >= canvas.height) {

@@ -7,6 +7,7 @@ import { Projectile } from "./classes/Projectile";
 import { createParticles, createScoreLabel, randomBetween, rectangularCollision } from "./utils";
 import { Particle } from "./classes/Particle";
 import { Bomb } from "./classes/Bomb";
+import { PowerUp } from "./classes/PowerUp";
 
 const scoreEl = document.querySelector("#scoreEl") as HTMLSpanElement;
 export const canvas = document.querySelector("canvas") as HTMLCanvasElement;
@@ -56,7 +57,7 @@ export const particles = [] as Particle[];
 //   }),
 // ] as Bomb[];
 const bombs = [] as Bomb[];
-// const powerUps = [];
+const powerUps = [new PowerUp({ position: { x: 100, y: 100 }, velocity: { x: 0, y: 0 } })] as PowerUp[];
 
 for (let i = 0; i < 100; i++) {
   particles.push(
@@ -84,6 +85,14 @@ for (let i = 0; i < 100; i++) {
   c.fillRect(0, 0, canvas.width, canvas.height);
   // player.draw();
   player.update();
+
+  for (let i = powerUps.length - 1; i >= 0; i--) {
+    const powerUp: PowerUp = powerUps[i];
+
+    if (powerUp.position.x - powerUp.radius >= canvas.width) {
+      powerUps.splice(i, 1);
+    } else powerUp.update();
+  }
 
   //* Spawn bombs
   if (frames % 200 === 0 && bombs.length < 3) {
